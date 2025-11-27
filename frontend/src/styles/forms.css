@@ -1,0 +1,42 @@
+/* Form Styles - Comfortable and accessible */
+
+.form-control, .form-select {
+  border-radius: var(--radius-btn);
+  border: 2px solid var(--border-color);
+  padding: var(--space-md) var(--space-lg);
+  transition: all var(--transition-smooth);
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.form-control:hover, .form-select:hover {
+  border-color: var(--primary-lighter);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(77, 184, 168, 0.15);
+  outline: none;
+  background-color: var(--pure-white);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Dark theme form adjustments */
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  background-color: var(--bg-primary);
+  border-color: var(--primary);
+  color: var(--text-primary);
+}

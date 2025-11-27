@@ -51,9 +51,9 @@ const ExpertDashboard = () => {
         {/* Welcome Section */}
         <div className="row mb-4">
           <div className="col-12">
-            <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}}>
+            <div className="card border-0 hero-section">
               <div className="card-body p-4 text-white">
-                <h2 className="mb-2">
+                <h2 className="mb-2" style={{textShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
                   <i className="bi bi-person-badge me-2"></i>
                   Expert Dashboard
                 </h2>
@@ -162,7 +162,7 @@ const ExpertDashboard = () => {
                         </td>
                         <td>
                           <div className="d-flex align-items-center gap-2">
-                            <div className="progress" style={{ width: '80px', height: '8px' }}>
+                            <div className="progress" style={{ width: '80px' }}>
                               <div
                                 className={`progress-bar bg-${patient.progress >= 70 ? 'success' : 'warning'}`}
                                 style={{ width: `${patient.progress}%` }}

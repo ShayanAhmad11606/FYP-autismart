@@ -27,11 +27,11 @@ const About = () => {
   return (
     <div className="min-vh-100">
       {/* Hero Section */}
-      <div className="py-5" style={{background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)'}}>
+      <div className="py-5 hero-section">
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-8 mx-auto text-center">
-              <h1 className="display-4 fw-bold mb-3" style={{color: 'white'}}>
+              <h1 className="display-4 fw-bold mb-3" style={{color: 'white', textShadow: '0 2px 8px rgba(0,0,0,0.2)'}}>
                 <i className="bi bi-heart-pulse-fill me-3"></i>
                 About AutiSmart
               </h1>

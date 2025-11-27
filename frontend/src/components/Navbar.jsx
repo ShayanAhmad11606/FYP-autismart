@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,14 +71,7 @@ const Navbar = () => {
             
             {/* Theme Toggle Button */}
             <li className="nav-item ms-2">
-              <button
-                className="btn btn-outline-light btn-sm"
-                onClick={toggleTheme}
-                title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-                style={{ borderRadius: '8px' }}
-              >
-                <i className={`bi ${theme === 'light' ? 'bi-moon-stars-fill' : 'bi-sun-fill'}`}></i>
-              </button>
+              <ThemeToggle />
             </li>
             
             {isAuthenticated ? (

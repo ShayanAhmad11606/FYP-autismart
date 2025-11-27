@@ -1,0 +1,47 @@
+/* Badge Styles - Gentle and readable */
+
+.badge-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.badge-success {
+  background: linear-gradient(135deg, var(--success) 0%, var(--success-light) 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.badge-warning {
+  background: linear-gradient(135deg, var(--warning) 0%, var(--warning-light) 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.badge-danger {
+  background: linear-gradient(135deg, var(--danger) 0%, var(--danger-light) 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.badge-info {
+  background: linear-gradient(135deg, var(--info) 0%, var(--info-light) 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}

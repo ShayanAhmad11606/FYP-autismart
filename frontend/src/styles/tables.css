@@ -1,0 +1,41 @@
+/* Table Styles - Organized and readable */
+
+.table {
+  background: var(--card-bg);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table thead {
+  background: linear-gradient(135deg, var(--primary-subtle) 0%, var(--primary-lighter) 100%);
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+.table tbody tr {
+  transition: all var(--transition);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table tbody tr:hover {
+  background-color: var(--primary-subtle);
+  transform: scale(1.01);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Dark theme table adjustments */
+[data-theme="dark"] .table {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Accessibility - Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .table tbody tr:hover {
+    transform: none !important;
+  }
+}

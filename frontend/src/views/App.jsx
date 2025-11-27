@@ -13,6 +13,7 @@ import ExpertDashboard from './ExpertDashboard';
 
 // Import new pages
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import Home from '../pages/Home';
 import Assessment from '../pages/Assessment';
 import Games from '../pages/Games';
@@ -76,8 +77,9 @@ function AppContent() {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
         <Route
           path="/register"
           element={
@@ -254,6 +256,8 @@ function AppContent() {
         
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      </main>
+      <Footer />
     </>
   );
 }

@@ -1,0 +1,51 @@
+/* Modal and Overlay Styles */
+
+[data-theme="dark"] .modal-content {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .accordion-item {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .accordion-button {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .accordion-button:not(.collapsed) {
+  background-color: var(--bg-primary);
+  color: var(--primary);
+}
+
+[data-theme="dark"] .btn-outline-primary {
+  color: var(--primary-light);
+  border-color: var(--primary-light);
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary-light);
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .alert {
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .list-group-item {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}

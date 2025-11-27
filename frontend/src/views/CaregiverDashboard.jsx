@@ -53,9 +53,9 @@ const CaregiverDashboard = () => {
         {/* Welcome Section */}
         <div className="row mb-4">
           <div className="col-12">
-            <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)'}}>
+            <div className="card border-0 hero-section">
               <div className="card-body p-4 text-white">
-                <h2 className="mb-2">
+                <h2 className="mb-2" style={{textShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
                   <i className="bi bi-heart-fill me-2"></i>
                   Caregiver Dashboard
                 </h2>
@@ -153,7 +153,7 @@ const CaregiverDashboard = () => {
                       {item.current}%
                     </Badge>
                   </div>
-                  <div className="progress" style={{ height: '10px' }}>
+                  <div className="progress">
                     <div
                       className={`progress-bar bg-${item.current >= 70 ? 'success' : item.current >= 50 ? 'warning' : 'danger'}`}
                       style={{ width: `${item.current}%` }}
@@ -251,7 +251,7 @@ const CaregiverDashboard = () => {
                   <small>Progress</small>
                   <small className="fw-bold">3/5</small>
                 </div>
-                <div className="progress" style={{ height: '10px' }}>
+                <div className="progress">
                   <div className="progress-bar bg-warning" style={{ width: '60%' }}></div>
                 </div>
               </div>

@@ -1,0 +1,30 @@
+/* Hero Section Styles - Welcoming and hopeful */
+
+.hero-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent-sky) 50%, var(--accent-lavender) 100%);
+  color: white;
+  padding: var(--space-2xl) 0;
+  border-radius: var(--radius-soft);
+  margin-bottom: var(--space-xl);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: var(--space-lg) var(--space-md);
+  }
+}

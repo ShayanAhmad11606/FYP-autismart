@@ -1,0 +1,64 @@
+/* Global Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--charcoal);
+  background-color: var(--bg-secondary);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+/* Dark theme body adjustments */
+[data-theme="dark"] body {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .text-muted {
+  color: var(--text-secondary) !important;
+}
+
+/* Accessibility - Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utilities */
+.text-primary-custom {
+  color: var(--primary);
+}
+
+.bg-primary-light {
+  background-color: var(--primary-lighter);
+}
+
+.border-primary {
+  border-color: var(--primary) !important;
+}
+
+/* Responsive Spacing */
+.section-spacing {
+  padding: var(--space-xl) 0;
+}
+
+@media (max-width: 768px) {
+  .section-spacing {
+    padding: var(--space-lg) 0;
+  }
+}

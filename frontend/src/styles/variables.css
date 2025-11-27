@@ -1,0 +1,93 @@
+/* Core Design System Variables */
+
+:root {
+  /* Primary Colors - Calming Teal/Sage for healing and trust */
+  --primary: #4db8a8;
+  --primary-light: #6bc9ba;
+  --primary-dark: #3a9688;
+  --primary-lighter: #d4f1ed;
+  --primary-subtle: #e8f8f5;
+  
+  /* Accent Colors - Therapeutic palette */
+  --accent-lavender: #b4a7d6;
+  --accent-lavender-light: #d4cce8;
+  --accent-peach: #f4a261;
+  --accent-peach-light: #f8c794;
+  --accent-sky: #87ceeb;
+  --accent-mint: #98d8c8;
+  
+  /* Neutral Colors - Warm and gentle */
+  --white: #f8f6f3;
+  --pure-white: #ffffff;
+  --light-gray: #f0ede7;
+  --medium-gray: #8b94a8;
+  --dark-gray: #5a6477;
+  --charcoal: #2d3748;
+  --light-border: #e5e1d8;
+  --warm-border: #ddd6c8;
+  
+  /* Status Colors - Accessible and gentle */
+  --success: #52b788;
+  --success-light: #95d5b2;
+  --warning: #f4a261;
+  --warning-light: #f8c794;
+  --danger: #e76f51;
+  --danger-light: #f2a58f;
+  --info: #5ea8d9;
+  --info-light: #9dc8e8;
+  
+  /* Spacing Scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  
+  /* Border Radius - Soft and friendly */
+  --radius-card: 16px;
+  --radius-btn: 10px;
+  --radius-soft: 20px;
+  
+  /* Transitions */
+  --transition: 0.3s ease;
+  --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Light Theme */
+  --bg-primary: #f8f6f3;
+  --bg-secondary: #f0ede7;
+  --bg-tertiary: #fdfcfa;
+  --text-primary: #2d3748;
+  --text-secondary: #5a6477;
+  --text-muted: #8b94a8;
+  --card-bg: #fdfcfa;
+  --card-hover: #ffffff;
+  --border-color: #e5e1d8;
+  --shadow-sm: 0 2px 8px rgba(45, 55, 72, 0.08);
+  --shadow-md: 0 4px 16px rgba(45, 55, 72, 0.12);
+  --shadow-lg: 0 8px 24px rgba(45, 55, 72, 0.16);
+}
+
+/* Dark Theme - Deep blue for restful, night-friendly experience */
+[data-theme="dark"] {
+  --bg-primary: #1a2332;
+  --bg-secondary: #0f1419;
+  --bg-tertiary: #212d3f;
+  --text-primary: #e8eef5;
+  --text-secondary: #b4bcc8;
+  --text-muted: #8891a1;
+  --card-bg: #243142;
+  --card-hover: #2a3748;
+  --border-color: #344053;
+  --light-gray: #0f1419;
+  --charcoal: #e8eef5;
+  --light-border: #344053;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  
+  /* Adjust primary colors for dark mode */
+  --primary: #5ec9ba;
+  --primary-light: #7dd6c9;
+  --primary-lighter: #2a4a46;
+}

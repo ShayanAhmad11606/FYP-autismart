@@ -1,0 +1,52 @@
+/* Card Styles - Soft and welcoming */
+
+.card {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-smooth);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+  border-color: var(--primary-lighter);
+  background: var(--card-hover);
+}
+
+.card-stat {
+  border-left: 4px solid var(--primary);
+}
+
+.card-success {
+  border-left: 4px solid var(--success);
+}
+
+.card-warning {
+  border-left: 4px solid var(--warning);
+}
+
+.card-danger {
+  border-left: 4px solid var(--danger);
+}
+
+.card-info {
+  border-left: 4px solid var(--info);
+}
+
+/* Dark theme card adjustments */
+[data-theme="dark"] .card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Accessibility - Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none !important;
+  }
+}

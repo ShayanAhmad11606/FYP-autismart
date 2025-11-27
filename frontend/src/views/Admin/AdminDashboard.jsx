@@ -131,9 +131,9 @@ const AdminDashboard = () => {
         {/* Welcome Section */}
         <div className="row mb-4">
           <div className="col-12">
-            <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'}}>
+            <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, var(--danger) 0%, var(--danger-light) 100%)'}}>
               <div className="card-body p-4 text-white">
-                <h2 className="mb-2">
+                <h2 className="mb-2" style={{textShadow: '0 2px 4px rgba(0,0,0,0.2)'}}>
                   <i className="bi bi-shield-lock me-2"></i>
                   Admin Dashboard
                 </h2>
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
         {/* Stats Cards */}
         <div className="row g-4 mb-4">
           <div className="col-md-3">
-            <div className="card border-0 shadow-sm" style={{backgroundColor: '#059669'}}>
+            <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)'}}>
               <div className="card-body">
                 <div className="d-flex align-items-center">
                   <i className="bi bi-people-fill fs-1 me-3 text-white opacity-75"></i>
@@ -168,7 +168,7 @@ const AdminDashboard = () => {
           </div>
 
           <div className="col-md-3">
-            <div className="card border-0 shadow-sm" style={{backgroundColor: '#10b981'}}>
+            <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, var(--success) 0%, var(--success-light) 100%)'}}>
               <div className="card-body">
                 <div className="d-flex align-items-center">
                   <i className="bi bi-check-circle-fill fs-1 me-3 text-white opacity-75"></i>
@@ -182,7 +182,7 @@ const AdminDashboard = () => {
           </div>
 
           <div className="col-md-3">
-            <div className="card border-0 shadow-sm" style={{backgroundColor: '#f59e0b'}}>
+            <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, var(--warning) 0%, var(--warning-light) 100%)'}}>
               <div className="card-body">
                 <div className="d-flex align-items-center">
                   <i className="bi bi-clock-fill fs-1 me-3 text-white opacity-75"></i>
@@ -196,7 +196,7 @@ const AdminDashboard = () => {
           </div>
 
           <div className="col-md-3">
-            <div className="card border-0 shadow-sm" style={{backgroundColor: '#3b82f6'}}>
+            <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, var(--info) 0%, var(--info-light) 100%)'}}>
               <div className="card-body">
                 <div className="d-flex align-items-center">
                   <i className="bi bi-star-fill fs-1 me-3 text-white opacity-75"></i>

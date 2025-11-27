@@ -1,0 +1,49 @@
+/* Sidebar Styles - Clean and organized */
+
+.sidebar {
+  background-color: var(--card-bg);
+  border-right: 1px solid var(--border-color);
+  min-height: calc(100vh - 70px);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-btn);
+  transition: all var(--transition-smooth);
+  margin-bottom: var(--space-sm);
+  font-weight: 500;
+  gap: var(--space-md);
+}
+
+.sidebar-link:hover {
+  background: linear-gradient(135deg, var(--primary-subtle) 0%, var(--primary-lighter) 100%);
+  color: var(--primary);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar-link.active {
+  background: linear-gradient(135deg, var(--primary-lighter) 0%, var(--accent-mint) 100%);
+  color: var(--primary-dark);
+  font-weight: 600;
+  border-left: 3px solid var(--primary);
+}
+
+/* Dark theme sidebar adjustments */
+[data-theme="dark"] .sidebar {
+  background-color: var(--card-bg);
+  border-right-color: var(--border-color);
+}
+
+/* Accessibility - Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-link:hover {
+    transform: none !important;
+  }
+}
