@@ -1,10 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -45,6 +47,9 @@ const Navbar = () => {
               <Link className="nav-link" to="/" onClick={closeMenu}>Home</Link>
             </li>
             <li className="nav-item">
+              <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link" to="/games" onClick={closeMenu}>Games</Link>
             </li>
             <li className="nav-item">
@@ -61,6 +66,18 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/dashboard" onClick={closeMenu}>Dashboard</Link>
+            </li>
+            
+            {/* Theme Toggle Button */}
+            <li className="nav-item ms-2">
+              <button
+                className="btn btn-outline-light btn-sm"
+                onClick={toggleTheme}
+                title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+                style={{ borderRadius: '8px' }}
+              >
+                <i className={`bi ${theme === 'light' ? 'bi-moon-stars-fill' : 'bi-sun-fill'}`}></i>
+              </button>
             </li>
             
             {isAuthenticated ? (

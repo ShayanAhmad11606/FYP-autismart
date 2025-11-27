@@ -35,6 +35,127 @@
   
   /* Transitions */
   --transition: 0.3s ease;
+  
+  /* Light Theme */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f1f5f9;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --card-bg: #ffffff;
+  --border-color: #e2e8f0;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --bg-primary: #1e293b;
+  --bg-secondary: #0f172a;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --card-bg: #334155;
+  --border-color: #475569;
+  --light-gray: #0f172a;
+  --charcoal: #f1f5f9;
+  --light-border: #475569;
+}
+
+[data-theme="dark"] body {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .bg-light {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .navbar-custom {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+}
+
+[data-theme="dark"] .text-muted {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .sidebar {
+  background-color: var(--card-bg);
+  border-right-color: var(--border-color);
+}
+
+[data-theme="dark"] .list-group-item {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  background-color: var(--bg-primary);
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .modal-content {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .table {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .accordion-item {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .accordion-button {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .accordion-button:not(.collapsed) {
+  background-color: var(--bg-primary);
+  color: var(--primary);
+}
+
+[data-theme="dark"] .btn-outline-primary {
+  color: var(--primary-light);
+  border-color: var(--primary-light);
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary-light);
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .alert {
+  border-color: var(--border-color);
 }
 
 * {
@@ -47,6 +168,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--charcoal);
   background-color: var(--light-gray);
+  transition: background-color var(--transition), color var(--transition);
 }
 
 /* Buttons */
@@ -85,7 +207,8 @@ body {
   border: 1px solid var(--light-border);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all var(--transition);
-  background: white;
+  background: var(--card-bg, white);
+  color: var(--text-primary, inherit);
 }
 
 .card:hover {

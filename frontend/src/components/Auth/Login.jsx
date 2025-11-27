@@ -1,16 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, sessionExpired, setSessionExpired } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (sessionExpired) {
+      setError('Session expired due to inactivity. Please login again.');
+      setSessionExpired(false);
+    }
+  }, [sessionExpired, setSessionExpired]);
 
   const handleChange = (e) => {
     setFormData({
@@ -18,6 +26,10 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
     setError('');
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -85,16 +97,35 @@ const Login = () => {
                   <label htmlFor="password" className="form-label">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Enter your password"
-                    required
-                  />
+                  <div className="position-relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="form-control"
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Enter your password"
+                      required
+                      style={{ paddingRight: '40px' }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-link position-absolute"
+                      onClick={togglePasswordVisibility}
+                      style={{
+                        right: '5px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        border: 'none',
+                        background: 'none',
+                        padding: '0',
+                        color: '#6c757d'
+                      }}
+                    >
+                      <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </button>
+                  </div>
                 </div>
 
                 <button

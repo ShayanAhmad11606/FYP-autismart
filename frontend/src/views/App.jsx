@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '../context/AuthContext';
+import { ThemeProvider } from '../context/ThemeContext';
 import Register from '../components/Auth/Register';
 import Login from '../components/Auth/Login';
 import VerifyOtp from '../components/Auth/VerifyOtp';
@@ -7,6 +8,8 @@ import ForgotPassword from '../components/Auth/ForgotPassword';
 import ResetPassword from '../components/Auth/ResetPassword';
 import Dashboard from './Dashboard';
 import AdminDashboard from './Admin/AdminDashboard';
+import CaregiverDashboard from './CaregiverDashboard';
+import ExpertDashboard from './ExpertDashboard';
 
 // Import new pages
 import Navbar from '../components/Navbar';
@@ -24,6 +27,11 @@ import Reports from '../pages/Reports';
 import Sessions from '../pages/Sessions';
 import Leaderboard from '../pages/Leaderboard';
 import Profile from '../pages/Profile';
+import About from '../pages/About';
+import Settings from '../pages/Settings';
+import ChangePassword from '../pages/ChangePassword';
+import Notifications from '../pages/Notifications';
+import Help from '../pages/Help';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -102,6 +110,7 @@ function AppContent() {
         <Route path="/games" element={<Games />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/about" element={<About />} />
         
         {/* Protected User Pages */}
         <Route
@@ -109,6 +118,22 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/caregiver-dashboard"
+          element={
+            <ProtectedRoute>
+              <CaregiverDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/expert-dashboard"
+          element={
+            <ProtectedRoute>
+              <ExpertDashboard />
             </ProtectedRoute>
           }
         />
@@ -160,6 +185,38 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/change-password"
+          element={
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/help"
+          element={
+            <ProtectedRoute>
+              <Help />
+            </ProtectedRoute>
+          }
+        />
         
         {/* Admin Pages */}
         <Route
@@ -204,11 +261,13 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <div className="min-vh-100 bg-light">
-          <AppContent />
-        </div>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <div className="min-vh-100 bg-light">
+            <AppContent />
+          </div>
+        </AuthProvider>
+      </ThemeProvider>
     </Router>
   );
 }

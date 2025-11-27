@@ -133,21 +133,13 @@ const AdminDashboard = () => {
           <div className="col-12">
             <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'}}>
               <div className="card-body p-4 text-white">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h2 className="mb-2">
-                      <i className="bi bi-shield-lock me-2"></i>
-                      Admin Dashboard
-                    </h2>
-                    <p className="mb-0 opacity-90">
-                      Welcome back, {user?.name}! Manage users and system settings.
-                    </p>
-                  </div>
-                  <button className="btn btn-light" onClick={handleLogout}>
-                    <i className="bi bi-box-arrow-right me-1"></i>
-                    Logout
-                  </button>
-                </div>
+                <h2 className="mb-2">
+                  <i className="bi bi-shield-lock me-2"></i>
+                  Admin Dashboard
+                </h2>
+                <p className="mb-0 opacity-90">
+                  Welcome back, {user?.name}! Manage users and system settings.
+                </p>
               </div>
             </div>
           </div>
@@ -162,13 +154,13 @@ const AdminDashboard = () => {
         {/* Stats Cards */}
         <div className="row g-4 mb-4">
           <div className="col-md-3">
-            <div className="card card-primary border-0 shadow-sm text-white">
+            <div className="card border-0 shadow-sm" style={{backgroundColor: '#059669'}}>
               <div className="card-body">
                 <div className="d-flex align-items-center">
-                  <i className="bi bi-people-fill fs-1 me-3 opacity-75"></i>
+                  <i className="bi bi-people-fill fs-1 me-3 text-white opacity-75"></i>
                   <div>
-                    <div className="stat-label text-white opacity-75">Total Users</div>
-                    <div className="stat-value text-white">{stats?.totalUsers || 0}</div>
+                    <div className="text-white opacity-75 small">Total Users</div>
+                    <h2 className="text-white mb-0">{stats?.totalUsers || 0}</h2>
                   </div>
                 </div>
               </div>
@@ -176,13 +168,13 @@ const AdminDashboard = () => {
           </div>
 
           <div className="col-md-3">
-            <div className="card card-success border-0 shadow-sm text-white">
+            <div className="card border-0 shadow-sm" style={{backgroundColor: '#10b981'}}>
               <div className="card-body">
                 <div className="d-flex align-items-center">
-                  <i className="bi bi-check-circle-fill fs-1 me-3 opacity-75"></i>
+                  <i className="bi bi-check-circle-fill fs-1 me-3 text-white opacity-75"></i>
                   <div>
-                    <div className="stat-label text-white opacity-75">Verified</div>
-                    <div className="stat-value text-white">{stats?.verifiedUsers || 0}</div>
+                    <div className="text-white opacity-75 small">Verified</div>
+                    <h2 className="text-white mb-0">{stats?.verifiedUsers || 0}</h2>
                   </div>
                 </div>
               </div>
@@ -190,13 +182,13 @@ const AdminDashboard = () => {
           </div>
 
           <div className="col-md-3">
-            <div className="card card-warning border-0 shadow-sm text-white">
+            <div className="card border-0 shadow-sm" style={{backgroundColor: '#f59e0b'}}>
               <div className="card-body">
                 <div className="d-flex align-items-center">
-                  <i className="bi bi-clock-fill fs-1 me-3 opacity-75"></i>
+                  <i className="bi bi-clock-fill fs-1 me-3 text-white opacity-75"></i>
                   <div>
-                    <div className="stat-label text-white opacity-75">Unverified</div>
-                    <div className="stat-value text-white">{stats?.unverifiedUsers || 0}</div>
+                    <div className="text-white opacity-75 small">Unverified</div>
+                    <h2 className="text-white mb-0">{stats?.unverifiedUsers || 0}</h2>
                   </div>
                 </div>
               </div>
@@ -204,13 +196,13 @@ const AdminDashboard = () => {
           </div>
 
           <div className="col-md-3">
-            <div className="card card-info border-0 shadow-sm text-white">
+            <div className="card border-0 shadow-sm" style={{backgroundColor: '#3b82f6'}}>
               <div className="card-body">
                 <div className="d-flex align-items-center">
-                  <i className="bi bi-star-fill fs-1 me-3 opacity-75"></i>
+                  <i className="bi bi-star-fill fs-1 me-3 text-white opacity-75"></i>
                   <div>
-                    <div className="stat-label text-white opacity-75">Experts</div>
-                    <div className="stat-value text-white">{stats?.byRole?.expert || 0}</div>
+                    <div className="text-white opacity-75 small">Experts</div>
+                    <h2 className="text-white mb-0">{stats?.byRole?.expert || 0}</h2>
                   </div>
                 </div>
               </div>

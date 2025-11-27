@@ -1,7 +1,9 @@
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
@@ -26,18 +28,10 @@ const Dashboard = () => {
           <div className="col-12">
             <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)'}}>
               <div className="card-body p-4 text-white">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h2 className="mb-2">Welcome back, {user?.name}! 👋</h2>
-                    <p className="mb-0 opacity-90">
-                      You're logged in as {user?.role}. Here's your dashboard overview.
-                    </p>
-                  </div>
-                  <button className="btn btn-light" onClick={handleLogout}>
-                    <i className="bi bi-box-arrow-right me-1"></i>
-                    Logout
-                  </button>
-                </div>
+                <h2 className="mb-2">Welcome back, {user?.name}! 👋</h2>
+                <p className="mb-0 opacity-90">
+                  You're logged in as {user?.role}. Here's your dashboard overview.
+                </p>
               </div>
             </div>
           </div>
@@ -174,19 +168,19 @@ const Dashboard = () => {
               </div>
               <div className="card-body">
                 <div className="d-grid gap-2">
-                  <button className="btn btn-primary">
+                  <button className="btn btn-primary" onClick={() => navigate('/settings')}>
                     <i className="bi bi-gear me-2"></i>
                     Account Settings
                   </button>
-                  <button className="btn btn-primary">
+                  <button className="btn btn-primary" onClick={() => navigate('/change-password')}>
                     <i className="bi bi-lock me-2"></i>
                     Change Password
                   </button>
-                  <button className="btn btn-primary">
+                  <button className="btn btn-primary" onClick={() => navigate('/notifications')}>
                     <i className="bi bi-bell me-2"></i>
                     Notifications
                   </button>
-                  <button className="btn btn-primary">
+                  <button className="btn btn-primary" onClick={() => navigate('/help')}>
                     <i className="bi bi-question-circle me-2"></i>
                     Help & Support
                   </button>

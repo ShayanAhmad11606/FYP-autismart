@@ -14,6 +14,63 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [sessionExpired, setSessionExpired] = useState(false);
+
+  // Auto logout after 3 minutes of inactivity
+  useEffect(() => {
+    let logoutTimer;
+    let activityTimer;
+
+    const SESSION_TIMEOUT = 3 * 60 * 1000; // 3 minutes in milliseconds
+
+    const resetTimer = () => {
+      // Clear existing timers
+      if (logoutTimer) clearTimeout(logoutTimer);
+      if (activityTimer) clearTimeout(activityTimer);
+
+      // Set new logout timer
+      if (user) {
+        logoutTimer = setTimeout(() => {
+          logout();
+          setSessionExpired(true);
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 100);
+        }, SESSION_TIMEOUT);
+      }
+    };
+
+    const handleActivity = () => {
+      // Clear activity timer to prevent too many resets
+      if (activityTimer) clearTimeout(activityTimer);
+      
+      // Debounce activity events
+      activityTimer = setTimeout(() => {
+        resetTimer();
+      }, 1000);
+    };
+
+    // Only set up listeners if user is logged in
+    if (user) {
+      resetTimer();
+
+      // Listen for user activity
+      window.addEventListener('mousedown', handleActivity);
+      window.addEventListener('keydown', handleActivity);
+      window.addEventListener('scroll', handleActivity);
+      window.addEventListener('touchstart', handleActivity);
+    }
+
+    // Cleanup
+    return () => {
+      if (logoutTimer) clearTimeout(logoutTimer);
+      if (activityTimer) clearTimeout(activityTimer);
+      window.removeEventListener('mousedown', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+      window.removeEventListener('scroll', handleActivity);
+      window.removeEventListener('touchstart', handleActivity);
+    };
+  }, [user]);
 
   useEffect(() => {
     // Check if user is logged in on mount
@@ -54,6 +111,8 @@ export const AuthProvider = ({ children }) => {
     verifyOtp,
     logout,
     isAuthenticated: !!user,
+    sessionExpired,
+    setSessionExpired,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

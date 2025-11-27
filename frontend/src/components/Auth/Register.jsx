@@ -15,6 +15,8 @@ const Register = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -22,6 +24,14 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
     setError('');
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -149,32 +159,70 @@ const Register = () => {
                   <label htmlFor="password" className="form-label">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Enter password (min 6 characters)"
-                    required
-                  />
+                  <div className="position-relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="form-control"
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Enter password (min 6 characters)"
+                      required
+                      style={{ paddingRight: '40px' }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-link position-absolute"
+                      onClick={togglePasswordVisibility}
+                      style={{
+                        right: '5px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        border: 'none',
+                        background: 'none',
+                        padding: '0',
+                        color: '#6c757d'
+                      }}
+                    >
+                      <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="confirmPassword" className="form-label">
                     Confirm Password
                   </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    placeholder="Confirm your password"
-                    required
-                  />
+                  <div className="position-relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      className="form-control"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="Confirm your password"
+                      required
+                      style={{ paddingRight: '40px' }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-link position-absolute"
+                      onClick={toggleConfirmPasswordVisibility}
+                      style={{
+                        right: '5px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        border: 'none',
+                        background: 'none',
+                        padding: '0',
+                        color: '#6c757d'
+                      }}
+                    >
+                      <i className={`bi ${showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </button>
+                  </div>
                 </div>
 
                 <button
