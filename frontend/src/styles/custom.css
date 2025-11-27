@@ -1,0 +1,297 @@
+/* AutiSmart Custom Design System */
+
+:root {
+  /* Primary Colors */
+  --primary: #059669;
+  --primary-light: #10b981;
+  --primary-lighter: #d1fae5;
+  --cyan: #06b6d4;
+  
+  /* Neutral Colors */
+  --white: #ffffff;
+  --light-gray: #f1f5f9;
+  --medium-gray: #64748b;
+  --dark-gray: #475569;
+  --charcoal: #1e293b;
+  --light-border: #e2e8f0;
+  
+  /* Status Colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+  
+  /* Spacing Scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 20px;
+  --space-xl: 30px;
+  --space-2xl: 40px;
+  
+  /* Border Radius */
+  --radius-card: 12px;
+  --radius-btn: 8px;
+  
+  /* Transitions */
+  --transition: 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--charcoal);
+  background-color: var(--light-gray);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: white !important;
+  border-radius: var(--radius-btn);
+  padding: var(--space-md) var(--space-lg);
+  transition: all var(--transition);
+}
+
+.btn-primary:hover {
+  background-color: #047857 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.btn-secondary {
+  background-color: var(--light-gray) !important;
+  border-color: var(--light-border) !important;
+  color: var(--dark-gray) !important;
+  border-radius: var(--radius-btn);
+  padding: var(--space-md) var(--space-lg);
+  transition: all var(--transition);
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0 !important;
+  transform: translateY(-2px);
+}
+
+/* Cards */
+.card {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--light-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition);
+  background: white;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.card-stat {
+  border-left: 4px solid var(--primary);
+}
+
+.card-success {
+  border-left: 4px solid var(--success);
+}
+
+.card-warning {
+  border-left: 4px solid var(--warning);
+}
+
+.card-danger {
+  border-left: 4px solid var(--danger);
+}
+
+.card-info {
+  border-left: 4px solid var(--info);
+}
+
+/* Badges */
+.badge-primary {
+  background-color: var(--primary);
+  color: white;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-btn);
+}
+
+.badge-success {
+  background-color: var(--success);
+  color: white;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-btn);
+}
+
+.badge-warning {
+  background-color: var(--warning);
+  color: white;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-btn);
+}
+
+.badge-danger {
+  background-color: var(--danger);
+  color: white;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-btn);
+}
+
+.badge-info {
+  background-color: var(--info);
+  color: white;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-btn);
+}
+
+/* Inputs */
+.form-control, .form-select {
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--light-border);
+  padding: var(--space-md);
+  transition: all var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.2rem rgba(5, 150, 105, 0.25);
+}
+
+/* Tables */
+.table {
+  background: white;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.table thead {
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+}
+
+.table tbody tr:hover {
+  background-color: var(--primary-lighter);
+}
+
+/* Navbar */
+.navbar-custom {
+  background-color: var(--primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+  min-height: 70px;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+  color: white !important;
+  transition: all var(--transition);
+}
+
+.navbar-custom .nav-link:hover {
+  color: var(--primary-lighter) !important;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: white;
+  border-right: 1px solid var(--light-border);
+  min-height: calc(100vh - 56px);
+  padding: var(--space-lg);
+}
+
+.sidebar-link {
+  display: block;
+  padding: var(--space-md);
+  color: var(--dark-gray);
+  text-decoration: none;
+  border-radius: var(--radius-btn);
+  transition: all var(--transition);
+  margin-bottom: var(--space-sm);
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+  background-color: var(--primary-lighter);
+  color: var(--primary);
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%);
+  color: white;
+  padding: var(--space-2xl) 0;
+  border-radius: var(--radius-card);
+  margin-bottom: var(--space-xl);
+}
+
+/* Stat Cards */
+.stat-card {
+  padding: var(--space-lg);
+  border-radius: var(--radius-card);
+  background: white;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition);
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--medium-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Progress Bars */
+.progress {
+  height: 8px;
+  border-radius: var(--radius-btn);
+  background-color: var(--light-gray);
+}
+
+.progress-bar {
+  background-color: var(--primary);
+}
+
+/* Utilities */
+.text-primary-custom {
+  color: var(--primary);
+}
+
+.bg-primary-light {
+  background-color: var(--primary-lighter);
+}
+
+.border-primary {
+  border-color: var(--primary) !important;
+}
+
+/* Responsive Spacing */
+.section-spacing {
+  padding: var(--space-xl) 0;
+}
+
+@media (max-width: 768px) {
+  .section-spacing {
+    padding: var(--space-lg) 0;
+  }
+  
+  .hero-section {
+    padding: var(--space-lg) var(--space-md);
+  }
+}
