@@ -1,143 +1,574 @@
 import { useState } from 'react';
 import Card from '../components/Card';
+import '../styles/assessment.css';
 
 const Assessment = () => {
   const [answers, setAnswers] = useState({});
+  const [currentLevel, setCurrentLevel] = useState('easy');
+  const [showResults, setShowResults] = useState(false);
 
-  const questions = [
-    {
-      id: 1,
-      category: 'Social Interaction',
-      question: 'Does your child make eye contact when speaking?',
-      options: ['Always', 'Sometimes', 'Rarely', 'Never']
+  // Complete Assessment Questions - 50 Questions Categorized by Symptom Areas
+  const assessmentData = {
+    easy: {
+      title: 'Level 1 - Easy (Observation Based)',
+      description: 'Basic observation questions about daily interactions',
+      questions: [
+        { id: 'easy_1', category: 'Social Interaction', question: 'When meeting someone new, your child usually:', options: ['Smiles and says hello', 'Stays quiet', 'Walks away'], scores: [1, 2, 3] },
+        { id: 'easy_2', category: 'Social Interaction', question: 'Does your child like playing with other children?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_3', category: 'Focus & Attention', question: 'Does your child respond when you call their name?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_4', category: 'Eye Contact', question: 'Does your child make eye contact during conversation?', options: ['Often', 'Sometimes', 'Rarely'], scores: [1, 2, 3] },
+        { id: 'easy_5', category: 'Social Interaction', question: 'When upset, does your child seek comfort?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_6', category: 'Focus & Attention', question: 'Does your child enjoy listening to stories or songs?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_7', category: 'Sensory Sensitivity', question: 'Does your child like trying new foods?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_8', category: 'Eye Contact', question: 'Does your child smile back when someone smiles?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_9', category: 'Communication', question: 'Does your child point to show interest?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_10', category: 'Communication', question: 'Does your child wave goodbye without reminding?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_11', category: 'Focus & Attention', question: 'Does your child react when someone enters the room?', options: ['Responds', 'Sometimes', 'Doesn\'t notice'], scores: [1, 2, 3] },
+        { id: 'easy_12', category: 'Social Interaction', question: 'Does your child share toys?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_13', category: 'Social Interaction', question: 'Does your child show excitement during play?', options: ['Often', 'Sometimes', 'Rarely'], scores: [1, 2, 3] },
+        { id: 'easy_14', category: 'Social Interaction', question: 'Does your child enjoy pretend play?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'easy_15', category: 'Communication', question: 'When confused, does your child ask for help?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] }
+      ]
     },
-    {
-      id: 2,
-      category: 'Social Interaction',
-      question: 'Does your child respond when their name is called?',
-      options: ['Always', 'Sometimes', 'Rarely', 'Never']
+    intermediate: {
+      title: 'Level 2 - Intermediate (Situational & Behavior Awareness)',
+      description: 'Questions about behavior in different situations',
+      questions: [
+        { id: 'int_1', category: 'Social Interaction', question: 'How does your child react to a new toy?', options: ['Plays immediately', 'Watches then plays', 'Avoids it'], scores: [1, 2, 3] },
+        { id: 'int_2', category: 'Social Interaction', question: 'In a group, your child prefers to:', options: ['Join', 'Play alone', 'Sit away'], scores: [1, 2, 3] },
+        { id: 'int_3', category: 'Focus & Attention', question: 'Does your child notice small changes?', options: ['Often', 'Sometimes', 'Rarely'], scores: [1, 2, 3] },
+        { id: 'int_4', category: 'Sensory Sensitivity', question: 'How does your child respond to loud noises?', options: ['Sometimes startled', 'Easily upset', 'Not affected'], scores: [1, 2, 1] },
+        { id: 'int_5', category: 'Communication', question: 'Does your child ask questions when confused?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'int_6', category: 'Repetitive Behavior', question: 'Does your child enjoy routine?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 1] },
+        { id: 'int_7', category: 'Repetitive Behavior', question: 'Does your child repeat movements?', options: ['Rarely', 'Sometimes', 'Often'], scores: [1, 2, 3] },
+        { id: 'int_8', category: 'Repetitive Behavior', question: 'How does your child react to sudden plan changes?', options: ['Calm', 'Slightly confused', 'Upset'], scores: [1, 2, 3] },
+        { id: 'int_9', category: 'Focus & Attention', question: 'Does your child listen till the end when spoken to?', options: ['Yes', 'Sometimes', 'Rarely'], scores: [1, 2, 3] },
+        { id: 'int_10', category: 'Focus & Attention', question: 'Classroom activity participation:', options: ['Active', 'Needs reminders', 'Avoids'], scores: [1, 2, 3] },
+        { id: 'int_11', category: 'Focus & Attention', question: 'Puzzle/task reaction:', options: ['Tries', 'Loses focus', 'Avoids'], scores: [1, 2, 3] },
+        { id: 'int_12', category: 'Communication', question: 'Does your child follow 2-step directions?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'int_13', category: 'Sensory Sensitivity', question: 'Reaction to noisy places:', options: ['Comfortable', 'Slight discomfort', 'Very uncomfortable'], scores: [1, 2, 3] },
+        { id: 'int_14', category: 'Eye Contact', question: 'Does your child show interest in others?', options: ['Often', 'Sometimes', 'Rarely'], scores: [1, 2, 3] },
+        { id: 'int_15', category: 'Communication', question: 'Does your child stay on topic while talking?', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] }
+      ]
     },
-    {
-      id: 3,
-      category: 'Communication',
-      question: 'Does your child use gestures to communicate needs?',
-      options: ['Always', 'Sometimes', 'Rarely', 'Never']
+    advanced: {
+      title: 'Level 3 - Advanced (Reasoning & Social Thinking)',
+      description: 'Questions about complex social and cognitive skills',
+      questions: [
+        { id: 'adv_1', category: 'Social Interaction', question: 'If a friend is sad, your child:', options: ['Helps', 'Watches', 'Ignores'], scores: [1, 2, 3] },
+        { id: 'adv_2', category: 'Focus & Attention', question: 'Handling 2 tasks at once:', options: ['Successful', 'Focuses on one', 'Confused'], scores: [1, 2, 3] },
+        { id: 'adv_3', category: 'Communication', question: 'Describing feelings:', options: ['Easy', 'Sometimes struggles', 'Rarely expresses'], scores: [1, 2, 3] },
+        { id: 'adv_4', category: 'Repetitive Behavior', question: 'Adapting to changes in games:', options: ['Tries new ways', 'Hesitant', 'Refuses'], scores: [1, 2, 3] },
+        { id: 'adv_5', category: 'Focus & Attention', question: 'Reaction to new learning activity:', options: ['Engages', 'Needs help', 'Avoids'], scores: [1, 2, 3] },
+        { id: 'adv_6', category: 'Social Interaction', question: 'Group play rule following:', options: ['Follows', 'Sometimes', 'Creates own rules'], scores: [1, 2, 3] },
+        { id: 'adv_7', category: 'Repetitive Behavior', question: 'If routine is disrupted:', options: ['Adjusts', 'Hesitant', 'Upset'], scores: [1, 2, 3] },
+        { id: 'adv_8', category: 'Social Interaction', question: 'If child makes a mistake in a game:', options: ['Continues', 'Slightly upset', 'Very upset'], scores: [1, 2, 3] },
+        { id: 'adv_9', category: 'Communication', question: 'Understanding new rules:', options: ['Quickly', 'Slowly', 'Difficulty'], scores: [1, 2, 3] },
+        { id: 'adv_10', category: 'Communication', question: 'Explaining why they are upset:', options: ['Yes', 'Sometimes', 'Rarely'], scores: [1, 2, 3] },
+        { id: 'adv_11', category: 'Social Interaction', question: 'Turn-taking in games:', options: ['Yes', 'Sometimes', 'Rarely'], scores: [1, 2, 3] },
+        { id: 'adv_12', category: 'Communication', question: 'Talking about past events:', options: ['Clearly', 'Difficulty', 'Almost never'], scores: [1, 2, 3] },
+        { id: 'adv_13', category: 'Social Interaction', question: 'Reaction to losing a game:', options: ['Accepts', 'Slightly upset', 'Avoids playing again'], scores: [1, 2, 3] },
+        { id: 'adv_14', category: 'Communication', question: 'Understanding jokes:', options: ['Yes', 'Sometimes', 'No'], scores: [1, 2, 3] },
+        { id: 'adv_15', category: 'Eye Contact', question: 'Guessing others\' feelings:', options: ['Often', 'Sometimes', 'Rarely'], scores: [1, 2, 3] }
+      ]
     },
-    {
-      id: 4,
-      category: 'Communication',
-      question: 'Does your child engage in conversation with peers?',
-      options: ['Always', 'Sometimes', 'Rarely', 'Never']
-    },
-    {
-      id: 5,
-      category: 'Behavior',
-      question: 'Does your child have repetitive behaviors or routines?',
-      options: ['Always', 'Sometimes', 'Rarely', 'Never']
-    },
-    {
-      id: 6,
-      category: 'Behavior',
-      question: 'Does your child show strong interest in specific topics?',
-      options: ['Always', 'Sometimes', 'Rarely', 'Never']
-    },
-    {
-      id: 7,
-      category: 'Sensory',
-      question: 'Is your child sensitive to loud noises or bright lights?',
-      options: ['Very Sensitive', 'Somewhat', 'Slightly', 'Not at all']
-    },
-    {
-      id: 8,
-      category: 'Sensory',
-      question: 'Does your child have strong reactions to textures or foods?',
-      options: ['Very Sensitive', 'Somewhat', 'Slightly', 'Not at all']
+    sensory: {
+      title: 'Bonus - Sensory & Attention',
+      description: 'Questions about sensory processing and attention',
+      questions: [
+        { id: 'sen_1', category: 'Sensory Sensitivity', question: 'Clothing texture preference:', options: ['No preference', 'Sometimes bothered', 'Yes, very particular'], scores: [1, 2, 3] },
+        { id: 'sen_2', category: 'Focus & Attention', question: 'Easily distracted during homework?', options: ['No', 'Sometimes', 'Yes'], scores: [1, 2, 3] },
+        { id: 'sen_3', category: 'Repetitive Behavior', question: 'Interest in lights/spinning objects?', options: ['Rarely', 'Sometimes', 'Often'], scores: [1, 2, 3] },
+        { id: 'sen_4', category: 'Sensory Sensitivity', question: 'Strong reaction to smells?', options: ['No', 'Sometimes', 'Yes'], scores: [1, 2, 3] },
+        { id: 'sen_5', category: 'Sensory Sensitivity', question: 'Covering ears at sudden sounds?', options: ['Rarely', 'Sometimes', 'Often'], scores: [1, 2, 3] }
+      ]
     }
-  ];
+  };
 
-  const handleAnswer = (questionId, answer) => {
+  const handleAnswer = (questionId, optionIndex, score) => {
     setAnswers({
       ...answers,
-      [questionId]: answer
+      [questionId]: { optionIndex, score }
     });
+  };
+
+  const calculateScore = () => {
+    let totalScore = 0;
+    let totalQuestions = 0;
+    const categoryScores = {
+      'Eye Contact': { score: 0, total: 0 },
+      'Social Interaction': { score: 0, total: 0 },
+      'Communication': { score: 0, total: 0 },
+      'Repetitive Behavior': { score: 0, total: 0 },
+      'Sensory Sensitivity': { score: 0, total: 0 },
+      'Focus & Attention': { score: 0, total: 0 }
+    };
+
+    Object.keys(assessmentData).forEach(level => {
+      assessmentData[level].questions.forEach(q => {
+        if (answers[q.id]) {
+          totalScore += answers[q.id].score;
+          totalQuestions++;
+          
+          // Track category scores
+          if (categoryScores[q.category]) {
+            categoryScores[q.category].score += answers[q.id].score;
+            categoryScores[q.category].total += 1;
+          }
+        }
+      });
+    });
+
+    return { totalScore, totalQuestions, categoryScores };
+  };
+
+  const getScoreInterpretation = (score, total) => {
+    const percentage = (score / (total * 3)) * 100;
+    
+    if (percentage <= 40) {
+      return {
+        level: 'Typical Development',
+        color: 'success',
+        message: 'The responses indicate typical developmental patterns. Continue encouraging positive behaviors.',
+        icon: 'bi-check-circle-fill'
+      };
+    } else if (percentage <= 60) {
+      return {
+        level: 'Some Areas of Observation',
+        color: 'warning',
+        message: 'Some responses suggest areas that may benefit from observation or support. Consider consulting with specialists.',
+        icon: 'bi-exclamation-triangle-fill'
+      };
+    } else {
+      return {
+        level: 'Further Assessment Recommended',
+        color: 'info',
+        message: 'The responses indicate several areas that may benefit from professional evaluation and support.',
+        icon: 'bi-info-circle-fill'
+      };
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Assessment answers:', answers);
+    const { totalScore, totalQuestions } = calculateScore();
+    
+    if (totalQuestions < getTotalQuestions()) {
+      alert(`Please answer all questions before submitting. ${totalQuestions}/${getTotalQuestions()} completed.`);
+      return;
+    }
+    
+    setShowResults(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const getTotalQuestions = () => {
+    return Object.values(assessmentData).reduce((sum, level) => sum + level.questions.length, 0);
+  };
+
+  const getAnsweredCount = () => {
+    return Object.keys(answers).length;
+  };
+
+  const resetAssessment = () => {
+    setAnswers({});
+    setShowResults(false);
+    setCurrentLevel('easy');
+  };
+
+  const getCategoryBadgeColor = (category) => {
+    const colors = {
+      'Eye Contact': 'success',
+      'Social Interaction': 'warning',
+      'Communication': 'success',
+      'Repetitive Behavior': 'info',
+      'Sensory Sensitivity': 'warning',
+      'Focus & Attention': 'info'
+    };
+    return colors[category] || 'secondary';
+  };
+
+  const getCategoryIcon = (category) => {
+    const icons = {
+      'Eye Contact': 'bi-eye',
+      'Social Interaction': 'bi-people',
+      'Communication': 'bi-chat-dots',
+      'Repetitive Behavior': 'bi-arrow-repeat',
+      'Sensory Sensitivity': 'bi-lightbulb',
+      'Focus & Attention': 'bi-crosshair'
+    };
+    return icons[category] || 'bi-circle';
   };
 
   return (
     <div className="container mt-4 mb-5">
       <div className="row">
-        <div className="col-lg-8 mx-auto">
-          <div className="mb-4">
-            <h1 className="text-primary-custom">
-              <i className="bi bi-clipboard-check me-2"></i>
-              Autism Assessment
+        <div className="col-lg-10 mx-auto">
+          <div className="mb-4 fade-in-up">
+            <h1 className="text-primary-custom" style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem' }}>
+              <i className="bi bi-clipboard-check me-3" style={{ fontSize: '2.5rem' }}></i>
+              AutiSmart Assessment Quiz
             </h1>
-            <p className="text-muted">
-              Please answer the following questions about your child's behavior and development
+            <p className="text-muted" style={{ fontSize: '1.15rem', marginBottom: '1rem' }}>
+              <strong>Age Group: 8-10 years</strong> | Complete behavioral screening with 50 questions
             </p>
+            <div className="alert alert-info fade-in-up" style={{ 
+              borderRadius: '15px', 
+              border: 'none', 
+              boxShadow: '0 4px 15px rgba(93, 188, 175, 0.3)',
+              background: '#5DBCAF',
+              borderLeft: '5px solid #4aa89c',
+              color: '#ffffff'
+            }}>
+              <div className="d-flex align-items-start">
+                <i className="bi bi-info-circle-fill me-3" style={{ fontSize: '1.5rem', color: '#ffffff' }}></i>
+                <div>
+                  <strong style={{ fontSize: '1.1rem', color: '#ffffff' }}>Important:</strong> This is a behavioral observation tool, not a medical diagnosis. 
+                  Results provide insights for further professional consultation if needed.
+                </div>
+              </div>
+            </div>
           </div>
 
-          <Card>
-            <form onSubmit={handleSubmit}>
-              {questions.map((q, index) => (
-                <div key={q.id} className={index > 0 ? 'mt-4 pt-4 border-top' : ''}>
-                  <div className="mb-2">
-                    <span className="badge badge-info me-2">{q.category}</span>
-                    <span className="text-muted">Question {index + 1} of {questions.length}</span>
-                  </div>
-                  <h6 className="mb-3">{q.question}</h6>
-                  <div className="d-flex flex-wrap gap-2">
-                    {q.options.map((option) => (
-                      <div key={option} className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name={`question-${q.id}`}
-                          id={`q${q.id}-${option}`}
-                          checked={answers[q.id] === option}
-                          onChange={() => handleAnswer(q.id, option)}
-                        />
-                        <label className="form-check-label" htmlFor={`q${q.id}-${option}`}>
-                          {option}
-                        </label>
+          {/* Progress Overview */}
+          <Card className="mb-4 fade-in-up" style={{ border: 'none', boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h5 className="mb-0" style={{ fontSize: '1.3rem', fontWeight: '700' }}>
+                <i className="bi bi-graph-up me-2" style={{ color: '#0d6efd' }}></i>
+                Assessment Progress
+              </h5>
+              <span className="badge bg-primary fs-6" style={{ fontSize: '1.1rem', padding: '10px 20px' }}>
+                {getAnsweredCount()} / {getTotalQuestions()} Answered
+              </span>
+            </div>
+            <div className="progress" style={{ height: '25px', borderRadius: '25px' }}>
+              <div
+                className="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                style={{ 
+                  width: `${(getAnsweredCount() / getTotalQuestions()) * 100}%`,
+                  fontSize: '1rem',
+                  fontWeight: '700',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                {Math.round((getAnsweredCount() / getTotalQuestions()) * 100)}%
+              </div>
+            </div>
+          </Card>
+
+          {/* Results Display */}
+          {showResults && (
+            <Card className="mb-4 border-success">
+              <div className="text-center">
+                <h3 className="text-success mb-3">
+                  <i className="bi bi-check-circle-fill me-2"></i>
+                  Assessment Complete!
+                </h3>
+                {(() => {
+                  const { totalScore, totalQuestions, categoryScores } = calculateScore();
+                  const interpretation = getScoreInterpretation(totalScore, totalQuestions);
+                  return (
+                    <>
+                      <div className={`alert alert-${interpretation.color} mb-3`}>
+                        <h4>
+                          <i className={`${interpretation.icon} me-2`}></i>
+                          {interpretation.level}
+                        </h4>
+                        <p className="mb-0">{interpretation.message}</p>
                       </div>
-                    ))}
+                      <div className="row text-center mb-4">
+                        <div className="col-md-4 mb-3">
+                          <div className="stats-box">
+                            <h5 className="text-muted mb-1">Total Score</h5>
+                            <h2 className="mb-0">{totalScore}</h2>
+                            <small className="text-muted">out of {totalQuestions * 3}</small>
+                          </div>
+                        </div>
+                        <div className="col-md-4 mb-3">
+                          <div className="stats-box">
+                            <h5 className="text-muted mb-1">Questions</h5>
+                            <h2 className="mb-0">{totalQuestions}</h2>
+                            <small className="text-muted">completed</small>
+                          </div>
+                        </div>
+                        <div className="col-md-4 mb-3">
+                          <div className="stats-box">
+                            <h5 className="text-muted mb-1">Score %</h5>
+                            <h2 className="mb-0">
+                              {Math.round((totalScore / (totalQuestions * 3)) * 100)}%
+                            </h2>
+                            <small className="text-muted">overall</small>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Symptom Progress Overview */}
+                      <div className="card mb-4 fade-in-up" style={{ borderRadius: '20px', border: 'none', boxShadow: '0 8px 30px rgba(0,0,0,0.1)' }}>
+                        <div className="card-body" style={{ padding: '2.5rem' }}>
+                          <h4 className="mb-4" style={{ fontSize: '1.5rem', fontWeight: '700' }}>
+                            <i className="bi bi-bar-chart-fill me-2" style={{ color: '#0d6efd' }}></i>
+                            Symptom Progress Overview
+                          </h4>
+                          {Object.entries(categoryScores).map(([category, data]) => {
+                            if (data.total === 0) return null;
+                            const percentage = Math.round(((data.total * 3 - data.score) / (data.total * 3)) * 100);
+                            const isImproving = percentage >= 50;
+                            const barColor = percentage >= 60 ? 'success' : percentage >= 40 ? 'warning' : 'info';
+                            
+                            return (
+                              <div key={category} className={`symptom-progress-item ${barColor}-category`}>
+                                <div className="d-flex justify-content-between align-items-center mb-2">
+                                  <div style={{ fontSize: '1.1rem', fontWeight: '600' }}>
+                                    <i className={`${getCategoryIcon(category)} me-2`} style={{ fontSize: '1.3rem' }}></i>
+                                    {category}
+                                    {isImproving ? (
+                                      <i className="bi bi-arrow-up-circle-fill text-success ms-2" style={{ fontSize: '1.2rem' }}></i>
+                                    ) : (
+                                      <i className="bi bi-arrow-down-circle-fill text-danger ms-2" style={{ fontSize: '1.2rem' }}></i>
+                                    )}
+                                  </div>
+                                  <span className={`badge bg-${barColor} fs-6`} style={{ padding: '8px 16px', fontSize: '1.1rem' }}>
+                                    {percentage}%
+                                  </span>
+                                </div>
+                                <div className="progress category-progress" style={{ height: '22px', borderRadius: '15px' }}>
+                                  <div
+                                    className={`progress-bar bg-${barColor}`}
+                                    role="progressbar"
+                                    style={{ width: `${percentage}%` }}
+                                  ></div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div className="d-flex gap-3 justify-content-center">
+                        <button className="btn btn-primary" onClick={() => window.print()}>
+                          <i className="bi bi-printer me-2"></i>
+                          Print Results
+                        </button>
+                        <button className="btn btn-outline-primary" onClick={resetAssessment}>
+                          <i className="bi bi-arrow-clockwise me-2"></i>
+                          Retake Assessment
+                        </button>
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            </Card>
+          )}
+
+          {/* Level Navigation */}
+          <div className="mb-4">
+            <div className="btn-group w-100" role="group">
+              <button
+                type="button"
+                className={`btn ${currentLevel === 'easy' ? 'btn-primary' : 'btn-outline-primary'}`}
+                onClick={() => setCurrentLevel('easy')}
+              >
+                <i className="bi bi-1-circle me-2"></i>
+                Level 1: Easy
+                <span className="badge bg-light text-dark ms-2">
+                  {assessmentData.easy.questions.filter(q => answers[q.id]).length}/{assessmentData.easy.questions.length}
+                </span>
+              </button>
+              <button
+                type="button"
+                className={`btn ${currentLevel === 'intermediate' ? 'btn-primary' : 'btn-outline-primary'}`}
+                onClick={() => setCurrentLevel('intermediate')}
+              >
+                <i className="bi bi-2-circle me-2"></i>
+                Level 2: Intermediate
+                <span className="badge bg-light text-dark ms-2">
+                  {assessmentData.intermediate.questions.filter(q => answers[q.id]).length}/{assessmentData.intermediate.questions.length}
+                </span>
+              </button>
+              <button
+                type="button"
+                className={`btn ${currentLevel === 'advanced' ? 'btn-primary' : 'btn-outline-primary'}`}
+                onClick={() => setCurrentLevel('advanced')}
+              >
+                <i className="bi bi-3-circle me-2"></i>
+                Level 3: Advanced
+                <span className="badge bg-light text-dark ms-2">
+                  {assessmentData.advanced.questions.filter(q => answers[q.id]).length}/{assessmentData.advanced.questions.length}
+                </span>
+              </button>
+              <button
+                type="button"
+                className={`btn ${currentLevel === 'sensory' ? 'btn-primary' : 'btn-outline-primary'}`}
+                onClick={() => setCurrentLevel('sensory')}
+              >
+                <i className="bi bi-stars me-2"></i>
+                Sensory
+                <span className="badge bg-light text-dark ms-2">
+                  {assessmentData.sensory.questions.filter(q => answers[q.id]).length}/{assessmentData.sensory.questions.length}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Current Level Questions */}
+          <Card className="mb-4 fade-in-up" style={{ borderRadius: '20px', border: 'none', boxShadow: '0 8px 30px rgba(0,0,0,0.1)' }}>
+            <div className="mb-4">
+              <h3 className="text-primary-custom" style={{ fontSize: '1.8rem', fontWeight: '700' }}>
+                <i className="bi bi-clipboard-check-fill me-2"></i>
+                {assessmentData[currentLevel].title}
+              </h3>
+              <p className="text-muted mb-0" style={{ fontSize: '1.1rem' }}>{assessmentData[currentLevel].description}</p>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              {assessmentData[currentLevel].questions.map((q, index) => (
+                <div key={q.id} className={`question-card ${index > 0 ? 'mt-4' : ''}`}>
+                  <div className="mb-3">
+                    <div className="d-flex justify-content-between align-items-start mb-3">
+                      <div className="flex-grow-1">
+                        <div className="mb-3 d-flex align-items-center flex-wrap gap-2">
+                          <span className="question-number">{index + 1}</span>
+                          <span className={`badge bg-${getCategoryBadgeColor(q.category)}`} style={{ fontSize: '0.9rem' }}>
+                            <i className={`${getCategoryIcon(q.category)} me-1`}></i>
+                            {q.category}
+                          </span>
+                        </div>
+                        <h6 className="mb-0" style={{ fontSize: '1.15rem', fontWeight: '600', lineHeight: '1.6' }}>{q.question}</h6>
+                      </div>
+                      {answers[q.id] && (
+                        <i className="bi bi-check-circle-fill text-success ms-3" style={{ fontSize: '1.8rem' }}></i>
+                      )}
+                    </div>
+                    <div className="d-flex flex-wrap gap-3 mt-3">
+                      {q.options.map((option, optIndex) => (
+                        <div key={optIndex} className="form-check flex-grow-1" style={{ minWidth: '200px' }}>
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            name={q.id}
+                            id={`${q.id}-${optIndex}`}
+                            checked={answers[q.id]?.optionIndex === optIndex}
+                            onChange={() => handleAnswer(q.id, optIndex, q.scores[optIndex])}
+                          />
+                          <label className="form-check-label w-100" htmlFor={`${q.id}-${optIndex}`}>
+                            <div className="p-3 border rounded hover-shadow" style={{ cursor: 'pointer', borderRadius: '12px', fontSize: '1rem' }}>
+                              {option}
+                            </div>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}
 
-              <div className="mt-4 pt-4 border-top d-flex gap-3">
-                <button type="submit" className="btn btn-primary">
-                  <i className="bi bi-check-circle me-2"></i>
-                  Submit Assessment
-                </button>
-                <button type="button" className="btn btn-secondary">
-                  Save Progress
-                </button>
+              {/* Navigation Buttons */}
+              <div className="mt-4 pt-4 border-top">
+                <div className="d-flex justify-content-between">
+                  <div>
+                    {currentLevel !== 'easy' && (
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => {
+                          const levels = ['easy', 'intermediate', 'advanced', 'sensory'];
+                          const currentIndex = levels.indexOf(currentLevel);
+                          if (currentIndex > 0) setCurrentLevel(levels[currentIndex - 1]);
+                        }}
+                      >
+                        <i className="bi bi-arrow-left me-2"></i>
+                        Previous Level
+                      </button>
+                    )}
+                  </div>
+                  <div className="d-flex gap-2">
+                    {currentLevel !== 'sensory' ? (
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => {
+                          const levels = ['easy', 'intermediate', 'advanced', 'sensory'];
+                          const currentIndex = levels.indexOf(currentLevel);
+                          if (currentIndex < levels.length - 1) setCurrentLevel(levels[currentIndex + 1]);
+                        }}
+                      >
+                        Next Level
+                        <i className="bi bi-arrow-right ms-2"></i>
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="btn btn-success"
+                        disabled={getAnsweredCount() < getTotalQuestions()}
+                      >
+                        <i className="bi bi-check-circle me-2"></i>
+                        Submit Assessment
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             </form>
           </Card>
 
-          <div className="mt-4">
-            <Card title="Assessment Progress">
-              <div className="mb-2 d-flex justify-content-between">
-                <span>Completion Status</span>
-                <span className="fw-bold">
-                  {Object.keys(answers).length} / {questions.length} answered
-                </span>
-              </div>
-              <div className="progress" style={{ height: '10px' }}>
-                <div
-                  className="progress-bar"
-                  role="progressbar"
-                  style={{ width: `${(Object.keys(answers).length / questions.length) * 100}%` }}
-                ></div>
-              </div>
-            </Card>
+          {/* Quick Stats */}
+          <div className="row">
+            <div className="col-md-3 mb-3">
+              <Card className="text-center fade-in-up" style={{ borderRadius: '15px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.1)', transition: 'all 0.3s ease' }}>
+                <div className="p-3">
+                  <div className="mb-3" style={{ fontSize: '3rem' }}>
+                    <i className="bi bi-1-circle-fill" style={{ background: 'linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}></i>
+                  </div>
+                  <h6 className="mt-2" style={{ fontWeight: '700', fontSize: '1.1rem' }}>Level 1</h6>
+                  <p className="text-muted small mb-0">
+                    <strong>{assessmentData.easy.questions.filter(q => answers[q.id]).length}</strong>/15 answered
+                  </p>
+                </div>
+              </Card>
+            </div>
+            <div className="col-md-3 mb-3">
+              <Card className="text-center fade-in-up" style={{ borderRadius: '15px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.1)', transition: 'all 0.3s ease' }}>
+                <div className="p-3">
+                  <div className="mb-3" style={{ fontSize: '3rem' }}>
+                    <i className="bi bi-2-circle-fill" style={{ background: 'linear-gradient(135deg, #17a2b8 0%, #138496 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}></i>
+                  </div>
+                  <h6 className="mt-2" style={{ fontWeight: '700', fontSize: '1.1rem' }}>Level 2</h6>
+                  <p className="text-muted small mb-0">
+                    <strong>{assessmentData.intermediate.questions.filter(q => answers[q.id]).length}</strong>/15 answered
+                  </p>
+                </div>
+              </Card>
+            </div>
+            <div className="col-md-3 mb-3">
+              <Card className="text-center fade-in-up" style={{ borderRadius: '15px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.1)', transition: 'all 0.3s ease' }}>
+                <div className="p-3">
+                  <div className="mb-3" style={{ fontSize: '3rem' }}>
+                    <i className="bi bi-3-circle-fill" style={{ background: 'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}></i>
+                  </div>
+                  <h6 className="mt-2" style={{ fontWeight: '700', fontSize: '1.1rem' }}>Level 3</h6>
+                  <p className="text-muted small mb-0">
+                    <strong>{assessmentData.advanced.questions.filter(q => answers[q.id]).length}</strong>/15 answered
+                  </p>
+                </div>
+              </Card>
+            </div>
+            <div className="col-md-3 mb-3">
+              <Card className="text-center fade-in-up" style={{ borderRadius: '15px', border: 'none', boxShadow: '0 4px 15px rgba(0,0,0,0.1)', transition: 'all 0.3s ease' }}>
+                <div className="p-3">
+                  <div className="mb-3" style={{ fontSize: '3rem' }}>
+                    <i className="bi bi-stars" style={{ background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}></i>
+                  </div>
+                  <h6 className="mt-2" style={{ fontWeight: '700', fontSize: '1.1rem' }}>Sensory</h6>
+                  <p className="text-muted small mb-0">
+                    <strong>{assessmentData.sensory.questions.filter(q => answers[q.id]).length}</strong>/5 answered
+                  </p>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

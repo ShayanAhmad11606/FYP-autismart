@@ -90,12 +90,14 @@ export const verifyEmailConfig = async () => {
       return false;
     }
     
+    console.log('Verifying email configuration...');
     await transporter.verify();
     console.log('✅ Email configuration verified successfully');
     return true;
   } catch (error) {
     console.warn('⚠️  Email configuration warning:', error.message);
     console.warn('   Email functionality will not work until credentials are properly configured');
+    console.warn('   Server will continue running...');
     return false;
   }
 };

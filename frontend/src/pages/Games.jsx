@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 
 const Games = () => {
+  const navigate = useNavigate();
+
   const games = [
     {
       id: 1,
@@ -9,7 +12,8 @@ const Games = () => {
       icon: 'bi-grid-3x3-gap',
       difficulty: 'Easy',
       category: 'Memory',
-      color: 'success'
+      color: 'success',
+      route: '/games/memory-match'
     },
     {
       id: 2,
@@ -127,7 +131,10 @@ const Games = () => {
               </div>
               <p className="card-text text-muted">{game.description}</p>
               <div className="mt-auto">
-                <button className="btn btn-primary w-100">
+                <button 
+                  className="btn btn-primary w-100"
+                  onClick={() => game.route ? navigate(game.route) : alert('Coming Soon!')}
+                >
                   <i className="bi bi-play-fill me-2"></i>
                   Play Now
                 </button>

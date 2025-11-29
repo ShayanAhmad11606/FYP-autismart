@@ -8,8 +8,8 @@
 }
 
 .table thead {
-  background: linear-gradient(135deg, var(--primary-subtle) 0%, var(--primary-lighter) 100%);
-  color: var(--primary-dark);
+  background: linear-gradient(135deg, rgba(97, 195, 180, 0.1) 0%, rgba(121, 201, 160, 0.15) 100%);
+  color: #61C3B4;
   font-weight: 600;
 }
 

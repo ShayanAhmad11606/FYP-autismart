@@ -48,20 +48,137 @@ const CaregiverDashboard = () => {
   ];
 
   return (
-    <div className="min-vh-100">
+    <div className="min-vh-100" style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
       <div className="container mt-4 mb-5">
         {/* Welcome Section */}
         <div className="row mb-4">
           <div className="col-12">
-            <div className="card border-0 hero-section">
-              <div className="card-body p-4 text-white">
-                <h2 className="mb-2" style={{textShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
-                  <i className="bi bi-heart-fill me-2"></i>
-                  Caregiver Dashboard
-                </h2>
-                <p className="mb-0 opacity-90">
-                  Welcome back, {user?.name}! Track {childInfo.name}'s progress and upcoming activities.
-                </p>
+            <div className="card border-0 shadow-lg" style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              borderRadius: '20px',
+              overflow: 'hidden'
+            }}>
+              <div className="card-body p-4 p-md-5 text-white position-relative">
+                <div className="position-absolute top-0 end-0 opacity-10" style={{ fontSize: '10rem' }}>
+                  <i className="bi bi-heart-fill"></i>
+                </div>
+                <div className="position-relative">
+                  <h1 className="mb-3 fw-bold" style={{textShadow: '0 2px 8px rgba(0,0,0,0.2)'}}>
+                    <i className="bi bi-heart-fill me-3"></i>
+                    Caregiver Dashboard
+                  </h1>
+                  <p className="mb-0 fs-5 opacity-90">
+                    Welcome back, <strong>{user?.name}</strong>! Track {childInfo.name}'s progress and upcoming activities.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Account Info Cards */}
+        <div className="row g-4 mb-4">
+          <div className="col-md-4">
+            <div className="card border-0 shadow-sm h-100" style={{
+              borderRadius: '16px',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer'
+            }} onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '';
+            }}>
+              <div className="card-body p-4">
+                <div className="d-flex align-items-center">
+                  <div className="flex-shrink-0">
+                    <div style={{
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      borderRadius: '16px',
+                      padding: '1rem',
+                      color: 'white'
+                    }}>
+                      <i className="bi bi-person-badge fs-3"></i>
+                    </div>
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    <div className="text-muted small mb-1">Account Status</div>
+                    <div className="d-flex align-items-center gap-2">
+                      <Badge variant="success"><i className="bi bi-check-circle me-1"></i>Active</Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="card border-0 shadow-sm h-100" style={{
+              borderRadius: '16px',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer'
+            }} onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '';
+            }}>
+              <div className="card-body p-4">
+                <div className="d-flex align-items-center">
+                  <div className="flex-shrink-0">
+                    <div style={{
+                      background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                      borderRadius: '16px',
+                      padding: '1rem',
+                      color: 'white'
+                    }}>
+                      <i className="bi bi-shield-check fs-3"></i>
+                    </div>
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    <div className="text-muted small mb-1">Email Verified</div>
+                    <div className="d-flex align-items-center gap-2">
+                      <Badge variant="success"><i className="bi bi-patch-check-fill me-1"></i>Verified</Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="card border-0 shadow-sm h-100" style={{
+              borderRadius: '16px',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer'
+            }} onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '';
+            }}>
+              <div className="card-body p-4">
+                <div className="d-flex align-items-center">
+                  <div className="flex-shrink-0">
+                    <div style={{
+                      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                      borderRadius: '16px',
+                      padding: '1rem',
+                      color: 'white'
+                    }}>
+                      <i className="bi bi-award fs-3"></i>
+                    </div>
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    <div className="text-muted small mb-1">Your Role</div>
+                    <div className="d-flex align-items-center gap-2">
+                      <Badge variant="primary"><i className="bi bi-star-fill me-1"></i>Caregiver</Badge>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -107,90 +224,123 @@ const CaregiverDashboard = () => {
           {/* Main Content */}
           <div className="col-lg-8">
             {/* Child Information */}
-            <Card title="Child Information" className="mb-4">
-              <div className="row g-3">
-                <div className="col-md-6">
-                  <div className="p-3 bg-light rounded">
-                    <small className="text-muted d-block mb-1">Name</small>
-                    <div className="fw-bold">{childInfo.name}</div>
+            <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '16px' }}>
+              <div className="card-header bg-white border-0 pt-4 px-4">
+                <h5 className="mb-0 fw-bold"><i className="bi bi-person-circle me-2 text-primary"></i>Child Information</h5>
+              </div>
+              <div className="card-body p-4">
+                <div className="row g-3">
+                  <div className="col-md-6">
+                    <div className="p-4 rounded-3" style={{ background: 'linear-gradient(135deg, #667eea15 0%, #764ba215 100%)', border: '1px solid #e9ecef' }}>
+                      <small className="text-muted d-block mb-2"><i className="bi bi-tag-fill me-1"></i>Name</small>
+                      <div className="fw-bold fs-5">{childInfo.name}</div>
+                    </div>
                   </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="p-3 bg-light rounded">
-                    <small className="text-muted d-block mb-1">Age</small>
-                    <div className="fw-bold">{childInfo.age} years old</div>
+                  <div className="col-md-6">
+                    <div className="p-4 rounded-3" style={{ background: 'linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%)', border: '1px solid #e9ecef' }}>
+                      <small className="text-muted d-block mb-2"><i className="bi bi-calendar-heart me-1"></i>Age</small>
+                      <div className="fw-bold fs-5">{childInfo.age} years old</div>
+                    </div>
                   </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="p-3 bg-light rounded">
-                    <small className="text-muted d-block mb-1">Diagnosis</small>
-                    <div className="fw-bold">{childInfo.diagnosis}</div>
+                  <div className="col-md-6">
+                    <div className="p-4 rounded-3" style={{ background: 'linear-gradient(135deg, #4facfe15 0%, #00f2fe15 100%)', border: '1px solid #e9ecef' }}>
+                      <small className="text-muted d-block mb-2"><i className="bi bi-heart-pulse-fill me-1"></i>Diagnosis</small>
+                      <div className="fw-bold fs-5">{childInfo.diagnosis}</div>
+                    </div>
                   </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="p-3 bg-light rounded">
-                    <small className="text-muted d-block mb-1">Diagnosis Date</small>
-                    <div className="fw-bold">{childInfo.diagnosisDate}</div>
+                  <div className="col-md-6">
+                    <div className="p-4 rounded-3" style={{ background: 'linear-gradient(135deg, #43e97b15 0%, #38f9d715 100%)', border: '1px solid #e9ecef' }}>
+                      <small className="text-muted d-block mb-2"><i className="bi bi-calendar3 me-1"></i>Diagnosis Date</small>
+                      <div className="fw-bold fs-5">{childInfo.diagnosisDate}</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
 
             {/* Progress Tracking */}
-            <Card title="Recent Progress" className="mb-4">
-              {recentProgress.map((item, idx) => (
-                <div key={idx} className="mb-3">
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <div>
-                      <span className="fw-medium">{item.skill}</span>
-                      <small className="text-muted ms-2">
-                        {item.previous}% → {item.current}%
-                        {item.trend === 'up' && <i className="bi bi-arrow-up text-success ms-1"></i>}
-                        {item.trend === 'stable' && <i className="bi bi-dash text-muted ms-1"></i>}
-                      </small>
-                    </div>
-                    <Badge variant={item.current >= 70 ? 'success' : item.current >= 50 ? 'warning' : 'danger'}>
-                      {item.current}%
-                    </Badge>
-                  </div>
-                  <div className="progress">
-                    <div
-                      className={`progress-bar bg-${item.current >= 70 ? 'success' : item.current >= 50 ? 'warning' : 'danger'}`}
-                      style={{ width: `${item.current}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
-            </Card>
-
-            {/* Upcoming Sessions */}
-            <Card title="Upcoming Therapy Sessions">
-              <div className="d-grid gap-3">
-                {upcomingSessions.map((session) => (
-                  <div key={session.id} className="d-flex gap-3 p-3 bg-light rounded">
-                    <div className="text-primary-custom">
-                      <i className="bi bi-calendar-event fs-3"></i>
-                    </div>
-                    <div className="flex-grow-1">
-                      <div className="fw-bold">{session.type}</div>
-                      <div className="text-muted small">
-                        <i className="bi bi-person me-1"></i>
-                        {session.therapist}
+            <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '16px' }}>
+              <div className="card-header bg-white border-0 pt-4 px-4">
+                <h5 className="mb-0 fw-bold"><i className="bi bi-graph-up-arrow me-2 text-success"></i>Recent Progress</h5>
+              </div>
+              <div className="card-body p-4">
+                {recentProgress.map((item, idx) => (
+                  <div key={idx} className="mb-4 p-3 rounded-3" style={{ background: '#f8f9fa' }}>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <div>
+                        <span className="fw-bold fs-6">{item.skill}</span>
+                        <div className="text-muted small mt-1">
+                          <i className="bi bi-arrow-right me-1"></i>
+                          {item.previous}% → {item.current}%
+                          {item.trend === 'up' && <i className="bi bi-arrow-up-circle-fill text-success ms-2"></i>}
+                          {item.trend === 'stable' && <i className="bi bi-dash-circle text-muted ms-2"></i>}
+                        </div>
                       </div>
-                      <div className="text-muted small mt-1">
-                        <i className="bi bi-calendar3 me-1"></i>
-                        {session.date} at {session.time}
-                      </div>
+                      <Badge variant={item.current >= 70 ? 'success' : item.current >= 50 ? 'warning' : 'danger'}>
+                        <i className="bi bi-star-fill me-1"></i>{item.current}%
+                      </Badge>
                     </div>
-                    <div>
-                      <button className="btn btn-sm btn-primary">
-                        <i className="bi bi-eye"></i>
-                      </button>
+                    <div className="progress" style={{ height: '12px', borderRadius: '10px' }}>
+                      <div
+                        className={`progress-bar bg-${item.current >= 70 ? 'success' : item.current >= 50 ? 'warning' : 'danger'}`}
+                        style={{ width: `${item.current}%`, transition: 'width 1s ease' }}
+                      ></div>
                     </div>
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
+
+            {/* Upcoming Sessions */}
+            <div className="card border-0 shadow-sm" style={{ borderRadius: '16px' }}>
+              <div className="card-header bg-white border-0 pt-4 px-4">
+                <h5 className="mb-0 fw-bold"><i className="bi bi-calendar-event me-2 text-info"></i>Upcoming Therapy Sessions</h5>
+              </div>
+              <div className="card-body p-4">
+                <div className="d-grid gap-3">
+                  {upcomingSessions.map((session) => (
+                    <div key={session.id} className="d-flex gap-3 p-4 rounded-3 border" style={{
+                      background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
+                      transition: 'all 0.3s ease'
+                    }} onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateX(5px)';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                    }} onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateX(0)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}>
+                      <div className="text-white" style={{
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        borderRadius: '12px',
+                        width: '60px',
+                        height: '60px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <i className="bi bi-calendar-event fs-3"></i>
+                      </div>
+                      <div className="flex-grow-1">
+                        <div className="fw-bold fs-6 mb-2">{session.type}</div>
+                        <div className="text-muted small mb-1">
+                          <i className="bi bi-person-fill me-1"></i>
+                          {session.therapist}
+                        </div>
+                        <div className="text-muted small">
+                          <i className="bi bi-clock-fill me-1"></i>
+                          {session.date} at {session.time}
+                        </div>
+                      </div>
+                      <div className="d-flex align-items-center">
+                        <button className="btn btn-sm btn-primary rounded-pill px-3">
+                          <i className="bi bi-arrow-right-circle me-1"></i>View
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Sidebar */}

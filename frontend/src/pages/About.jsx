@@ -183,7 +183,7 @@ const About = () => {
         {/* CTA Section */}
         <div className="row">
           <div className="col-lg-8 mx-auto">
-            <div className="card border-0 shadow-sm" style={{background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)'}}>
+            <div className="card border-0 shadow-sm" style={{backgroundColor: '#61C3B4'}}>
               <div className="card-body p-5 text-white text-center">
                 <h2 className="mb-3">Ready to Get Started?</h2>
                 <p className="mb-4">

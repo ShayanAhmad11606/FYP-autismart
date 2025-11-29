@@ -1,20 +1,135 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const Home = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [counters, setCounters] = useState({
+    users: 0,
+    therapists: 0,
+    games: 0,
+    satisfaction: 0
+  });
+
+  // Dynamic text animation states
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [typingSpeed, setTypingSpeed] = useState(150);
+
+  const dynamicPhrases = [
+    "interactive games",
+    "smart assessments",
+    "personalized therapy",
+    "progress tracking",
+    "expert guidance",
+    "educational resources"
+  ];
+
+  // Typing animation effect
+  useEffect(() => {
+    const currentPhrase = dynamicPhrases[currentPhraseIndex];
+    
+    const typingTimeout = setTimeout(() => {
+      if (!isDeleting) {
+        // Typing forward
+        if (displayText.length < currentPhrase.length) {
+          setDisplayText(currentPhrase.substring(0, displayText.length + 1));
+          setTypingSpeed(150);
+        } else {
+          // Pause before deleting
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      } else {
+        // Deleting
+        if (displayText.length > 0) {
+          setDisplayText(currentPhrase.substring(0, displayText.length - 1));
+          setTypingSpeed(75);
+        } else {
+          // Move to next phrase
+          setIsDeleting(false);
+          setCurrentPhraseIndex((prev) => (prev + 1) % dynamicPhrases.length);
+        }
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(typingTimeout);
+  }, [displayText, isDeleting, currentPhraseIndex, typingSpeed]);
+
+  useEffect(() => {
+    setIsVisible(true);
+
+    // Intersection Observer for stats animation
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !statsVisible) {
+            setStatsVisible(true);
+            animateCounters();
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+      observer.observe(statsSection);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const animateCounters = () => {
+    const duration = 2000;
+    const steps = 60;
+    const stepDuration = duration / steps;
+
+    const targets = {
+      users: 10000,
+      therapists: 50,
+      games: 100,
+      satisfaction: 98
+    };
+
+    let currentStep = 0;
+
+    const interval = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+
+      setCounters({
+        users: Math.floor(targets.users * progress),
+        therapists: Math.floor(targets.therapists * progress),
+        games: Math.floor(targets.games * progress),
+        satisfaction: Math.floor(targets.satisfaction * progress)
+      });
+
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        setCounters(targets);
+      }
+    }, stepDuration);
+  };
+
   return (
     <div>
       {/* Hero Section */}
-      <section className="hero-section text-center">
+      <section className={`hero-section text-center ${isVisible ? 'fade-in' : ''}`}>
         <div className="container">
-          <h1 className="display-4 fw-bold mb-4">Welcome to AutiSmart</h1>
-          <p className="lead mb-4">
-            Empowering children with autism through interactive games, assessments, and personalized therapy
+          <h1 className="display-4 fw-bold mb-4 slide-up">Welcome to AutiSmart</h1>
+          <p className="lead mb-4 slide-up delay-1" style={{ minHeight: '60px' }}>
+            Empowering children with autism through{' '}
+            <span className="dynamic-text-wrapper">
+              <span className="dynamic-text">{displayText}</span>
+              <span className="typing-cursor">|</span>
+            </span>
           </p>
-          <div className="d-flex gap-3 justify-content-center flex-wrap">
-            <Link to="/register" className="btn btn-light btn-lg">
+          <div className="d-flex gap-3 justify-content-center flex-wrap slide-up delay-2">
+            <Link to="/register" className="btn btn-light btn-lg btn-hover-lift">
               Get Started
             </Link>
-            <Link to="/games" className="btn btn-outline-light btn-lg">
+            <Link to="/games" className="btn btn-outline-light btn-lg btn-hover-lift">
               Explore Games
             </Link>
           </div>
@@ -24,12 +139,12 @@ const Home = () => {
       {/* Features Section */}
       <section className="section-spacing">
         <div className="container">
-          <h2 className="text-center mb-5">Our Features</h2>
+          <h2 className="text-center mb-5 fade-in-up">Our Features</h2>
           <div className="row g-4">
-            <div className="col-md-4">
-              <div className="card h-100 text-center">
+            <div className="col-md-4 feature-card-wrapper" style={{ animationDelay: '0.1s' }}>
+              <div className="card h-100 text-center card-hover">
                 <div className="card-body">
-                  <div className="fs-1 text-primary-custom mb-3">
+                  <div className="fs-1 text-primary-custom mb-3 icon-float">
                     <i className="bi bi-controller"></i>
                   </div>
                   <h5 className="card-title">Interactive Games</h5>
@@ -39,10 +154,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
-              <div className="card h-100 text-center">
+            <div className="col-md-4 feature-card-wrapper" style={{ animationDelay: '0.2s' }}>
+              <div className="card h-100 text-center card-hover">
                 <div className="card-body">
-                  <div className="fs-1 text-primary-custom mb-3">
+                  <div className="fs-1 text-primary-custom mb-3 icon-float">
                     <i className="bi bi-clipboard-check"></i>
                   </div>
                   <h5 className="card-title">Smart Assessments</h5>
@@ -52,10 +167,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
-              <div className="card h-100 text-center">
+            <div className="col-md-4 feature-card-wrapper" style={{ animationDelay: '0.3s' }}>
+              <div className="card h-100 text-center card-hover">
                 <div className="card-body">
-                  <div className="fs-1 text-primary-custom mb-3">
+                  <div className="fs-1 text-primary-custom mb-3 icon-float">
                     <i className="bi bi-heart-pulse"></i>
                   </div>
                   <h5 className="card-title">Personalized Therapy</h5>
@@ -65,10 +180,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
-              <div className="card h-100 text-center">
+            <div className="col-md-4 feature-card-wrapper" style={{ animationDelay: '0.4s' }}>
+              <div className="card h-100 text-center card-hover">
                 <div className="card-body">
-                  <div className="fs-1 text-primary-custom mb-3">
+                  <div className="fs-1 text-primary-custom mb-3 icon-float">
                     <i className="bi bi-graph-up"></i>
                   </div>
                   <h5 className="card-title">Progress Tracking</h5>
@@ -78,10 +193,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
-              <div className="card h-100 text-center">
+            <div className="col-md-4 feature-card-wrapper" style={{ animationDelay: '0.5s' }}>
+              <div className="card h-100 text-center card-hover">
                 <div className="card-body">
-                  <div className="fs-1 text-primary-custom mb-3">
+                  <div className="fs-1 text-primary-custom mb-3 icon-float">
                     <i className="bi bi-chat-dots"></i>
                   </div>
                   <h5 className="card-title">Expert Communication</h5>
@@ -91,10 +206,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
-              <div className="card h-100 text-center">
+            <div className="col-md-4 feature-card-wrapper" style={{ animationDelay: '0.6s' }}>
+              <div className="card h-100 text-center card-hover">
                 <div className="card-body">
-                  <div className="fs-1 text-primary-custom mb-3">
+                  <div className="fs-1 text-primary-custom mb-3 icon-float">
                     <i className="bi bi-book"></i>
                   </div>
                   <h5 className="card-title">Educational Resources</h5>
@@ -109,23 +224,23 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="section-spacing bg-primary-light">
+      <section className="section-spacing bg-primary-light stats-section">
         <div className="container">
           <div className="row g-4 text-center">
-            <div className="col-md-3">
-              <div className="stat-value">10K+</div>
+            <div className="col-md-3 stat-item" style={{ animationDelay: '0.1s' }}>
+              <div className="stat-value">{counters.users > 0 ? `${(counters.users / 1000).toFixed(0)}K+` : '0'}</div>
               <div className="stat-label">Active Users</div>
             </div>
-            <div className="col-md-3">
-              <div className="stat-value">50+</div>
+            <div className="col-md-3 stat-item" style={{ animationDelay: '0.2s' }}>
+              <div className="stat-value">{counters.therapists}+</div>
               <div className="stat-label">Expert Therapists</div>
             </div>
-            <div className="col-md-3">
-              <div className="stat-value">100+</div>
+            <div className="col-md-3 stat-item" style={{ animationDelay: '0.3s' }}>
+              <div className="stat-value">{counters.games}+</div>
               <div className="stat-label">Interactive Games</div>
             </div>
-            <div className="col-md-3">
-              <div className="stat-value">98%</div>
+            <div className="col-md-3 stat-item" style={{ animationDelay: '0.4s' }}>
+              <div className="stat-value">{counters.satisfaction}%</div>
               <div className="stat-label">Satisfaction Rate</div>
             </div>
           </div>
@@ -135,13 +250,13 @@ const Home = () => {
       {/* CTA Section */}
       <section className="section-spacing">
         <div className="container">
-          <div className="card bg-primary text-white">
+          <div className="card text-white cta-card" style={{ backgroundColor: '#61C3B4' }}>
             <div className="card-body text-center p-5">
-              <h2 className="mb-3">Ready to Get Started?</h2>
-              <p className="lead mb-4">
+              <h2 className="mb-3 fade-in-up">Ready to Get Started?</h2>
+              <p className="lead mb-4 fade-in-up" style={{ animationDelay: '0.2s' }}>
                 Join thousands of families using AutiSmart to support their children's development
               </p>
-              <Link to="/register" className="btn btn-light btn-lg">
+              <Link to="/register" className="btn btn-light btn-lg btn-hover-lift pulse-on-hover" style={{ animationDelay: '0.4s' }}>
                 Create Free Account
               </Link>
             </div>

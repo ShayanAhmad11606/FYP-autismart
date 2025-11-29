@@ -1,7 +1,7 @@
 /* Hero Section Styles - Welcoming and hopeful */
 
 .hero-section {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent-sky) 50%, var(--accent-lavender) 100%);
+  background: linear-gradient(135deg, #61C3B4 0%, #85BCE2 50%, #79C9A0 100%);
   color: white;
   padding: var(--space-2xl) 0;
   border-radius: var(--radius-soft);
@@ -9,22 +9,423 @@
   box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
+  animation: backgroundFlow 15s ease-in-out infinite;
+}
+
+@keyframes backgroundFlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .hero-section::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
   pointer-events: none;
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Enhanced Hero Title */
+.hero-section h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #ffffff 0%, #F6BA82 25%, #ffffff 50%, #85BCE2 75%, #ffffff 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  letter-spacing: -1px;
+  position: relative;
+  animation: gradientShift 6s ease infinite, scaleUp 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes scaleUp {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+}
+
+/* Hero Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bgPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.slide-up.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.slide-up.delay-2 {
+  animation-delay: 0.4s;
+}
+
+/* Dynamic Text Animation */
+.dynamic-text-wrapper {
+  display: inline-block;
+  position: relative;
+  font-weight: 700;
+  background: linear-gradient(90deg, #fff 0%, #F6BA82 25%, #fff 50%, #F6BA82 75%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  min-width: 250px;
+  text-align: left;
+  animation: shimmer 3s linear infinite;
+}
+
+.dynamic-text {
+  display: inline-block;
+  padding-right: 5px;
+  animation: colorWave 3s ease-in-out infinite, bounce 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.typing-cursor {
+  display: inline-block;
+  font-weight: 100;
+  opacity: 1;
+  animation: cursorPulse 0.8s ease-in-out infinite;
+  color: #F6BA82;
+  margin-left: 3px;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px rgba(246, 186, 130, 0.8);
+}
+
+/* Shimmer effect for text wrapper */
+@keyframes shimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Color wave animation */
+@keyframes colorWave {
+  0%, 100% {
+    filter: brightness(1) hue-rotate(0deg);
+  }
+  25% {
+    filter: brightness(1.2) hue-rotate(10deg);
+  }
+  50% {
+    filter: brightness(1.3) hue-rotate(0deg);
+  }
+  75% {
+    filter: brightness(1.2) hue-rotate(-10deg);
+  }
+}
+
+/* Bounce animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.02);
+  }
+}
+
+/* Enhanced cursor pulse */
+@keyframes cursorPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.2);
+  }
+}
+
+/* Enhanced hero text with gradient */
+.hero-section .lead {
+  font-size: 1.35rem;
+  font-weight: 400;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  line-height: 1.8;
+  animation: fadeInScale 1s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Make dynamic text more prominent on mobile */
+@media (max-width: 768px) {
+  .dynamic-text-wrapper {
+    display: block;
+    margin-top: 10px;
+    min-width: auto;
+  }
+  
+  .hero-section .lead {
+    font-size: 1.1rem;
+  }
+}
+
+/* Feature Cards Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feature-card-wrapper {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Icon Float Animation */
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.icon-float {
+  animation: iconFloat 3s ease-in-out infinite;
+  display: inline-block;
+}
+
+.card-hover:hover .icon-float {
+  animation: iconFloat 1s ease-in-out infinite;
+}
+
+/* Stats Animation */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.stat-item {
+  animation: countUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.stat-value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--primary);
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover .stat-value {
+  transform: scale(1.1);
+}
+
+/* Button Animations */
+.btn-hover-lift {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  overflow: hidden;
+  animation: slideInFromBottom 0.8s ease-out;
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-hover-lift::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-hover-lift:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+.btn-hover-lift:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.btn-hover-lift:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* CTA Card Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.cta-card {
+  background: #61C3B4 !important;
+  transition: all 0.4s ease;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.cta-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 25px 50px rgba(97, 195, 180, 0.3);
+  background: #52b0a3 !important;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.pulse-on-hover:hover {
+  animation: pulse 1s ease-in-out infinite;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .hero-section {
     padding: var(--space-lg) var(--space-md);
+  }
+
+  .stat-value {
+    font-size: 2rem;
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-5px) scale(1.01);
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

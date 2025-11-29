@@ -40,18 +40,35 @@ const Dashboard = () => {
         {/* Stats Cards */}
         <div className="row g-4 mb-4">
           <div className="col-md-4">
-            <div className="card card-stat border-0 shadow-sm h-100">
-              <div className="card-body">
+            <div className="card border-0 shadow-sm h-100" style={{
+              borderRadius: '16px',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer'
+            }} onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '';
+            }}>
+              <div className="card-body p-4">
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
-                    <div className="bg-primary-custom bg-opacity-10 text-primary-custom rounded p-3">
+                    <div style={{
+                      background: '#51A79F',
+                      borderRadius: '16px',
+                      padding: '1rem',
+                      color: 'white'
+                    }}>
                       <i className="bi bi-person-badge fs-3"></i>
                     </div>
                   </div>
                   <div className="flex-grow-1 ms-3">
-                    <div class="stat-label">Account Status</div>
-                    <div className="stat-value">
-                      <span className="badge bg-success">Active</span>
+                    <div className="text-muted small mb-2 fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Account Status</div>
+                    <div>
+                      <span className="badge bg-success fs-6 px-3 py-2">
+                        <i className="bi bi-check-circle me-1"></i>Active
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -60,18 +77,33 @@ const Dashboard = () => {
           </div>
 
           <div className="col-md-4">
-            <div className="card card-stat border-0 shadow-sm h-100">
-              <div className="card-body">
+            <div className="card border-0 shadow-sm h-100" style={{
+              borderRadius: '16px',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer'
+            }} onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '';
+            }}>
+              <div className="card-body p-4">
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
-                    <div className="bg-success bg-opacity-10 text-success rounded p-3">
+                    <div style={{
+                      background: '#51A79F',
+                      borderRadius: '16px',
+                      padding: '1rem',
+                      color: 'white'
+                    }}>
                       <i className="bi bi-shield-check fs-3"></i>
                     </div>
                   </div>
                   <div className="flex-grow-1 ms-3">
-                    <div class="stat-label">Email Verified</div>
-                    <div className="stat-value">
-                      <i className="bi bi-check-circle-fill text-success"></i> Yes
+                    <div className="text-muted small mb-2 fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Email Verified</div>
+                    <div className="fs-5 fw-bold text-success">
+                      <i className="bi bi-patch-check-fill me-2"></i>Yes
                     </div>
                   </div>
                 </div>
@@ -80,19 +112,34 @@ const Dashboard = () => {
           </div>
 
           <div className="col-md-4">
-            <div className="card card-stat border-0 shadow-sm h-100">
-              <div className="card-body">
+            <div className="card border-0 shadow-sm h-100" style={{
+              borderRadius: '16px',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer'
+            }} onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '';
+            }}>
+              <div className="card-body p-4">
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
-                    <div className={`bg-${getRoleColor(user?.role)} bg-opacity-10 text-${getRoleColor(user?.role)} rounded p-3`}>
+                    <div style={{
+                      background: '#51A79F',
+                      borderRadius: '16px',
+                      padding: '1rem',
+                      color: 'white'
+                    }}>
                       <i className="bi bi-award fs-3"></i>
                     </div>
                   </div>
                   <div className="flex-grow-1 ms-3">
-                    <div class="stat-label">Your Role</div>
-                    <div className="stat-value">
-                      <span className={`badge bg-${getRoleColor(user?.role)}`}>
-                        {user?.role}
+                    <div className="text-muted small mb-2 fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Your Role</div>
+                    <div>
+                      <span className={`badge bg-${getRoleColor(user?.role)} fs-6 px-3 py-2 text-capitalize`}>
+                        <i className="bi bi-star-fill me-1"></i>{user?.role}
                       </span>
                     </div>
                   </div>

@@ -1,20 +1,21 @@
 /* Core Design System Variables */
 
 :root {
-  /* Primary Colors - Calming Teal/Sage for healing and trust */
-  --primary: #4db8a8;
-  --primary-light: #6bc9ba;
-  --primary-dark: #3a9688;
-  --primary-lighter: #d4f1ed;
-  --primary-subtle: #e8f8f5;
+  /* Primary Colors - New Color Palette */
+  --primary: #61C3B4; /* Teal/Turquoise */
+  --primary-light: #79C9A0; /* Light Green */
+  --primary-dark: #4da89a;
+  --primary-lighter: #d4f3ee;
+  --primary-subtle: #e8f9f6;
   
   /* Accent Colors - Therapeutic palette */
-  --accent-lavender: #b4a7d6;
-  --accent-lavender-light: #d4cce8;
-  --accent-peach: #f4a261;
-  --accent-peach-light: #f8c794;
-  --accent-sky: #87ceeb;
-  --accent-mint: #98d8c8;
+  --accent-coral: #EC896E; /* Coral/Red */
+  --accent-coral-light: #f2a68f;
+  --accent-peach: #F6BA82; /* Peach/Orange */
+  --accent-peach-light: #f9cb9f;
+  --accent-sky: #85BCE2; /* Sky Blue */
+  --accent-mint: #79C9A0; /* Mint Green */
+  --accent-teal: #61C3B4; /* Teal */
   
   /* Neutral Colors - Warm and gentle */
   --white: #f8f6f3;
@@ -26,15 +27,15 @@
   --light-border: #e5e1d8;
   --warm-border: #ddd6c8;
   
-  /* Status Colors - Accessible and gentle */
-  --success: #52b788;
-  --success-light: #95d5b2;
-  --warning: #f4a261;
-  --warning-light: #f8c794;
-  --danger: #e76f51;
-  --danger-light: #f2a58f;
-  --info: #5ea8d9;
-  --info-light: #9dc8e8;
+  /* Status Colors - Using new palette */
+  --success: #79C9A0; /* Green */
+  --success-light: #a3dbb9;
+  --warning: #F6BA82; /* Peach */
+  --warning-light: #f9d1a8;
+  --danger: #EC896E; /* Coral */
+  --danger-light: #f2ad96;
+  --info: #85BCE2; /* Blue */
+  --info-light: #aacfe9;
   
   /* Spacing Scale */
   --space-xs: 4px;
@@ -87,7 +88,10 @@
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
   
   /* Adjust primary colors for dark mode */
-  --primary: #5ec9ba;
-  --primary-light: #7dd6c9;
+  --primary: #61C3B4;
+  --primary-light: #79C9A0;
   --primary-lighter: #2a4a46;
+  --accent-coral: #EC896E;
+  --accent-peach: #F6BA82;
+  --accent-sky: #85BCE2;
 }

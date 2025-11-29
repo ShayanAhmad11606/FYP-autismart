@@ -18,22 +18,32 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, var(--primary) 0%, var(--accent-mint) 100%);
+  background: linear-gradient(180deg, #61C3B4 0%, #79C9A0 100%);
 }
 
 .stat-card:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-3px);
-  border-left-color: var(--accent-mint);
+  border-left-color: #79C9A0;
 }
 
 .stat-value {
   font-size: 2.25rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent-mint) 100%);
+  background: linear-gradient(135deg, #61C3B4 0%, #79C9A0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Override gradient for text with icons */
+.stat-value.d-flex {
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: inherit;
+  background-clip: unset;
+  color: var(--text-primary);
+  font-size: 1rem;
 }
 
 .stat-label {

@@ -14,7 +14,7 @@
 .btn-primary:hover {
   background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%) !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(77, 184, 168, 0.3);
+  box-shadow: 0 6px 16px rgba(97, 195, 180, 0.3);
 }
 
 .btn-primary:active {

@@ -66,7 +66,13 @@ const Navbar = () => {
               <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/dashboard" onClick={closeMenu}>Dashboard</Link>
+              <Link 
+                className="nav-link" 
+                to={user?.role === 'admin' ? '/admin' : '/dashboard'} 
+                onClick={closeMenu}
+              >
+                Dashboard
+              </Link>
             </li>
             
             {/* Theme Toggle Button */}

@@ -17,6 +17,7 @@ import Footer from '../components/Footer';
 import Home from '../pages/Home';
 import Assessment from '../pages/Assessment';
 import Games from '../pages/Games';
+import MemoryMatchGame from '../pages/MemoryMatchGame';
 import Tracker from '../pages/Tracker';
 import Therapy from '../pages/Therapy';
 import Communication from '../pages/Communication';
@@ -108,13 +109,21 @@ function AppContent() {
         <Route path="/reset-password" element={<ResetPassword />} />
         
         {/* Public Pages */}
-        <Route path="/assessment" element={<Assessment />} />
         <Route path="/games" element={<Games />} />
+        <Route path="/games/memory-match" element={<MemoryMatchGame />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/about" element={<About />} />
         
         {/* Protected User Pages */}
+        <Route
+          path="/assessment"
+          element={
+            <ProtectedRoute>
+              <Assessment />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/dashboard"
           element={

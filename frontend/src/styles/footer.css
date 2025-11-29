@@ -1,7 +1,7 @@
 /* Footer Styles - Warm and informative */
 
 .footer {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, #61C3B4 0%, #4da09a 100%);
   color: white;
   margin-top: var(--space-2xl);
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
@@ -72,7 +72,7 @@
 }
 
 .footer-contact i {
-  color: var(--accent-peach);
+  color: #F6BA82;
   margin-top: 2px;
   flex-shrink: 0;
 }
@@ -180,13 +180,13 @@
 }
 
 [data-theme="dark"] .footer-social-link {
-  background: rgba(94, 201, 186, 0.1);
-  color: var(--primary-light);
+  background: rgba(97, 195, 180, 0.1);
+  color: #61C3B4;
 }
 
 [data-theme="dark"] .footer-social-link:hover {
-  background: rgba(94, 201, 186, 0.2);
-  border-color: var(--primary-light);
+  background: rgba(97, 195, 180, 0.2);
+  border-color: #61C3B4;
 }
 
 /* Responsive footer */

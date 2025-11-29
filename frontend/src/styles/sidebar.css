@@ -29,10 +29,10 @@
 }
 
 .sidebar-link.active {
-  background: linear-gradient(135deg, var(--primary-lighter) 0%, var(--accent-mint) 100%);
-  color: var(--primary-dark);
+  background: linear-gradient(135deg, rgba(97, 195, 180, 0.2) 0%, rgba(121, 201, 160, 0.2) 100%);
+  color: #61C3B4;
   font-weight: 600;
-  border-left: 3px solid var(--primary);
+  border-left: 3px solid #61C3B4;
 }
 
 /* Dark theme sidebar adjustments */
