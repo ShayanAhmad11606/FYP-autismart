@@ -244,7 +244,7 @@ const Register = () => {
               <div className="text-center mt-3">
                 <p className="mb-0">
                   Already have an account?{' '}
-                  <a href="/login" className="text-decoration-none">
+                  <a href="/login" className="text-decoration-none" style={{ color: '#5BB8AC' }}>
                     Login here
                   </a>
                 </p>

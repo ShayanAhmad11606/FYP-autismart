@@ -126,13 +126,22 @@ const Resources = () => {
       <div className="row g-3 mb-4">
         <div className="col-md-8">
           <div className="input-group">
-            <span className="input-group-text bg-white">
+            <span className="input-group-text" style={{
+              backgroundColor: 'var(--card-bg, #fff)',
+              borderColor: 'var(--border-color, #ced4da)',
+              color: 'var(--text-primary, #000)'
+            }}>
               <i className="bi bi-search"></i>
             </span>
             <input
               type="text"
               className="form-control"
               placeholder="Search resources..."
+              style={{
+                backgroundColor: 'var(--card-bg, #fff)',
+                borderColor: 'var(--border-color, #ced4da)',
+                color: 'var(--text-primary, #000)'
+              }}
             />
           </div>
         </div>
@@ -173,10 +182,10 @@ const Resources = () => {
                   <div className="flex-grow-1">
                     <div className="d-flex justify-content-between align-items-start mb-2">
                       <div>
-                        <h5 className="mb-1">{resource.title}</h5>
+                        <h5 className="mb-1" style={{ color: 'var(--text-primary, #000)' }}>{resource.title}</h5>
                         <div className="d-flex gap-2 align-items-center mb-2">
                           <Badge variant="primary">{resource.type}</Badge>
-                          <small className="text-muted">
+                          <small style={{ color: 'var(--text-secondary, #6c757d)' }}>
                             <i className="bi bi-clock me-1"></i>
                             {resource.duration}
                           </small>
@@ -187,18 +196,22 @@ const Resources = () => {
                       </button>
                     </div>
 
-                    <p className="text-muted mb-3">{resource.description}</p>
+                    <p className="mb-3" style={{ color: 'var(--text-secondary, #6c757d)' }}>{resource.description}</p>
 
                     <div className="d-flex flex-wrap gap-2 mb-3">
                       {resource.tags.map((tag, idx) => (
-                        <span key={idx} className="badge bg-light text-dark border">
+                        <span key={idx} className="badge border" style={{
+                          backgroundColor: 'var(--bg-secondary, #f8f9fa)',
+                          color: 'var(--text-primary, #000)',
+                          borderColor: 'var(--border-color, #dee2e6)'
+                        }}>
                           {tag}
                         </span>
                       ))}
                     </div>
 
                     <div className="d-flex justify-content-between align-items-center">
-                      <div className="text-muted small">
+                      <div className="small" style={{ color: 'var(--text-secondary, #6c757d)' }}>
                         <i className="bi bi-person me-1"></i>
                         {resource.author}
                         <span className="mx-2">•</span>
@@ -225,12 +238,13 @@ const Resources = () => {
         {/* Sidebar */}
         <div className="col-lg-4">
           {/* Featured Resource */}
-          <Card title="Featured This Week" className="card-success">
+          <Card className="card-success">
+            <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>Featured This Week</h5>
             <div className="text-center mb-3">
               <i className="bi bi-star-fill fs-1 text-warning"></i>
             </div>
-            <h6 className="mb-2">Complete Parent's Guide</h6>
-            <p className="text-muted small mb-3">
+            <h6 className="mb-2" style={{ color: 'var(--text-primary, #000)' }}>Complete Parent's Guide</h6>
+            <p className="small mb-3" style={{ color: 'var(--text-secondary, #6c757d)' }}>
               A comprehensive guide covering all aspects of autism support and care
             </p>
             <button className="btn btn-primary w-100 btn-sm">
@@ -239,7 +253,8 @@ const Resources = () => {
           </Card>
 
           {/* Popular Topics */}
-          <Card title="Popular Topics" className="mt-4">
+          <Card className="mt-4">
+            <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>Popular Topics</h5>
             <div className="d-grid gap-2">
               {['Communication', 'Behavior', 'Social Skills', 'Sensory', 'Education', 'Therapy'].map((topic) => (
                 <button key={topic} className="btn btn-outline-primary btn-sm text-start">
@@ -251,26 +266,28 @@ const Resources = () => {
           </Card>
 
           {/* Recent Downloads */}
-          <Card title="Your Recent Downloads" className="mt-4">
+          <Card className="mt-4">
+            <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>Your Recent Downloads</h5>
             <div className="d-grid gap-2">
               <div className="small">
-                <div className="fw-medium">Social Skills Toolkit</div>
-                <div className="text-muted">Downloaded 2 days ago</div>
+                <div className="fw-medium" style={{ color: 'var(--text-primary, #000)' }}>Social Skills Toolkit</div>
+                <div style={{ color: 'var(--text-secondary, #6c757d)' }}>Downloaded 2 days ago</div>
               </div>
               <div className="small">
-                <div className="fw-medium">Communication Guide</div>
-                <div className="text-muted">Downloaded 5 days ago</div>
+                <div className="fw-medium" style={{ color: 'var(--text-primary, #000)' }}>Communication Guide</div>
+                <div style={{ color: 'var(--text-secondary, #6c757d)' }}>Downloaded 5 days ago</div>
               </div>
               <div className="small">
-                <div className="fw-medium">Sensory Activities</div>
-                <div className="text-muted">Downloaded 1 week ago</div>
+                <div className="fw-medium" style={{ color: 'var(--text-primary, #000)' }}>Sensory Activities</div>
+                <div style={{ color: 'var(--text-secondary, #6c757d)' }}>Downloaded 1 week ago</div>
               </div>
             </div>
           </Card>
 
           {/* Newsletter */}
-          <Card title="Stay Updated" className="mt-4">
-            <p className="small text-muted mb-3">
+          <Card className="mt-4">
+            <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>Stay Updated</h5>
+            <p className="small mb-3" style={{ color: 'var(--text-secondary, #6c757d)' }}>
               Subscribe to our newsletter for the latest resources and tips
             </p>
             <div className="mb-2">

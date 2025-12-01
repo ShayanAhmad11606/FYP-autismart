@@ -44,36 +44,83 @@ const Navbar = () => {
         </button>
         <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/" onClick={closeMenu}>Home</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/games" onClick={closeMenu}>Games</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/assessment" onClick={closeMenu}>Assessment</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/tracker" onClick={closeMenu}>Tracker</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/therapy" onClick={closeMenu}>Therapy</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
-            </li>
-            <li className="nav-item">
-              <Link 
-                className="nav-link" 
-                to={user?.role === 'admin' ? '/admin' : '/dashboard'} 
-                onClick={closeMenu}
-              >
-                Dashboard
-              </Link>
-            </li>
+            {!isAuthenticated && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/" onClick={closeMenu}>Home</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
+                </li>
+              </>
+            )}
+            
+            {isAuthenticated && user?.role === 'user' && (
+              <>
+                <li className="nav-item">
+                  <Link 
+                    className="nav-link" 
+                    to="/dashboard" 
+                    onClick={closeMenu}
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/assessment" onClick={closeMenu}>Assessment</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/games" onClick={closeMenu}>Games</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/tracker" onClick={closeMenu}>Tracker</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/therapy" onClick={closeMenu}>Therapy</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
+                </li>
+              </>
+            )}
+            
+            {isAuthenticated && user?.role !== 'user' && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/" onClick={closeMenu}>Home</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/games" onClick={closeMenu}>Games</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/assessment" onClick={closeMenu}>Assessment</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/tracker" onClick={closeMenu}>Tracker</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/therapy" onClick={closeMenu}>Therapy</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
+                </li>
+                <li className="nav-item">
+                  <Link 
+                    className="nav-link" 
+                    to={user?.role === 'admin' ? '/admin' : '/dashboard'} 
+                    onClick={closeMenu}
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+              </>
+            )}
             
             {/* Theme Toggle Button */}
             <li className="nav-item ms-2">

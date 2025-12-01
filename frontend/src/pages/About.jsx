@@ -2,10 +2,10 @@ import Card from '../components/Card';
 
 const About = () => {
   const team = [
-    { name: 'Dr. Sarah Johnson', role: 'Chief Medical Officer', specialty: 'Pediatric Autism Specialist', image: '👩‍⚕️' },
-    { name: 'Dr. Mike Chen', role: 'Lead Therapist', specialty: 'Applied Behavior Analysis', image: '👨‍⚕️' },
-    { name: 'Dr. Emily Brown', role: 'Speech Pathologist', specialty: 'Communication Development', image: '👩‍⚕️' },
-    { name: 'Dr. James Wilson', role: 'Occupational Therapist', specialty: 'Sensory Integration', image: '👨‍⚕️' }
+    { name: 'Dr. Ayesha Khan', role: 'Chief Medical Officer', specialty: 'Pediatric Autism Specialist', image: '👩‍⚕️' },
+    { name: 'Dr. Ahmed Malik', role: 'Lead Therapist', specialty: 'Applied Behavior Analysis', image: '👨‍⚕️' },
+    { name: 'Dr. Fatima Noor', role: 'Speech Pathologist', specialty: 'Communication Development', image: '👩‍⚕️' },
+    { name: 'Dr. Hassan Ali', role: 'Occupational Therapist', specialty: 'Sensory Integration', image: '👨‍⚕️' }
   ];
 
   const features = [
@@ -27,7 +27,7 @@ const About = () => {
   return (
     <div className="min-vh-100">
       {/* Hero Section */}
-      <div className="py-5 hero-section">
+      <div className="py-5 hero-section" style={{borderRadius: '0px' }}>
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-8 mx-auto text-center">

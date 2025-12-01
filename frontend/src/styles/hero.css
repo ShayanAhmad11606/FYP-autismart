@@ -4,7 +4,7 @@
   background: linear-gradient(135deg, #61C3B4 0%, #85BCE2 50%, #79C9A0 100%);
   color: white;
   padding: var(--space-2xl) 0;
-  border-radius: var(--radius-soft);
+  border-radius: 0px;
   margin-bottom: var(--space-xl);
   box-shadow: var(--shadow-lg);
   position: relative;

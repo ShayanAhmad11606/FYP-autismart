@@ -77,8 +77,8 @@ const Therapy = () => {
               <Card key={therapy.id} className={`card-${therapy.priority === 'high' ? 'success' : therapy.priority === 'medium' ? 'warning' : 'info'}`}>
                 <div className="d-flex justify-content-between align-items-start mb-3">
                   <div>
-                    <h5 className="mb-1">{therapy.title}</h5>
-                    <p className="text-muted mb-2">{therapy.description}</p>
+                    <h5 className="mb-1" style={{ color: 'var(--text-primary, #000)' }}>{therapy.title}</h5>
+                    <p className="mb-2" style={{ color: 'var(--text-secondary, #6c757d)' }}>{therapy.description}</p>
                   </div>
                   <Badge variant={therapy.priority === 'high' ? 'danger' : therapy.priority === 'medium' ? 'warning' : 'info'}>
                     {therapy.priority.toUpperCase()}
@@ -87,29 +87,33 @@ const Therapy = () => {
 
                 <div className="row g-3 mb-3">
                   <div className="col-md-4">
-                    <small className="text-muted d-block">Duration</small>
-                    <span className="fw-medium">
+                    <small className="d-block" style={{ color: 'var(--text-secondary, #6c757d)' }}>Duration</small>
+                    <span className="fw-medium" style={{ color: 'var(--text-primary, #000)' }}>
                       <i className="bi bi-clock me-1"></i>
                       {therapy.duration}
                     </span>
                   </div>
                   <div className="col-md-4">
-                    <small className="text-muted d-block">Status</small>
+                    <small className="d-block" style={{ color: 'var(--text-secondary, #6c757d)' }}>Status</small>
                     <Badge variant={therapy.status === 'Recommended' ? 'success' : 'info'}>
                       {therapy.status}
                     </Badge>
                   </div>
                   <div className="col-md-4">
-                    <small className="text-muted d-block">Priority</small>
-                    <span className="fw-medium text-capitalize">{therapy.priority}</span>
+                    <small className="d-block" style={{ color: 'var(--text-secondary, #6c757d)' }}>Priority</small>
+                    <span className="fw-medium text-capitalize" style={{ color: 'var(--text-primary, #000)' }}>{therapy.priority}</span>
                   </div>
                 </div>
 
                 <div className="mb-3">
-                  <small className="text-muted d-block mb-2">Key Benefits:</small>
+                  <small className="d-block mb-2" style={{ color: 'var(--text-secondary, #6c757d)' }}>Key Benefits:</small>
                   <div className="d-flex flex-wrap gap-2">
                     {therapy.benefits.map((benefit, idx) => (
-                      <span key={idx} className="badge bg-light text-dark border">
+                      <span key={idx} className="badge border" style={{
+                        backgroundColor: 'var(--bg-secondary, #f8f9fa)',
+                        color: 'var(--text-primary, #000)',
+                        borderColor: 'var(--border-color, #dee2e6)'
+                      }}>
                         <i className="bi bi-check-circle-fill text-success me-1"></i>
                         {benefit}
                       </span>
@@ -134,25 +138,29 @@ const Therapy = () => {
         {/* Sidebar */}
         <div className="col-lg-4">
           {/* Upcoming Sessions */}
-          <Card title="Upcoming Sessions">
+          <Card>
+            <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>Upcoming Sessions</h5>
             <div className="d-grid gap-3">
               {upcomingSessions.map((session, index) => (
-                <div key={index} className="p-3 bg-light rounded">
+                <div key={index} className="p-3 rounded" style={{
+                  backgroundColor: 'var(--bg-secondary, #f8f9fa)',
+                  border: '1px solid var(--border-color, #dee2e6)'
+                }}>
                   <div className="d-flex justify-content-between align-items-start mb-2">
                     <div>
-                      <div className="fw-medium mb-1">{session.therapy}</div>
-                      <small className="text-muted d-block">{session.therapist}</small>
+                      <div className="fw-medium mb-1" style={{ color: 'var(--text-primary, #000)' }}>{session.therapy}</div>
+                      <small className="d-block" style={{ color: 'var(--text-secondary, #6c757d)' }}>{session.therapist}</small>
                     </div>
                     <Badge variant="info">
                       <i className="bi bi-clock me-1"></i>
                       {session.time}
                     </Badge>
                   </div>
-                  <div className="small text-muted">
+                  <div className="small" style={{ color: 'var(--text-secondary, #6c757d)' }}>
                     <i className="bi bi-calendar3 me-1"></i>
                     {session.date}
                   </div>
-                  <div className="small text-muted">
+                  <div className="small" style={{ color: 'var(--text-secondary, #6c757d)' }}>
                     <i className="bi bi-geo-alt me-1"></i>
                     {session.location}
                   </div>
@@ -165,11 +173,12 @@ const Therapy = () => {
           </Card>
 
           {/* Progress Summary */}
-          <Card title="Progress Summary" className="mt-4">
+          <Card className="mt-4">
+            <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>Progress Summary</h5>
             <div className="mb-3">
               <div className="d-flex justify-content-between mb-2">
-                <span>Sessions Completed</span>
-                <span className="fw-bold">24/30</span>
+                <span style={{ color: 'var(--text-primary, #000)' }}>Sessions Completed</span>
+                <span className="fw-bold" style={{ color: 'var(--text-primary, #000)' }}>24/30</span>
               </div>
               <div className="progress" style={{ height: '10px' }}>
                 <div className="progress-bar bg-success" style={{ width: '80%' }}></div>
@@ -177,8 +186,8 @@ const Therapy = () => {
             </div>
             <div className="mb-3">
               <div className="d-flex justify-content-between mb-2">
-                <span>Goal Achievement</span>
-                <span className="fw-bold">65%</span>
+                <span style={{ color: 'var(--text-primary, #000)' }}>Goal Achievement</span>
+                <span className="fw-bold" style={{ color: 'var(--text-primary, #000)' }}>65%</span>
               </div>
               <div className="progress" style={{ height: '10px' }}>
                 <div className="progress-bar bg-info" style={{ width: '65%' }}></div>
@@ -186,8 +195,8 @@ const Therapy = () => {
             </div>
             <div>
               <div className="d-flex justify-content-between mb-2">
-                <span>Attendance Rate</span>
-                <span className="fw-bold">95%</span>
+                <span style={{ color: 'var(--text-primary, #000)' }}>Attendance Rate</span>
+                <span className="fw-bold" style={{ color: 'var(--text-primary, #000)' }}>95%</span>
               </div>
               <div className="progress" style={{ height: '10px' }}>
                 <div className="progress-bar bg-warning" style={{ width: '95%' }}></div>

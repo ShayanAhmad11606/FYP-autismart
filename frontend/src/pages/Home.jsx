@@ -115,7 +115,7 @@ const Home = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className={`hero-section text-center ${isVisible ? 'fade-in' : ''}`}>
+      <section className={`hero-section text-center ${isVisible ? 'fade-in' : ''}`} style={{borderRadius: '0px' }}>
         <div className="container">
           <h1 className="display-4 fw-bold mb-4 slide-up">Welcome to AutiSmart</h1>
           <p className="lead mb-4 slide-up delay-1" style={{ minHeight: '60px' }}>

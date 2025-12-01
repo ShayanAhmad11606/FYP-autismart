@@ -119,7 +119,7 @@ const Register = () => {
                 <div className="form-check mb-4">
                   <input type="checkbox" className="form-check-input" id="terms" required />
                   <label className="form-check-label" htmlFor="terms">
-                    I agree to the <Link to="/terms" className="text-primary-custom">Terms & Conditions</Link>
+                    I agree to the <Link to="/terms" className="text-decoration-none" style={{ color: '#5BB8AC' }}>Terms & Conditions</Link>
                   </label>
                 </div>
 
@@ -131,7 +131,7 @@ const Register = () => {
               <div className="text-center mt-4">
                 <p className="text-muted">
                   Already have an account?{' '}
-                  <Link to="/login" className="text-primary-custom text-decoration-none fw-bold">
+                  <Link to="/login" className="text-decoration-none fw-bold" style={{ color: '#5BB8AC' }}>
                     Login here
                   </Link>
                 </p>

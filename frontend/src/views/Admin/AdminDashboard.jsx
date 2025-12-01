@@ -212,7 +212,10 @@ const AdminDashboard = () => {
 
         {/* Users Table */}
         <div className="card border-0 shadow-sm">
-          <div className="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+          <div className="card-header py-3 d-flex justify-content-between align-items-center" style={{
+            backgroundColor: 'var(--card-bg, #fff)',
+            borderBottom: '1px solid var(--border-color, #dee2e6)'
+          }}>
             <h5 className="mb-0 text-primary-custom">
               <i className="bi bi-table me-2"></i>
               User Management
@@ -228,7 +231,10 @@ const AdminDashboard = () => {
           <div className="card-body p-0">
             <div className="table-responsive">
               <table className="table table-hover mb-0">
-                <thead className="table-light">
+                <thead style={{
+                  backgroundColor: 'var(--table-header-bg, #f8f9fa)',
+                  borderColor: 'var(--border-color, #dee2e6)'
+                }}>
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
@@ -303,8 +309,13 @@ const AdminDashboard = () => {
       {showEditModal && (
         <div className="modal show d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
           <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
+            <div className="modal-content" style={{
+              backgroundColor: 'var(--card-bg, #fff)',
+              color: 'var(--text-color, #000)'
+            }}>
+              <div className="modal-header" style={{
+                borderColor: 'var(--border-color, #dee2e6)'
+              }}>
                 <h5 className="modal-title">Edit User</h5>
                 <button type="button" className="btn-close" onClick={() => setShowEditModal(false)}></button>
               </div>
@@ -352,7 +363,9 @@ const AdminDashboard = () => {
                     <label className="form-check-label">Verified</label>
                   </div>
                 </div>
-                <div className="modal-footer">
+                <div className="modal-footer" style={{
+                  borderColor: 'var(--border-color, #dee2e6)'
+                }}>
                   <button type="button" className="btn btn-secondary" onClick={() => setShowEditModal(false)}>
                     Cancel
                   </button>
@@ -370,7 +383,10 @@ const AdminDashboard = () => {
       {showCreateModal && (
         <div className="modal show d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
           <div className="modal-dialog">
-            <div className="modal-content">
+            <div className="modal-content" style={{
+              backgroundColor: 'var(--card-bg, #fff)',
+              color: 'var(--text-color, #000)'
+            }}>
               <div className="modal-header bg-primary text-white">
                 <h5 className="modal-title">
                   <i className="bi bi-person-plus-fill me-2"></i>
@@ -445,7 +461,9 @@ const AdminDashboard = () => {
                     <label className="form-check-label">Verified (User can login immediately)</label>
                   </div>
                 </div>
-                <div className="modal-footer">
+                <div className="modal-footer" style={{
+                  borderColor: 'var(--border-color, #dee2e6)'
+                }}>
                   <button type="button" className="btn btn-secondary" onClick={() => setShowCreateModal(false)}>
                     Cancel
                   </button>

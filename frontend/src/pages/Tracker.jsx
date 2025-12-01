@@ -77,12 +77,15 @@ const Tracker = () => {
       <div className="row g-4">
         {/* Symptom Progress */}
         <div className="col-lg-8">
-          <Card title="Symptom Progress Overview">
+          <Card>
+            <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>
+              Symptom Progress Overview
+            </h5>
             {symptoms.map((symptom) => (
               <div key={symptom.id} className="mb-4">
                 <div className="d-flex justify-content-between align-items-center mb-2">
                   <div className="d-flex align-items-center gap-2">
-                    <span className="fw-medium">{symptom.name}</span>
+                    <span className="fw-medium" style={{ color: 'var(--text-primary, #000)' }}>{symptom.name}</span>
                     <i className={`bi bi-arrow-${symptom.trend === 'up' ? 'up' : 'down'} text-${symptom.trend === 'up' ? 'success' : 'danger'}`}></i>
                   </div>
                   <span className={`badge badge-${symptom.color}`}>{symptom.severity}%</span>
@@ -98,33 +101,45 @@ const Tracker = () => {
           </Card>
 
           {/* Chart Placeholder */}
-          <Card title="Trend Analysis" className="mt-4">
-            <div className="text-center py-5 bg-light rounded">
-              <i className="bi bi-graph-up fs-1 text-muted mb-3 d-block"></i>
-              <p className="text-muted">Line chart showing symptom trends over time</p>
-              <p className="text-muted small">(Chart visualization placeholder)</p>
+          <Card className="mt-4">
+            <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>
+              Trend Analysis
+            </h5>
+            <div className="text-center py-5 rounded" style={{
+              backgroundColor: 'var(--bg-secondary, #f8f9fa)',
+              border: '1px solid var(--border-color, #dee2e6)'
+            }}>
+              <i className="bi bi-graph-up fs-1 mb-3 d-block" style={{ color: 'var(--text-secondary, #6c757d)' }}></i>
+              <p style={{ color: 'var(--text-secondary, #6c757d)' }}>Line chart showing symptom trends over time</p>
+              <p className="small" style={{ color: 'var(--text-secondary, #6c757d)' }}>(Chart visualization placeholder)</p>
             </div>
           </Card>
         </div>
 
         {/* Recent Activity Log */}
         <div className="col-lg-4">
-          <Card title="Recent Activity Log">
+          <Card>
+            <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>
+              Recent Activity Log
+            </h5>
             <div className="d-grid gap-3">
               {recentLogs.map((log, index) => (
-                <div key={index} className="p-3 bg-light rounded">
+                <div key={index} className="p-3 rounded" style={{
+                  backgroundColor: 'var(--bg-secondary, #f8f9fa)',
+                  border: '1px solid var(--border-color, #dee2e6)'
+                }}>
                   <div className="d-flex justify-content-between align-items-start mb-2">
-                    <small className="text-muted">
+                    <small style={{ color: 'var(--text-secondary, #6c757d)' }}>
                       <i className="bi bi-calendar3 me-1"></i>
                       {log.date}
                     </small>
-                    <small className="text-muted">{log.time}</small>
+                    <small style={{ color: 'var(--text-secondary, #6c757d)' }}>{log.time}</small>
                   </div>
-                  <p className="mb-1 fw-medium">{log.symptom}</p>
+                  <p className="mb-1 fw-medium" style={{ color: 'var(--text-primary, #000)' }}>{log.symptom}</p>
                   <div className="d-flex gap-2 align-items-center">
                     <span className="badge badge-info">{log.mood}</span>
                     {log.notes && (
-                      <small className="text-muted">{log.notes}</small>
+                      <small style={{ color: 'var(--text-secondary, #6c757d)' }}>{log.notes}</small>
                     )}
                   </div>
                 </div>
