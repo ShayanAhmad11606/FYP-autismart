@@ -4,7 +4,7 @@ const Card = ({ title, children, className = '', variant = '' }) => {
   return (
     <div className={`card ${variantClass} ${className}`}>
       {title && (
-        <div className="card-header bg-white border-bottom">
+        <div className="card-header border-bottom" style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-primary)' }}>
           <h5 className="mb-0">{title}</h5>
         </div>
       )}

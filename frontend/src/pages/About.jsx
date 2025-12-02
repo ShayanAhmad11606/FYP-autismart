@@ -14,7 +14,7 @@ const About = () => {
     { icon: 'bi-graph-up-arrow', title: 'Progress Tracking', description: 'Real-time monitoring of developmental milestones' },
     { icon: 'bi-people', title: 'Expert Support', description: 'Connect with qualified therapists and specialists' },
     { icon: 'bi-book', title: 'Resource Library', description: 'Access evidence-based information and guides' },
-    { icon: 'bi-heart-pulse', title: 'Personalized Care', description: 'Customized therapy plans for individual needs' }
+    { icon: 'bi-heart-pulse', title: 'Personalized Care', description: 'Customized discussion plans for individual needs' }
   ];
 
   const stats = [
@@ -36,7 +36,7 @@ const About = () => {
                 About AutiSmart
               </h1>
               <p className="lead mb-0" style={{color: 'white', opacity: 0.95}}>
-                Empowering families and children with autism through technology, therapy, and community support
+                Empowering families and children with autism through technology, discussion, and community support
               </p>
             </div>
           </div>

@@ -28,9 +28,9 @@ const CaregiverDashboard = () => {
   };
 
   const upcomingSessions = [
-    { id: 1, type: 'Speech Therapy', therapist: 'Dr. Sarah Johnson', date: '2025-11-28', time: '10:00 AM' },
-    { id: 2, type: 'Occupational Therapy', therapist: 'Dr. Mike Chen', date: '2025-11-29', time: '2:00 PM' },
-    { id: 3, type: 'ABA Therapy', therapist: 'Dr. Emily Brown', date: '2025-11-30', time: '11:00 AM' }
+    { id: 1, type: 'Speech Discussion', therapist: 'Dr. Sarah Johnson', date: '2025-11-28', time: '10:00 AM' },
+    { id: 2, type: 'Occupational Discussion', therapist: 'Dr. Mike Chen', date: '2025-11-29', time: '2:00 PM' },
+    { id: 3, type: 'ABA Discussion', therapist: 'Dr. Emily Brown', date: '2025-11-30', time: '11:00 AM' }
   ];
 
   const recentProgress = [
@@ -43,7 +43,7 @@ const CaregiverDashboard = () => {
   const todayTasks = [
     { id: 1, task: 'Morning routine practice', completed: true },
     { id: 2, task: 'Complete speech exercises', completed: true },
-    { id: 3, task: 'Play therapy session', completed: false },
+    { id: 3, task: 'Play discussion session', completed: false },
     { id: 4, task: 'Evening sensory activities', completed: false }
   ];
 
@@ -213,7 +213,7 @@ const CaregiverDashboard = () => {
           <div className="col-md-3">
             <StatCard
               value="24"
-              label="Games Played"
+              label="Therapy Games Played"
               icon="bi-controller"
               variant="warning"
             />
@@ -294,7 +294,7 @@ const CaregiverDashboard = () => {
             {/* Upcoming Sessions */}
             <div className="card border-0 shadow-sm" style={{ borderRadius: '16px' }}>
               <div className="card-header bg-white border-0 pt-4 px-4">
-                <h5 className="mb-0 fw-bold"><i className="bi bi-calendar-event me-2 text-info"></i>Upcoming Therapy Sessions</h5>
+                <h5 className="mb-0 fw-bold"><i className="bi bi-calendar-event me-2 text-info"></i>Upcoming Discussion Sessions</h5>
               </div>
               <div className="card-body p-4">
                 <div className="d-grid gap-3">
@@ -377,7 +377,7 @@ const CaregiverDashboard = () => {
                 </button>
                 <button className="btn btn-outline-primary" onClick={() => navigate('/games')}>
                   <i className="bi bi-controller me-2"></i>
-                  Play Games
+                  Play Therapy Games
                 </button>
                 <button className="btn btn-outline-primary" onClick={() => navigate('/communication')}>
                   <i className="bi bi-chat-dots me-2"></i>
@@ -395,7 +395,7 @@ const CaregiverDashboard = () => {
               <div className="text-center mb-3">
                 <i className="bi bi-trophy-fill fs-1 text-warning"></i>
               </div>
-              <h6 className="text-center mb-3">Complete 5 Therapy Sessions</h6>
+              <h6 className="text-center mb-3">Complete 5 Discussion Sessions</h6>
               <div className="mb-2">
                 <div className="d-flex justify-content-between mb-1">
                   <small>Progress</small>

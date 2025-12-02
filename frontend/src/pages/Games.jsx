@@ -96,10 +96,10 @@ const Games = () => {
       <div className="mb-4">
         <h1 className="text-primary-custom">
           <i className="bi bi-controller me-2"></i>
-          Interactive Games
+          Interactive Therapy Games
         </h1>
         <p className="text-muted">
-          Choose from our collection of educational games designed for autism development
+          Choose from our collection of educational therapy games designed for autism development
         </p>
       </div>
 
@@ -151,7 +151,7 @@ const Games = () => {
           <div className="col-md-3">
             <Card className="text-center card-success">
               <i className="bi bi-trophy-fill fs-1 text-warning mb-2"></i>
-              <h6>10 Games Completed</h6>
+              <h6>10 Therapy Games Completed</h6>
             </Card>
           </div>
           <div className="col-md-3">

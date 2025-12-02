@@ -8,7 +8,7 @@ const Sessions = () => {
   const sessions = [
     {
       id: 1,
-      title: 'ABA Therapy Session',
+      title: 'ABA Discussion Session',
       date: 'Nov 27, 2025',
       time: '10:00 AM - 11:30 AM',
       therapist: 'Dr. Sarah Johnson',
@@ -20,7 +20,7 @@ const Sessions = () => {
     },
     {
       id: 2,
-      title: 'Speech Therapy',
+      title: 'Speech Discussion',
       date: 'Nov 28, 2025',
       time: '2:00 PM - 3:00 PM',
       therapist: 'Ms. Emily Chen',
@@ -32,7 +32,7 @@ const Sessions = () => {
     },
     {
       id: 3,
-      title: 'Occupational Therapy',
+      title: 'Occupational Discussion',
       date: 'Nov 25, 2025',
       time: '11:00 AM - 12:00 PM',
       therapist: 'Dr. Maria Garcia',
@@ -56,7 +56,7 @@ const Sessions = () => {
     },
     {
       id: 5,
-      title: 'Play Therapy',
+      title: 'Play Discussion',
       date: 'Nov 29, 2025',
       time: '1:00 PM - 1:45 PM',
       therapist: 'Dr. Sarah Johnson',
@@ -75,9 +75,9 @@ const Sessions = () => {
           <div>
             <h1 className="text-primary-custom">
               <i className="bi bi-calendar-event me-2"></i>
-              Therapy Sessions
+              Discussion Sessions
             </h1>
-            <p className="text-muted">Manage and track all therapy sessions</p>
+            <p className="text-muted">Manage and track all discussion sessions</p>
           </div>
           <div className="btn-group">
             <button

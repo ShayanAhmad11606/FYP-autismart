@@ -11,7 +11,7 @@ const Dashboard = () => {
   ];
 
   const upcomingEvents = [
-    { event: 'Speech Therapy Session', date: 'Tomorrow, 2:00 PM', therapist: 'Ms. Emily Chen' },
+    { event: 'Speech Discussion Session', date: 'Tomorrow, 2:00 PM', therapist: 'Ms. Emily Chen' },
     { event: 'Monthly Assessment', date: 'Dec 1, 10:00 AM', therapist: 'Dr. Sarah Johnson' },
     { event: 'Social Skills Group', date: 'Dec 3, 3:00 PM', therapist: 'Mr. David Lee' }
   ];
@@ -33,7 +33,7 @@ const Dashboard = () => {
           {/* Stats Grid */}
           <div className="row g-4 mb-4">
             <div className="col-md-3">
-              <StatCard value="24" label="Games Played" icon="bi-controller" variant="success" />
+              <StatCard value="24" label="Therapy Games Played" icon="bi-controller" variant="success" />
             </div>
             <div className="col-md-3">
               <StatCard value="85%" label="Overall Progress" icon="bi-graph-up-arrow" variant="info" />
@@ -185,7 +185,7 @@ const Dashboard = () => {
             <div className="d-grid gap-2">
               <button className="btn btn-outline-primary btn-sm">
                 <i className="bi bi-controller me-2"></i>
-                Play Games
+                Play Therapy Games
               </button>
               <button className="btn btn-outline-primary btn-sm">
                 <i className="bi bi-clipboard-check me-2"></i>

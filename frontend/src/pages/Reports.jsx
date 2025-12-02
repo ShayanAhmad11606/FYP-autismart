@@ -212,10 +212,10 @@ const Reports = () => {
           </Card>
         </div>
         <div className="col-md-6">
-          <Card title="Therapy Outcomes">
+          <Card title="Discussion Outcomes">
             <div className="text-center py-4 bg-light rounded">
               <i className="bi bi-graph-up fs-1 text-success mb-2 d-block"></i>
-              <p className="text-muted small">Progress metrics for therapy sessions</p>
+              <p className="text-muted small">Progress metrics for discussion sessions</p>
               <p className="text-muted small">(Chart visualization placeholder)</p>
             </div>
           </Card>

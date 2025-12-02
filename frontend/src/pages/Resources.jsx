@@ -46,7 +46,7 @@ const Resources = () => {
     },
     {
       id: 4,
-      title: 'Latest Research on ABA Therapy',
+      title: 'Latest Research on ABA Discussion',
       type: 'Research',
       category: 'Research',
       duration: '15 min read',
@@ -256,7 +256,7 @@ const Resources = () => {
           <Card className="mt-4">
             <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>Popular Topics</h5>
             <div className="d-grid gap-2">
-              {['Communication', 'Behavior', 'Social Skills', 'Sensory', 'Education', 'Therapy'].map((topic) => (
+              {['Communication', 'Behavior', 'Social Skills', 'Sensory', 'Education', 'Discussion'].map((topic) => (
                 <button key={topic} className="btn btn-outline-primary btn-sm text-start">
                   <i className="bi bi-tag me-2"></i>
                   {topic}

@@ -14,7 +14,7 @@ const Footer = () => {
               <span className="fw-bold fs-5">AutiSmart</span>
             </div>
             <p className="footer-text mb-3">
-              Empowering families and children with autism through technology, therapy, and community support. Building a better future together.
+              Empowering families and children with autism through technology, discussion, and community support. Building a better future together.
             </p>
             <div className="footer-social">
               <a href="#" className="footer-social-link" aria-label="Facebook">
@@ -38,7 +38,7 @@ const Footer = () => {
             <ul className="footer-links">
               <li><Link to="/">Home</Link></li>
               <li><Link to="/about">About Us</Link></li>
-              <li><Link to="/games">Games</Link></li>
+              <li><Link to="/games">Therapy Games</Link></li>
               <li><Link to="/assessment">Assessment</Link></li>
               <li><Link to="/resources">Resources</Link></li>
             </ul>
@@ -49,7 +49,7 @@ const Footer = () => {
             <h6 className="footer-heading mb-3">Support</h6>
             <ul className="footer-links">
               <li><Link to="/help">Help Center</Link></li>
-              <li><Link to="/therapy">Therapy</Link></li>
+              <li><Link to="/therapy">Discussion</Link></li>
               <li><Link to="/tracker">Progress Tracker</Link></li>
               <li><Link to="/dashboard">Dashboard</Link></li>
               <li><Link to="/settings">Settings</Link></li>

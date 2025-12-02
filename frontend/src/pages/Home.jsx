@@ -130,7 +130,7 @@ const Home = () => {
               Get Started
             </Link>
             <Link to="/games" className="btn btn-outline-light btn-lg btn-hover-lift">
-              Explore Games
+              Explore Therapy Games
             </Link>
           </div>
         </div>
@@ -147,9 +147,9 @@ const Home = () => {
                   <div className="fs-1 text-primary-custom mb-3 icon-float">
                     <i className="bi bi-controller"></i>
                   </div>
-                  <h5 className="card-title">Interactive Games</h5>
+                  <h5 className="card-title">Interactive Therapy Games</h5>
                   <p className="card-text">
-                    Engaging educational games designed to improve cognitive and motor skills
+                    Engaging educational therapy games designed to improve cognitive and motor skills
                   </p>
                 </div>
               </div>
@@ -173,9 +173,9 @@ const Home = () => {
                   <div className="fs-1 text-primary-custom mb-3 icon-float">
                     <i className="bi bi-heart-pulse"></i>
                   </div>
-                  <h5 className="card-title">Personalized Therapy</h5>
+                  <h5 className="card-title">Personalized Discussion</h5>
                   <p className="card-text">
-                    Tailored therapy recommendations based on individual progress
+                    Tailored discussion recommendations based on individual progress
                   </p>
                 </div>
               </div>
@@ -237,7 +237,7 @@ const Home = () => {
             </div>
             <div className="col-md-3 stat-item" style={{ animationDelay: '0.3s' }}>
               <div className="stat-value">{counters.games}+</div>
-              <div className="stat-label">Interactive Games</div>
+              <div className="stat-label">Interactive Therapy Games</div>
             </div>
             <div className="col-md-3 stat-item" style={{ animationDelay: '0.4s' }}>
               <div className="stat-value">{counters.satisfaction}%</div>

@@ -50,10 +50,10 @@ const Navbar = () => {
                   <Link className="nav-link" to="/" onClick={closeMenu}>Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
+                  <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
+                  <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
                 </li>
               </>
             )}
@@ -73,16 +73,19 @@ const Navbar = () => {
                   <Link className="nav-link" to="/assessment" onClick={closeMenu}>Assessment</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/games" onClick={closeMenu}>Games</Link>
+                  <Link className="nav-link" to="/games" onClick={closeMenu}>Therapy Games</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/tracker" onClick={closeMenu}>Tracker</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/therapy" onClick={closeMenu}>Therapy</Link>
+                  <Link className="nav-link" to="/therapy" onClick={closeMenu}>Discussion</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
                 </li>
               </>
             )}
@@ -93,19 +96,16 @@ const Navbar = () => {
                   <Link className="nav-link" to="/" onClick={closeMenu}>Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/games" onClick={closeMenu}>Games</Link>
-                </li>
-                <li className="nav-item">
                   <Link className="nav-link" to="/assessment" onClick={closeMenu}>Assessment</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/games" onClick={closeMenu}>Therapy Games</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/tracker" onClick={closeMenu}>Tracker</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/therapy" onClick={closeMenu}>Therapy</Link>
+                  <Link className="nav-link" to="/therapy" onClick={closeMenu}>Discussion</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
@@ -118,6 +118,9 @@ const Navbar = () => {
                   >
                     Dashboard
                   </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
                 </li>
               </>
             )}

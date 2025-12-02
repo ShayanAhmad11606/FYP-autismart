@@ -10,7 +10,7 @@ const Communication = () => {
     {
       id: 1,
       name: 'Dr. Sarah Johnson',
-      specialty: 'ABA Therapy',
+      specialty: 'ABA Discussion',
       experience: '15 years',
       rating: 4.9,
       availability: 'Available',
@@ -20,7 +20,7 @@ const Communication = () => {
     {
       id: 2,
       name: 'Ms. Emily Chen',
-      specialty: 'Speech Therapy',
+      specialty: 'Speech Discussion',
       experience: '10 years',
       rating: 4.8,
       availability: 'Available',
@@ -30,7 +30,7 @@ const Communication = () => {
     {
       id: 3,
       name: 'Dr. Maria Garcia',
-      specialty: 'Occupational Therapy',
+      specialty: 'Occupational Discussion',
       experience: '12 years',
       rating: 4.9,
       availability: 'Busy',

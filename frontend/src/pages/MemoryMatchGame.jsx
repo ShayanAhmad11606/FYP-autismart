@@ -154,13 +154,13 @@ const MemoryMatchGame = () => {
         <div>
           <h1 className="text-primary-custom mb-2">
             <i className="bi bi-grid-3x3-gap me-2"></i>
-            Memory Match Game
+            Memory Match Therapy Game
           </h1>
           <p className="text-muted mb-0">Level {currentLevel}: {currentLevelConfig.name} - Match {currentLevelConfig.pairs} pairs!</p>
         </div>
         <button className="btn btn-outline-secondary" onClick={() => navigate('/games')}>
           <i className="bi bi-arrow-left me-2"></i>
-          Back to Games
+          Back to Therapy Games
         </button>
       </div>
 
@@ -369,8 +369,8 @@ const MemoryMatchGame = () => {
                   </button>
                 )}
                 <button className="btn btn-outline-secondary" onClick={() => navigate('/games')}>
-                  <i className="bi bi-arrow-left me-2"></i>
-                  Back to Games
+                  <i className="bi bi-chevron-left me-2"></i>
+                  Back to Therapy Games
                 </button>
               </div>
             </div>

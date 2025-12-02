@@ -21,15 +21,15 @@ const ExpertDashboard = () => {
   };
 
   const todaySessions = [
-    { id: 1, patient: 'Alex Doe', caregiver: 'Tommy Doe', time: '10:00 AM', type: 'Speech Therapy', status: 'upcoming' },
-    { id: 2, patient: 'Emma Smith', caregiver: 'John Smith', time: '2:00 PM', type: 'ABA Therapy', status: 'upcoming' },
-    { id: 3, patient: 'Lily Williams', caregiver: 'Sarah Williams', time: '4:00 PM', type: 'Occupational Therapy', status: 'upcoming' }
+    { id: 1, patient: 'Alex Doe', caregiver: 'Tommy Doe', time: '10:00 AM', type: 'Speech Discussion', status: 'upcoming' },
+    { id: 2, patient: 'Emma Smith', caregiver: 'John Smith', time: '2:00 PM', type: 'ABA Discussion', status: 'upcoming' },
+    { id: 3, patient: 'Lily Williams', caregiver: 'Sarah Williams', time: '4:00 PM', type: 'Occupational Discussion', status: 'upcoming' }
   ];
 
-  const myPatients = [
-    { id: 1, name: 'Alex Doe', age: 8, therapyType: 'Speech Therapy', progress: 75, lastSession: '2025-11-25' },
-    { id: 2, name: 'Emma Smith', age: 6, therapyType: 'ABA Therapy', progress: 68, lastSession: '2025-11-24' },
-    { id: 3, name: 'Lily Williams', age: 7, therapyType: 'Occupational Therapy', progress: 82, lastSession: '2025-11-26' },
+  const recentPatients = [
+    { id: 1, name: 'Alex Doe', age: 8, therapyType: 'Speech Discussion', progress: 75, lastSession: '2025-11-25' },
+    { id: 2, name: 'Emma Smith', age: 6, therapyType: 'ABA Discussion', progress: 68, lastSession: '2025-11-24' },
+    { id: 3, name: 'Lily Williams', age: 7, therapyType: 'Occupational Discussion', progress: 82, lastSession: '2025-11-26' },
     { id: 4, name: 'Jack Brown', age: 9, therapyType: 'Social Skills', progress: 70, lastSession: '2025-11-23' }
   ];
 
@@ -289,7 +289,7 @@ const ExpertDashboard = () => {
                       <tr>
                         <th className="px-4 py-3 border-0">Patient</th>
                         <th className="py-3 border-0">Age</th>
-                        <th className="py-3 border-0">Therapy Type</th>
+                        <th className="py-3 border-0">Discussion Type</th>
                         <th className="py-3 border-0">Progress</th>
                         <th className="py-3 border-0">Last Session</th>
                         <th className="py-3 border-0">Action</th>

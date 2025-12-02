@@ -39,11 +39,11 @@ const Help = () => {
       ],
     },
     {
-      category: 'Therapy Sessions',
+      category: 'Discussion Sessions',
       questions: [
         {
           q: 'How do I schedule a session?',
-          a: 'Go to the Therapy page and click "Schedule Session". Choose your preferred date and therapist.',
+          a: 'Go to the Discussion page and click "Schedule Session". Choose your preferred date and therapist.',
         },
         {
           q: 'Can I reschedule a session?',
@@ -85,7 +85,7 @@ const Help = () => {
           {/* Search Bar */}
           <Card className="mb-4">
             <div className="input-group">
-              <span className="input-group-text bg-white">
+              <span className="input-group-text" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}>
                 <i className="bi bi-search"></i>
               </span>
               <input
@@ -94,6 +94,7 @@ const Help = () => {
                 placeholder="Search for help..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                style={{ backgroundColor: 'var(--input-bg)', color: 'var(--text-primary)', borderColor: 'var(--border-color)' }}
               />
             </div>
           </Card>
@@ -170,8 +171,8 @@ const Help = () => {
                   <div className="text-center mb-3">
                     <i className="bi bi-book-fill text-primary" style={{ fontSize: '3rem' }}></i>
                   </div>
-                  <h5 className="text-center mb-3">Getting Started Guide</h5>
-                  <p className="text-muted">
+                  <h5 className="text-center mb-3" style={{ color: 'var(--text-primary)' }}>Getting Started Guide</h5>
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     Learn how to set up your account and start using AutiSmart effectively.
                   </p>
                   <button className="btn btn-outline-primary w-100">
@@ -185,8 +186,8 @@ const Help = () => {
                   <div className="text-center mb-3">
                     <i className="bi bi-clipboard-check-fill text-success" style={{ fontSize: '3rem' }}></i>
                   </div>
-                  <h5 className="text-center mb-3">Assessment Guide</h5>
-                  <p className="text-muted">
+                  <h5 className="text-center mb-3" style={{ color: 'var(--text-primary)' }}>Assessment Guide</h5>
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     Complete guide on conducting assessments and interpreting results.
                   </p>
                   <button className="btn btn-outline-primary w-100">
@@ -200,8 +201,8 @@ const Help = () => {
                   <div className="text-center mb-3">
                     <i className="bi bi-controller text-warning" style={{ fontSize: '3rem' }}></i>
                   </div>
-                  <h5 className="text-center mb-3">Games & Activities</h5>
-                  <p className="text-muted">
+                  <h5 className="text-center mb-3" style={{ color: 'var(--text-primary)' }}>Games & Activities</h5>
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     How to use therapeutic games and track your child's progress.
                   </p>
                   <button className="btn btn-outline-primary w-100">
@@ -215,8 +216,8 @@ const Help = () => {
                   <div className="text-center mb-3">
                     <i className="bi bi-heart-fill text-danger" style={{ fontSize: '3rem' }}></i>
                   </div>
-                  <h5 className="text-center mb-3">Caregiver Resources</h5>
-                  <p className="text-muted">
+                  <h5 className="text-center mb-3" style={{ color: 'var(--text-primary)' }}>Caregiver Resources</h5>
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     Tips and resources for parents and caregivers of children with autism.
                   </p>
                   <button className="btn btn-outline-primary w-100">
@@ -282,26 +283,26 @@ const Help = () => {
                 </Card>
 
                 <Card className="mt-4">
-                  <h5 className="mb-3">Other Ways to Reach Us</h5>
+                  <h5 className="mb-3" style={{ color: 'var(--text-primary)' }}>Other Ways to Reach Us</h5>
                   <div className="d-flex align-items-center mb-3">
                     <i className="bi bi-envelope-fill text-primary fs-4 me-3"></i>
                     <div>
-                      <div className="fw-bold">Email</div>
+                      <div className="fw-bold" style={{ color: 'var(--text-primary)' }}>Email</div>
                       <a href="mailto:support@autismart.com">support@autismart.com</a>
                     </div>
                   </div>
                   <div className="d-flex align-items-center mb-3">
                     <i className="bi bi-telephone-fill text-primary fs-4 me-3"></i>
                     <div>
-                      <div className="fw-bold">Phone</div>
+                      <div className="fw-bold" style={{ color: 'var(--text-primary)' }}>Phone</div>
                       <a href="tel:+1234567890">+1 (234) 567-890</a>
                     </div>
                   </div>
                   <div className="d-flex align-items-center">
                     <i className="bi bi-clock-fill text-primary fs-4 me-3"></i>
                     <div>
-                      <div className="fw-bold">Support Hours</div>
-                      <div>Monday - Friday: 9AM - 6PM</div>
+                      <div className="fw-bold" style={{ color: 'var(--text-primary)' }}>Support Hours</div>
+                      <div style={{ color: 'var(--text-secondary)' }}>Monday - Friday: 9AM - 6PM</div>
                     </div>
                   </div>
                 </Card>

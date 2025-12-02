@@ -18,7 +18,7 @@ const Profile = () => {
   };
 
   const stats = [
-    { label: 'Games Played', value: '120', icon: 'bi-controller', color: 'success' },
+    { label: 'Therapy Games Played', value: '120', icon: 'bi-controller', color: 'success' },
     { label: 'Sessions Completed', value: '45', icon: 'bi-calendar-check', color: 'info' },
     { label: 'Current Level', value: '15', icon: 'bi-star', color: 'warning' },
     { label: 'Total Points', value: '2850', icon: 'bi-trophy', color: 'danger' }
@@ -130,7 +130,7 @@ const Profile = () => {
             <div className="d-grid gap-3">
               {[
                 { activity: 'Completed Memory Match game', time: '2 hours ago', icon: 'bi-controller', color: 'success' },
-                { activity: 'Therapy session with Dr. Johnson', time: '1 day ago', icon: 'bi-calendar-event', color: 'info' },
+                { activity: 'Discussion session with Dr. Johnson', time: '1 day ago', icon: 'bi-calendar-event', color: 'info' },
                 { activity: 'Unlocked "Rising Star" achievement', time: '2 days ago', icon: 'bi-trophy', color: 'warning' },
                 { activity: 'Completed monthly assessment', time: '3 days ago', icon: 'bi-clipboard-check', color: 'primary' },
                 { activity: 'Reached Level 15', time: '4 days ago', icon: 'bi-star', color: 'success' }

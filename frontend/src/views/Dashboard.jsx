@@ -64,7 +64,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="flex-grow-1 ms-3">
-                    <div className="text-muted small mb-2 fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Account Status</div>
+                    <div className="small mb-2 fw-semibold text-uppercase" style={{ letterSpacing: '0.5px', color: 'var(--text-secondary)' }}>Account Status</div>
                     <div>
                       <span className="badge bg-success fs-6 px-3 py-2">
                         <i className="bi bi-check-circle me-1"></i>Active
@@ -101,7 +101,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="flex-grow-1 ms-3">
-                    <div className="text-muted small mb-2 fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Email Verified</div>
+                    <div className="small mb-2 fw-semibold text-uppercase" style={{ letterSpacing: '0.5px', color: 'var(--text-secondary)' }}>Email Verified</div>
                     <div className="fs-5 fw-bold text-success">
                       <i className="bi bi-patch-check-fill me-2"></i>Yes
                     </div>
@@ -136,7 +136,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="flex-grow-1 ms-3">
-                    <div className="text-muted small mb-2 fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Your Role</div>
+                    <div className="small mb-2 fw-semibold text-uppercase" style={{ letterSpacing: '0.5px', color: 'var(--text-secondary)' }}>Your Role</div>
                     <div>
                       <span className={`badge bg-${getRoleColor(user?.role)} fs-6 px-3 py-2 text-capitalize`}>
                         <i className="bi bi-star-fill me-1"></i>{user?.role}
@@ -153,7 +153,7 @@ const Dashboard = () => {
         <div className="row">
           <div className="col-lg-8">
             <div className="card border-0 shadow-sm">
-              <div className="card-header bg-white border-0 py-3">
+              <div className="card-header border-0 py-3" style={{ backgroundColor: 'var(--card-bg)' }}>
                 <h5 className="mb-0 text-primary-custom">
                   <i className="bi bi-person-lines-fill me-2"></i>
                   Account Details
@@ -164,21 +164,21 @@ const Dashboard = () => {
                   <table className="table table-hover">
                     <tbody>
                       <tr>
-                        <td className="text-muted" width="30%">
+                        <td className="text-muted" width="30%" style={{ color: 'var(--text-secondary)' }}>
                           <i className="bi bi-person me-2"></i>
                           Full Name
                         </td>
-                        <td className="fw-medium">{user?.name}</td>
+                        <td className="fw-medium" style={{ color: 'var(--text-primary)' }}>{user?.name}</td>
                       </tr>
                       <tr>
-                        <td className="text-muted">
+                        <td className="text-muted" style={{ color: 'var(--text-secondary)' }}>
                           <i className="bi bi-envelope me-2"></i>
                           Email Address
                         </td>
-                        <td className="fw-medium">{user?.email}</td>
+                        <td className="fw-medium" style={{ color: 'var(--text-primary)' }}>{user?.email}</td>
                       </tr>
                       <tr>
-                        <td className="text-muted">
+                        <td className="text-muted" style={{ color: 'var(--text-secondary)' }}>
                           <i className="bi bi-tag me-2"></i>
                           User Role
                         </td>
@@ -189,12 +189,12 @@ const Dashboard = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="text-muted">
+                        <td className="text-muted" style={{ color: 'var(--text-secondary)' }}>
                           <i className="bi bi-hash me-2"></i>
                           User ID
                         </td>
                         <td>
-                          <code className="text-muted">{user?.id}</code>
+                          <code style={{ color: 'var(--text-secondary)' }}>{user?.id}</code>
                         </td>
                       </tr>
                     </tbody>
@@ -207,7 +207,7 @@ const Dashboard = () => {
           {/* Quick Actions */}
           <div className="col-lg-4">
             <div className="card border-0 shadow-sm">
-              <div className="card-header bg-white border-0 py-3">
+              <div className="card-header border-0 py-3" style={{ backgroundColor: 'var(--card-bg)' }}>
                 <h5 className="mb-0 text-primary-custom">
                   <i className="bi bi-lightning-charge-fill me-2"></i>
                   Quick Actions
@@ -238,15 +238,15 @@ const Dashboard = () => {
             {/* System Info */}
             <div className="card border-0 shadow-sm mt-3">
               <div className="card-body">
-                <h6 className="text-muted mb-3">
+                <h6 className="mb-3" style={{ color: 'var(--text-secondary)' }}>
                   <i className="bi bi-info-circle me-2"></i>
                   System Information
                 </h6>
-                <small className="text-muted d-block mb-2">
+                <small className="d-block mb-2" style={{ color: 'var(--text-secondary)' }}>
                   <i className="bi bi-calendar-check me-2"></i>
                   Last Login: {new Date().toLocaleDateString()}
                 </small>
-                <small className="text-muted d-block">
+                <small className="d-block" style={{ color: 'var(--text-secondary)' }}>
                   <i className="bi bi-shield-lock me-2"></i>
                   Security: 2FA Enabled
                 </small>

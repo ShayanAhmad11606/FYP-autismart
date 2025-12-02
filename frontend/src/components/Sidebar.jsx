@@ -6,10 +6,10 @@ const Sidebar = () => {
   const menuItems = [
     { path: '/dashboard', icon: 'bi-speedometer2', label: 'Dashboard' },
     { path: '/profile', icon: 'bi-person-circle', label: 'Profile' },
-    { path: '/games', icon: 'bi-controller', label: 'Games' },
+    { path: '/games', icon: 'bi-controller', label: 'Therapy Games' },
     { path: '/assessment', icon: 'bi-clipboard-check', label: 'Assessment' },
     { path: '/tracker', icon: 'bi-graph-up', label: 'Tracker' },
-    { path: '/therapy', icon: 'bi-heart-pulse', label: 'Therapy' },
+    { path: '/therapy', icon: 'bi-chat-dots', label: 'Discussion' },
     { path: '/sessions', icon: 'bi-calendar-event', label: 'Sessions' },
     { path: '/communication', icon: 'bi-chat-dots', label: 'Communication' },
     { path: '/resources', icon: 'bi-book', label: 'Resources' },

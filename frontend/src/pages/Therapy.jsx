@@ -14,7 +14,7 @@ const Therapy = () => {
     },
     {
       id: 2,
-      title: 'Speech & Language Therapy',
+      title: 'Speech & Language Discussion',
       description: 'Helps improve verbal and non-verbal communication skills',
       duration: '1 hour, 2x/week',
       priority: 'high',
@@ -23,7 +23,7 @@ const Therapy = () => {
     },
     {
       id: 3,
-      title: 'Occupational Therapy',
+      title: 'Occupational Discussion',
       description: 'Develops daily living skills and sensory integration',
       duration: '1 hour/week',
       priority: 'medium',
@@ -41,7 +41,7 @@ const Therapy = () => {
     },
     {
       id: 5,
-      title: 'Play Therapy',
+      title: 'Play Discussion',
       description: 'Uses play to improve emotional and social development',
       duration: '45 min, 2x/week',
       priority: 'low',
@@ -51,21 +51,21 @@ const Therapy = () => {
   ];
 
   const upcomingSessions = [
-    { date: 'Nov 27, 2025', time: '10:00 AM', therapy: 'ABA Therapy', therapist: 'Dr. Sarah Johnson', location: 'Room 201' },
-    { date: 'Nov 28, 2025', time: '2:00 PM', therapy: 'Speech Therapy', therapist: 'Ms. Emily Chen', location: 'Room 105' },
+    { date: 'Nov 27, 2025', time: '10:00 AM', therapy: 'ABA Discussion', therapist: 'Dr. Sarah Johnson', location: 'Room 201' },
+    { date: 'Nov 28, 2025', time: '2:00 PM', therapy: 'Speech Discussion', therapist: 'Ms. Emily Chen', location: 'Room 105' },
     { date: 'Nov 29, 2025', time: '11:00 AM', therapy: 'Social Skills', therapist: 'Mr. David Lee', location: 'Group Room A' },
-    { date: 'Nov 30, 2025', time: '9:00 AM', therapy: 'Occupational Therapy', therapist: 'Dr. Maria Garcia', location: 'Room 302' }
+    { date: 'Nov 30, 2025', time: '9:00 AM', therapy: 'Occupational Discussion', therapist: 'Dr. Maria Garcia', location: 'Room 302' }
   ];
 
   return (
     <div className="container mt-4 mb-5">
       <div className="mb-4">
         <h1 className="text-primary-custom">
-          <i className="bi bi-heart-pulse me-2"></i>
-          Therapy Recommendations
+          <i className="bi bi-chat-dots me-2"></i>
+          Discussion Recommendations
         </h1>
         <p className="text-muted">
-          Personalized therapy plans based on your child's assessment results
+          Personalized discussion plans based on your child's assessment results
         </p>
       </div>
 
