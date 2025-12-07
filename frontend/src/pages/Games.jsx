@@ -17,12 +17,13 @@ const Games = () => {
     },
     {
       id: 2,
-      title: 'Color Sorter',
-      description: 'Sort objects by color to enhance visual processing',
-      icon: 'bi-palette',
+      title: 'Sound Matching',
+      description: 'Match sounds to images to improve auditory processing',
+      icon: 'bi-music-note-beamed',
       difficulty: 'Easy',
-      category: 'Visual',
-      color: 'info'
+      category: 'Audio',
+      color: 'info',
+      route: '/games/sound-matching'
     },
     {
       id: 3,

@@ -19,6 +19,7 @@ import Home from '../pages/Home';
 import Assessment from '../pages/Assessment';
 import Games from '../pages/Games';
 import MemoryMatchGame from '../pages/MemoryMatchGame';
+import SoundMatchingGame from '../pages/SoundMatchingGame';
 import Tracker from '../pages/Tracker';
 import Therapy from '../pages/Therapy';
 import Communication from '../pages/Communication';
@@ -120,6 +121,7 @@ function AppContent() {
         {/* Public Pages */}
         <Route path="/games" element={<Games />} />
         <Route path="/games/memory-match" element={<MemoryMatchGame />} />
+        <Route path="/games/sound-matching" element={<SoundMatchingGame />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/about" element={<About />} />
