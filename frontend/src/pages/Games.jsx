@@ -87,6 +87,16 @@ const Games = () => {
       difficulty: 'Hard',
       category: 'Logic',
       color: 'danger'
+    },
+    {
+      id: 10,
+      title: 'Color Matching',
+      description: 'Match color names to tiles to improve color recognition',
+      icon: 'bi-palette',
+      difficulty: 'Easy',
+      category: 'Visual',
+      color: 'success',
+      route: '/games/color-matching'
     }
   ];
 
