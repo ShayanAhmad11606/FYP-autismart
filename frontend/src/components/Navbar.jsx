@@ -27,7 +27,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-custom sticky-top">
       <div className="container-fluid px-4">
-        <Link className="navbar-brand fw-bold" to="/" onClick={closeMenu}>
+          <Link className="navbar-brand fw-bold" to="/" onClick={closeMenu}>
           <i className="bi bi-heart-pulse-fill me-2"></i>
           AutiSmart
         </Link>

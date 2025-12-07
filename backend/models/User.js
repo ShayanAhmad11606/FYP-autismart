@@ -10,22 +10,35 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: [true, 'Email is required'],
       unique: true,
+      sparse: true, // Allow null values with unique constraint
       lowercase: true,
       trim: true,
       match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email'],
     },
     phone: {
       type: String,
-      required: [true, 'Phone number is required'],
+      trim: true,
+    },
+    phoneNumber: {
+      type: String,
+      unique: true,
+      sparse: true, // Allow null values with unique constraint
       trim: true,
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
       minlength: [6, 'Password must be at least 6 characters'],
       select: false,
+    },
+    firebaseUid: {
+      type: String,
+      unique: true,
+      sparse: true, // Firebase UID for phone auth users
+    },
+    isPhoneVerified: {
+      type: Boolean,
+      default: false,
     },
     role: {
       type: String,
@@ -52,7 +65,8 @@ const userSchema = new mongoose.Schema(
 
 // Hash password before saving
 userSchema.pre('save', async function () {
-  if (!this.isModified('password')) return;
+  // Only hash password if it exists and has been modified
+  if (!this.password || !this.isModified('password')) return;
   
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
@@ -60,6 +74,10 @@ userSchema.pre('save', async function () {
 
 // Method to compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {
+  // If no password is set (phone-only users), return false
+  if (!this.password) {
+    return false;
+  }
   return await bcrypt.compare(candidatePassword, this.password);
 };
 

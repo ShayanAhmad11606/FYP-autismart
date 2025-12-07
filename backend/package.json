@@ -9,7 +9,13 @@
     "dev": "nodemon server.js",
     "create-admin": "node scripts/createAdmin.js"
   },
-  "keywords": ["autismart", "authentication", "nodejs", "express", "mongodb"],
+  "keywords": [
+    "autismart",
+    "authentication",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -17,10 +23,13 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "firebase": "^12.6.0",
+    "firebase-admin": "^13.6.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.0",
-    "nodemailer": "^7.0.10"
+    "nodemailer": "^7.0.10",
+    "twilio": "^5.10.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

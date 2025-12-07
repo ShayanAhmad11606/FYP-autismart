@@ -81,8 +81,19 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
-    const response = await authAPI.login(email, password);
+  const login = async (credentials) => {
+    // Support both old signature (email, password) and new signature (credentials object)
+    let loginData;
+    if (typeof credentials === 'string') {
+      // Old signature: login(email, password)
+      const password = arguments[1];
+      loginData = { email: credentials, password };
+    } else {
+      // New signature: login({ email/phoneNumber, password })
+      loginData = credentials;
+    }
+    
+    const response = await authAPI.login(loginData);
     setUser(response.data.user);
     return response;
   };
@@ -92,8 +103,19 @@ export const AuthProvider = ({ children }) => {
     return response;
   };
 
-  const verifyOtp = async (email, otp) => {
-    const response = await authAPI.verifyOtp(email, otp);
+  const verifyOtp = async (verifyData) => {
+    // Support both old signature (email, otp) and new signature (verifyData object)
+    let otpData;
+    if (typeof verifyData === 'string') {
+      // Old signature: verifyOtp(email, otp)
+      const otp = arguments[1];
+      otpData = { email: verifyData, otp };
+    } else {
+      // New signature: verifyOtp({ email/phoneNumber, otp })
+      otpData = verifyData;
+    }
+    
+    const response = await authAPI.verifyOtp(otpData);
     setUser(response.data.user);
     return response;
   };

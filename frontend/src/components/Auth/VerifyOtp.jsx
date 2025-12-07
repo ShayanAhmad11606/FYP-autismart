@@ -9,17 +9,23 @@ const VerifyOtp = () => {
   const { verifyOtp } = useAuth();
   const [otp, setOtp] = useState('');
   const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [verificationType, setVerificationType] = useState('email'); // 'email' or 'phone'
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
 
   useEffect(() => {
-    // Get email from navigation state
+    // Get email or phone from navigation state
     if (location.state?.email) {
       setEmail(location.state.email);
+      setVerificationType('email');
+    } else if (location.state?.phoneNumber) {
+      setPhoneNumber(location.state.phoneNumber);
+      setVerificationType('phone');
     } else {
-      // If no email in state, redirect to register
+      // If no email or phone in state, redirect to register
       navigate('/register');
     }
   }, [location, navigate]);
@@ -37,10 +43,16 @@ const VerifyOtp = () => {
     setLoading(true);
 
     try {
-      const response = await verifyOtp(email, otp);
+      const payload = verificationType === 'email' 
+        ? { email, otp }
+        : { phoneNumber, otp };
+      
+      const response = await verifyOtp(payload);
       
       if (response.success) {
-        setSuccess('Email verified successfully! Redirecting...');
+        setSuccess(verificationType === 'email' 
+          ? 'Email verified successfully! Redirecting...' 
+          : 'Phone number verified successfully! Redirecting...');
         setTimeout(() => {
           navigate('/dashboard');
         }, 1500);
@@ -58,10 +70,16 @@ const VerifyOtp = () => {
     setResendLoading(true);
 
     try {
-      const response = await authAPI.resendOtp(email);
+      const payload = verificationType === 'email'
+        ? { email }
+        : { phoneNumber };
+        
+      const response = await authAPI.resendOtp(payload);
       
       if (response.success) {
-        setSuccess('OTP has been resent to your email!');
+        setSuccess(verificationType === 'email'
+          ? 'OTP has been resent to your email!'
+          : 'OTP has been resent to your phone!');
         setOtp('');
       }
     } catch (err) {
@@ -77,11 +95,13 @@ const VerifyOtp = () => {
         <div className="col-md-6 col-lg-5">
           <div className="card shadow">
             <div className="card-body p-4">
-              <h2 className="text-center mb-4">Verify Your Email</h2>
+              <h2 className="text-center mb-4">
+                {verificationType === 'email' ? 'Verify Your Email' : 'Verify Your Phone'}
+              </h2>
               
               <p className="text-center text-muted mb-4">
                 We've sent a 6-digit OTP to<br />
-                <strong>{email}</strong>
+                <strong>{verificationType === 'email' ? email : phoneNumber}</strong>
               </p>
 
               {error && (

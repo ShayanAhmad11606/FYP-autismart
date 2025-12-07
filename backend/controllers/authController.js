@@ -1,6 +1,8 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 import { sendOTPEmail } from '../config/email.js';
+import { sendOTPSMS } from '../config/sms.js';
+import { firebaseAuth } from '../config/firebaseAdmin.js';
 
 // Generate JWT token
 const generateToken = (userId) => {
@@ -14,66 +16,149 @@ const generateToken = (userId) => {
 // @access  Public
 export const register = async (req, res) => {
   try {
-    const { name, email, phone, password, role } = req.body;
+    const { name, email, phone, phoneNumber, password, role } = req.body;
+
+    // Determine registration type
+    const isEmailRegistration = email && email.trim() !== '';
+    const isPhoneRegistration = (phoneNumber && phoneNumber.trim() !== '') || 
+                                 (!email && phone && phone.trim() !== '');
 
     // Validation
-    if (!name || !email || !phone || !password) {
+    if (!name || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide all required fields',
+        message: 'Name and password are required',
+      });
+    }
+
+    if (!isEmailRegistration && !isPhoneRegistration) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide either email or phone number',
       });
     }
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email already registered',
+    let existingUser = null;
+    if (isEmailRegistration) {
+      existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: 'Email already registered',
+        });
+      }
+    }
+
+    if (isPhoneRegistration) {
+      const phoneToCheck = phoneNumber || phone;
+      existingUser = await User.findOne({ 
+        $or: [
+          { phoneNumber: phoneToCheck },
+          { phone: phoneToCheck }
+        ]
       });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: 'Phone number already registered',
+        });
+      }
+    }
+
+    // Create user data object
+    const userData = {
+      name,
+      password,
+      role: role || 'caregiver',
+    };
+
+    // Add email or phone based on registration type
+    if (isEmailRegistration) {
+      userData.email = email;
+      userData.phone = phone || ''; // Optional legacy field
+    }
+
+    if (isPhoneRegistration) {
+      const phoneToUse = phoneNumber || phone;
+      userData.phoneNumber = phoneToUse;
+      userData.phone = phoneToUse; // Legacy field
+      // For phone registration, we'll verify via Firebase later
+      // So we don't send email OTP
     }
 
     // Create new user
-    const user = new User({
-      name,
-      email,
-      phone,
-      password,
-      role: role || 'caregiver',
-    });
+    const user = new User(userData);
 
-    // Generate OTP
-    const otp = user.generateOTP();
-    await user.save();
-    
-    console.log('✅ User saved to database:', { 
-      id: user._id, 
-      email: user.email,
-      name: user.name,
-      role: user.role,
-      isVerified: user.isVerified
-    });
+    // Only generate and send email OTP for email registration
+    if (isEmailRegistration) {
+      const otp = user.generateOTP();
+      await user.save();
+      
+      console.log('✅ User saved to database:', { 
+        id: user._id, 
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        isVerified: user.isVerified
+      });
 
-    // Send OTP email
-    try {
-      await sendOTPEmail(email, otp, name);
-    } catch (emailError) {
-      // If email fails, delete the user and return error
-      await User.findByIdAndDelete(user._id);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to send verification email. Please try again.',
+      // Send OTP email
+      try {
+        await sendOTPEmail(email, otp, name);
+      } catch (emailError) {
+        // If email fails, delete the user and return error
+        await User.findByIdAndDelete(user._id);
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to send verification email. Please try again.',
+        });
+      }
+
+      res.status(201).json({
+        success: true,
+        message: 'Registration successful. Please check your email for OTP.',
+        data: {
+          userId: user._id,
+          email: user.email,
+          registrationType: 'email',
+        },
+      });
+    } else {
+      // Phone registration - send SMS OTP (just like email)
+      const otp = user.generateOTP();
+      await user.save();
+      
+      console.log('✅ User saved to database:', { 
+        id: user._id, 
+        phoneNumber: user.phoneNumber,
+        name: user.name,
+        role: user.role,
+        isVerified: user.isVerified
+      });
+
+      // Send OTP via SMS
+      try {
+        await sendOTPSMS(user.phoneNumber, otp, name);
+      } catch (smsError) {
+        // If SMS fails, delete the user and return error
+        await User.findByIdAndDelete(user._id);
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to send verification SMS. Please try again.',
+        });
+      }
+
+      res.status(201).json({
+        success: true,
+        message: 'Registration successful. Please check your phone for OTP.',
+        data: {
+          userId: user._id,
+          phoneNumber: user.phoneNumber,
+          registrationType: 'phone',
+        },
       });
     }
-
-    res.status(201).json({
-      success: true,
-      message: 'Registration successful. Please check your email for OTP.',
-      data: {
-        userId: user._id,
-        email: user.email,
-      },
-    });
   } catch (error) {
     console.error('Register error:', error);
     res.status(500).json({
@@ -89,18 +174,36 @@ export const register = async (req, res) => {
 // @access  Public
 export const verifyOtp = async (req, res) => {
   try {
-    const { email, otp } = req.body;
+    const { email, phoneNumber, otp } = req.body;
 
-    // Validation
-    if (!email || !otp) {
+    // Validation - need either email or phone
+    if (!otp) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide email and OTP',
+        message: 'Please provide OTP',
       });
     }
 
-    // Find user with OTP
-    const user = await User.findOne({ email }).select('+otp +otpExpires');
+    if (!email && !phoneNumber) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide email or phone number',
+      });
+    }
+
+    // Find user by email or phone
+    let user;
+    if (email) {
+      user = await User.findOne({ email }).select('+otp +otpExpires');
+    } else {
+      user = await User.findOne({
+        $or: [
+          { phoneNumber: phoneNumber },
+          { phone: phoneNumber }
+        ]
+      }).select('+otp +otpExpires');
+    }
+
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -112,7 +215,7 @@ export const verifyOtp = async (req, res) => {
     if (user.isVerified) {
       return res.status(400).json({
         success: false,
-        message: 'Email already verified',
+        message: email ? 'Email already verified' : 'Phone number already verified',
       });
     }
 
@@ -142,6 +245,9 @@ export const verifyOtp = async (req, res) => {
 
     // Mark user as verified and clear OTP
     user.isVerified = true;
+    if (phoneNumber) {
+      user.isPhoneVerified = true;
+    }
     user.otp = undefined;
     user.otpExpires = undefined;
     await user.save();
@@ -151,13 +257,14 @@ export const verifyOtp = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Email verified successfully',
+      message: email ? 'Email verified successfully' : 'Phone number verified successfully',
       data: {
         token,
         user: {
           id: user._id,
           name: user.name,
           email: user.email,
+          phoneNumber: user.phoneNumber,
           role: user.role,
         },
       },
@@ -177,18 +284,36 @@ export const verifyOtp = async (req, res) => {
 // @access  Public
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, phoneNumber, password } = req.body;
 
-    // Validation
-    if (!email || !password) {
+    // Validation - need either email or phone
+    if (!password) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide email and password',
+        message: 'Please provide password',
       });
     }
 
-    // Find user with password field
-    const user = await User.findOne({ email }).select('+password');
+    if (!email && !phoneNumber) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide email or phone number',
+      });
+    }
+
+    // Find user by email or phone with password field
+    let user;
+    if (email) {
+      user = await User.findOne({ email }).select('+password');
+    } else {
+      user = await User.findOne({
+        $or: [
+          { phoneNumber: phoneNumber },
+          { phone: phoneNumber }
+        ]
+      }).select('+password');
+    }
+
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -200,7 +325,7 @@ export const login = async (req, res) => {
     if (!user.isVerified) {
       return res.status(401).json({
         success: false,
-        message: 'Please verify your email first',
+        message: email ? 'Please verify your email first' : 'Please verify your phone number first',
       });
     }
 
@@ -225,6 +350,7 @@ export const login = async (req, res) => {
           id: user._id,
           name: user.name,
           email: user.email,
+          phoneNumber: user.phoneNumber,
           role: user.role,
         },
       },
@@ -244,18 +370,29 @@ export const login = async (req, res) => {
 // @access  Public
 export const resendOtp = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, phoneNumber } = req.body;
 
-    // Validation
-    if (!email) {
+    // Validation - need either email or phone
+    if (!email && !phoneNumber) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide email',
+        message: 'Please provide email or phone number',
       });
     }
 
     // Find user
-    const user = await User.findOne({ email });
+    let user;
+    if (email) {
+      user = await User.findOne({ email });
+    } else {
+      user = await User.findOne({
+        $or: [
+          { phoneNumber: phoneNumber },
+          { phone: phoneNumber }
+        ]
+      });
+    }
+
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -267,7 +404,7 @@ export const resendOtp = async (req, res) => {
     if (user.isVerified) {
       return res.status(400).json({
         success: false,
-        message: 'Email already verified',
+        message: email ? 'Email already verified' : 'Phone number already verified',
       });
     }
 
@@ -275,19 +412,23 @@ export const resendOtp = async (req, res) => {
     const otp = user.generateOTP();
     await user.save();
 
-    // Send OTP email
+    // Send OTP via email or SMS
     try {
-      await sendOTPEmail(email, otp, user.name);
-    } catch (emailError) {
+      if (email) {
+        await sendOTPEmail(email, otp, user.name);
+      } else {
+        await sendOTPSMS(user.phoneNumber, otp, user.name);
+      }
+    } catch (error) {
       return res.status(500).json({
         success: false,
-        message: 'Failed to send verification email. Please try again.',
+        message: email ? 'Failed to send verification email. Please try again.' : 'Failed to send verification SMS. Please try again.',
       });
     }
 
     res.status(200).json({
       success: true,
-      message: 'OTP has been resent to your email',
+      message: email ? 'OTP has been resent to your email' : 'OTP has been resent to your phone',
     });
   } catch (error) {
     console.error('Resend OTP error:', error);
@@ -433,3 +574,141 @@ export const resetPassword = async (req, res) => {
     });
   }
 };
+
+// @desc    Firebase Phone Authentication - Login/Register
+// @route   POST /api/auth/firebase-login
+// @access  Public
+export const firebaseLogin = async (req, res) => {
+  try {
+    const { idToken, phoneNumber } = req.body;
+
+    // Validation
+    if (!idToken) {
+      return res.status(400).json({
+        success: false,
+        message: 'Firebase ID token is required',
+      });
+    }
+
+    // Check if Firebase Admin is initialized
+    if (!firebaseAuth) {
+      console.error('Firebase Admin not initialized');
+      return res.status(500).json({
+        success: false,
+        message: 'Firebase authentication service is not available',
+      });
+    }
+
+    // Verify Firebase ID token
+    let decodedToken;
+    try {
+      decodedToken = await firebaseAuth.verifyIdToken(idToken);
+    } catch (verifyError) {
+      console.error('Firebase token verification error:', verifyError);
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid or expired Firebase token',
+      });
+    }
+
+    // Extract phone number and Firebase UID from decoded token
+    const firebaseUid = decodedToken.uid;
+    const verifiedPhone = decodedToken.phone_number || phoneNumber;
+
+    if (!verifiedPhone) {
+      return res.status(400).json({
+        success: false,
+        message: 'Phone number not found in token',
+      });
+    }
+
+    console.log('✓ Firebase token verified:', { uid: firebaseUid, phone: verifiedPhone });
+
+    // Check if user exists with this phone number or Firebase UID
+    let user = await User.findOne({
+      $or: [
+        { phoneNumber: verifiedPhone },
+        { phone: verifiedPhone },
+        { firebaseUid: firebaseUid }
+      ]
+    });
+
+    if (user) {
+      // User exists - update verification status and Firebase UID
+      console.log('✓ Existing user found:', user._id);
+      
+      user.isPhoneVerified = true;
+      
+      // Update Firebase UID if not set
+      if (!user.firebaseUid) {
+        user.firebaseUid = firebaseUid;
+      }
+      
+      // Update phone number if not set
+      if (!user.phoneNumber) {
+        user.phoneNumber = verifiedPhone;
+      }
+      
+      // Update legacy phone field
+      if (!user.phone) {
+        user.phone = verifiedPhone;
+      }
+      
+      // Mark as verified if not already
+      if (!user.isVerified) {
+        user.isVerified = true;
+      }
+      
+      await user.save();
+      
+    } else {
+      // User doesn't exist - create new user with phone authentication
+      console.log('✓ Creating new user with phone:', verifiedPhone);
+      
+      // Extract name from phone number or use default
+      const defaultName = `User_${verifiedPhone.slice(-4)}`;
+      
+      user = new User({
+        name: defaultName,
+        phoneNumber: verifiedPhone,
+        firebaseUid: firebaseUid,
+        isPhoneVerified: true,
+        isVerified: true,
+        role: 'caregiver', // Default role
+        // No password required for phone-based signup
+      });
+      
+      await user.save();
+      console.log('✓ New user created:', user._id);
+    }
+
+    // Generate JWT token for session management
+    const token = generateToken(user._id);
+
+    // Return success response with JWT and user data
+    res.status(200).json({
+      success: true,
+      message: 'Login successful',
+      data: {
+        token,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          phoneNumber: user.phoneNumber,
+          role: user.role,
+          isPhoneVerified: user.isPhoneVerified,
+        },
+      },
+    });
+
+  } catch (error) {
+    console.error('Firebase login error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during Firebase authentication',
+      error: error.message,
+    });
+  }
+};
+

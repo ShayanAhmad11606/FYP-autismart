@@ -13,22 +13,45 @@ const MemoryMatchGame = () => {
   const [currentLevel, setCurrentLevel] = useState(1);
   const [totalScore, setTotalScore] = useState(0);
   const [bestTimes, setBestTimes] = useState({});
+  const [showPreview, setShowPreview] = useState(true);
+  const [previewTimer, setPreviewTimer] = useState(5);
 
-  // All available symbols
-  const allSymbols = ['🎮', '🎨', '🎭', '🎪', '🎯', '🎲', '🎸', '🎺', '🎹', '🎬', '🎤', '🎧', '⚽', '🏀', '🎾', '🏐', '⚡', '🌟', '🎈', '🎁', '🚀', '🌈', '🦋', '🌺', '🍎', '🍕', '🎂', '🍭', '🐶', '🐱'];
+  // All available symbols - expanded for higher levels
+  const allSymbols = [
+    '🎮', '🎨', '🎭', '🎪', '🎯', '🎲', '🎸', '🎺', '🎹', '🎬', 
+    '🎤', '🎧', '⚽', '🏀', '🎾', '🏐', '⚡', '🌟', '🎈', '🎁', 
+    '🚀', '🌈', '🦋', '🌺', '🍎', '🍕', '🎂', '🍭', '🐶', '🐱',
+    '🎻', '🥁', '🎵', '🎶', '🏈', '⚾', '🥎', '🏐', '🎳', '🏓',
+    '🏸', '🥅', '🥇', '🥈', '🥉', '🏆', '🎗️', '🏅', '🎖️', '⭐',
+    '💫', '✨', '🌙', '☀️', '🌞', '🌝', '🌛', '🌜', '🌚', '🌕',
+    '🌖', '🌗', '🌘', '🌑', '🌒', '🌓', '🌔', '🌍', '🌎', '🌏',
+    '🌐', '🗺️', '🗾', '🧭', '🏔️', '⛰️', '🌋', '🗻', '🏕️', '🏖️',
+    '🏜️', '🏝️', '🏞️', '🏟️', '🏛️', '🏗️', '🧱', '🏘️', '🏚️', '🏠',
+    '🏡', '🏢', '🏣', '🏤', '🏥', '🏦', '🏨', '🏩', '🏪', '🏫',
+    '🏬', '🏭', '🏯', '🏰', '💒', '🗼', '🗽', '⛪', '🕌', '🛕',
+    '🕍', '⛩️', '🕋', '⛲', '⛺', '🌁', '🌃', '🏙️', '🌄', '🌅',
+    '🌆', '🌇', '🌉', '🎠', '🎡', '🎢', '💈', '🎪', '🚂', '🚃',
+    '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋',
+    '🚌', '🚍', '🚎', '🚐', '🚑', '🚒', '🚓', '🚔', '🚕', '🚖',
+    '🚗', '🚘', '🚙', '🚚', '🚛', '🚜', '🏎️', '🏍️', '🛵', '🦽',
+    '🦼', '🛺', '🚲', '🛴', '🛹', '🛼', '🚏', '🛣️', '🛤️', '🛢️',
+    '⛽', '🚨', '🚥', '🚦', '🛑', '🚧', '⚓', '⛵', '🛶', '🚤',
+    '🛳️', '⛴️', '🛥️', '🚢', '✈️', '🛩️', '🛫', '🛬', '🪂', '💺',
+    '🚁', '🚟', '🚠', '🚡', '🛰️', '🚀', '🛸', '🛎️', '🧳', '⌛'
+  ];
 
-  // Level configurations - 10 levels
+  // Level configurations - 10 levels (gradual progression with square grids)
   const levels = [
-    { level: 1, pairs: 3, time: 45, name: 'Beginner', color: 'success', maxMoves: 15 },
-    { level: 2, pairs: 4, time: 60, name: 'Easy', color: 'success', maxMoves: 20 },
-    { level: 3, pairs: 6, time: 90, name: 'Simple', color: 'info', maxMoves: 25 },
-    { level: 4, pairs: 8, time: 120, name: 'Medium', color: 'info', maxMoves: 30 },
-    { level: 5, pairs: 10, time: 150, name: 'Intermediate', color: 'warning', maxMoves: 35 },
-    { level: 6, pairs: 12, time: 180, name: 'Challenging', color: 'warning', maxMoves: 40 },
-    { level: 7, pairs: 14, time: 210, name: 'Hard', color: 'danger', maxMoves: 45 },
-    { level: 8, pairs: 16, time: 240, name: 'Very Hard', color: 'danger', maxMoves: 50 },
-    { level: 9, pairs: 18, time: 270, name: 'Expert', color: 'primary', maxMoves: 55 },
-    { level: 10, pairs: 20, time: 300, name: 'Master', color: 'dark', maxMoves: 60 }
+    { level: 1, gridSize: 2, time: 40, name: 'Beginner', color: 'success', maxMoves: 10 },       // 2x2 grid (4 cards = 2 pairs)
+    { level: 2, gridSize: 3, time: 50, name: 'Easy', color: 'success', maxMoves: 15 },           // 3x3 grid (9 cards = 4 pairs + 1 single)
+    { level: 3, gridSize: 4, time: 70, name: 'Simple', color: 'info', maxMoves: 20 },            // 4x4 grid (16 cards = 8 pairs)
+    { level: 4, gridSize: 5, time: 90, name: 'Medium', color: 'info', maxMoves: 28 },            // 5x5 grid (25 cards = 12 pairs + 1 single)
+    { level: 5, gridSize: 6, time: 110, name: 'Intermediate', color: 'warning', maxMoves: 36 },  // 6x6 grid (36 cards = 18 pairs)
+    { level: 6, gridSize: 7, time: 140, name: 'Challenging', color: 'warning', maxMoves: 45 },   // 7x7 grid (49 cards = 24 pairs + 1 single)
+    { level: 7, gridSize: 8, time: 170, name: 'Hard', color: 'danger', maxMoves: 55 },           // 8x8 grid (64 cards = 32 pairs)
+    { level: 8, gridSize: 9, time: 210, name: 'Very Hard', color: 'danger', maxMoves: 70 },      // 9x9 grid (81 cards = 40 pairs + 1 single)
+    { level: 9, gridSize: 10, time: 250, name: 'Expert', color: 'primary', maxMoves: 85 },       // 10x10 grid (100 cards = 50 pairs)
+    { level: 10, gridSize: 11, time: 300, name: 'Master', color: 'dark', maxMoves: 100 }         // 11x11 grid (121 cards = 60 pairs + 1 single)
   ];
 
   const currentLevelConfig = levels[currentLevel - 1];
@@ -49,12 +72,37 @@ const MemoryMatchGame = () => {
     return () => clearInterval(interval);
   }, [isRunning]);
 
+  // Preview timer effect
+  useEffect(() => {
+    let interval;
+    if (showPreview && previewTimer > 0) {
+      interval = setInterval(() => {
+        setPreviewTimer((prev) => prev - 1);
+      }, 1000);
+    } else if (previewTimer === 0 && showPreview) {
+      setShowPreview(false);
+    }
+    return () => clearInterval(interval);
+  }, [showPreview, previewTimer]);
+
   const initializeGame = () => {
+    // Calculate total cards needed for square grid
+    const totalCards = currentLevelConfig.gridSize * currentLevelConfig.gridSize;
+    const pairs = Math.floor(totalCards / 2);
+    
     // Get symbols for current level
-    const levelSymbols = allSymbols.slice(0, currentLevelConfig.pairs);
+    const levelSymbols = allSymbols.slice(0, pairs);
     
     // Create pairs of cards
-    const cardPairs = [...levelSymbols, ...levelSymbols]
+    let cardPairs = [...levelSymbols, ...levelSymbols];
+    
+    // If odd number of cards, add one more random symbol
+    if (totalCards % 2 !== 0) {
+      cardPairs.push(allSymbols[pairs]);
+    }
+    
+    // Shuffle and create card objects
+    const shuffledCards = cardPairs
       .map((symbol, index) => ({
         id: index,
         symbol,
@@ -63,13 +111,15 @@ const MemoryMatchGame = () => {
       }))
       .sort(() => Math.random() - 0.5);
 
-    setCards(cardPairs);
+    setCards(shuffledCards);
     setFlipped([]);
     setMatched([]);
     setMoves(0);
     setGameWon(false);
     setTimer(0);
     setIsRunning(false);
+    setShowPreview(true);
+    setPreviewTimer(5);
   };
 
   const calculateScore = () => {
@@ -80,6 +130,11 @@ const MemoryMatchGame = () => {
   };
 
   const handleCardClick = (index) => {
+    // Don't allow clicking during preview
+    if (showPreview) {
+      return;
+    }
+
     // Start timer on first click
     if (!isRunning && moves === 0) {
       setIsRunning(true);
@@ -104,8 +159,13 @@ const MemoryMatchGame = () => {
         setMatched(newMatched);
         setFlipped([]);
 
-        // Check if level is complete
-        if (newMatched.length === cards.length) {
+        // Check if level is complete (all pairs matched, excluding single card if exists)
+        const totalCards = currentLevelConfig.gridSize * currentLevelConfig.gridSize;
+        const isComplete = totalCards % 2 === 0 
+          ? newMatched.length === totalCards 
+          : newMatched.length === totalCards - 1;
+          
+        if (isComplete) {
           const score = calculateScore();
           setTotalScore(totalScore + score);
           setGameWon(true);
@@ -156,7 +216,7 @@ const MemoryMatchGame = () => {
             <i className="bi bi-grid-3x3-gap me-2"></i>
             Memory Match Therapy Game
           </h1>
-          <p className="text-muted mb-0">Level {currentLevel}: {currentLevelConfig.name} - Match {currentLevelConfig.pairs} pairs!</p>
+          <p className="text-muted mb-0">Level {currentLevel}: {currentLevelConfig.name} - {currentLevelConfig.gridSize}x{currentLevelConfig.gridSize} Grid!</p>
         </div>
         <button className="btn btn-outline-secondary" onClick={() => navigate('/games')}>
           <i className="bi bi-arrow-left me-2"></i>
@@ -224,7 +284,7 @@ const MemoryMatchGame = () => {
             <div className="card-body text-center">
               <i className="bi bi-trophy-fill fs-3 text-warning mb-2"></i>
               <h6 className="text-muted mb-1">Matched</h6>
-              <h4 className="mb-0 fw-bold">{matched.length / 2} / {currentLevelConfig.pairs}</h4>
+              <h4 className="mb-0 fw-bold">{matched.length / 2} / {Math.floor((currentLevelConfig.gridSize * currentLevelConfig.gridSize) / 2)}</h4>
             </div>
           </div>
         </div>
@@ -239,25 +299,44 @@ const MemoryMatchGame = () => {
         </div>
       </div>
 
+      {/* Preview Timer Banner */}
+      {showPreview && (
+        <div className="alert alert-info border-0 shadow-sm mb-4" style={{ borderRadius: '12px' }}>
+          <div className="d-flex align-items-center justify-content-center">
+            <i className="bi bi-eye-fill fs-4 me-3"></i>
+            <div className="text-center">
+              <h5 className="mb-1 fw-bold">Memorize the cards!</h5>
+              <p className="mb-0">Game starts in <span className="badge bg-primary fs-6">{previewTimer}</span> seconds...</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Game Board */}
       <div className="card border-0 shadow-sm" style={{ borderRadius: '16px' }}>
         <div className="card-body p-4">
-          <div className="row g-3" style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <div 
+            style={{ 
+              display: 'grid',
+              gridTemplateColumns: `repeat(${currentLevelConfig.gridSize}, 1fr)`,
+              gap: '12px',
+              maxWidth: '900px',
+              margin: '0 auto'
+            }}
+          >
             {cards.map((card, index) => {
-              const gridCols = currentLevelConfig.pairs <= 6 ? 4 : currentLevelConfig.pairs <= 10 ? 6 : 6;
-              const colClass = `col-${12 / gridCols}`;
               
               return (
-                <div key={card.id} className={colClass}>
+                <div key={card.id}>
                   <div
                     className={`card h-100 border-0 shadow-sm ${
-                      flipped.includes(index) || matched.includes(index)
+                      flipped.includes(index) || matched.includes(index) || showPreview
                         ? 'bg-primary text-white'
                         : 'bg-light'
                     }`}
                     style={{
-                      minHeight: currentLevelConfig.pairs <= 6 ? '120px' : '100px',
-                      cursor: matched.includes(index) ? 'default' : 'pointer',
+                      minHeight: currentLevelConfig.gridSize <= 4 ? '120px' : currentLevelConfig.gridSize <= 7 ? '100px' : '80px',
+                      cursor: matched.includes(index) || showPreview ? 'default' : 'pointer',
                       borderRadius: '12px',
                       transition: 'all 0.3s ease',
                       transform: flipped.includes(index) || matched.includes(index) ? 'rotateY(0deg)' : 'rotateY(0deg)',
@@ -265,7 +344,7 @@ const MemoryMatchGame = () => {
                     }}
                     onClick={() => handleCardClick(index)}
                     onMouseEnter={(e) => {
-                      if (!matched.includes(index)) {
+                      if (!matched.includes(index) && !showPreview) {
                         e.currentTarget.style.transform = 'translateY(-5px)';
                         e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.2)';
                       }
@@ -276,10 +355,10 @@ const MemoryMatchGame = () => {
                     }}
                   >
                     <div className="card-body d-flex align-items-center justify-content-center p-2">
-                      {flipped.includes(index) || matched.includes(index) ? (
-                        <span style={{ fontSize: currentLevelConfig.pairs <= 6 ? '3rem' : '2.5rem' }}>{card.symbol}</span>
+                      {flipped.includes(index) || matched.includes(index) || showPreview ? (
+                        <span style={{ fontSize: currentLevelConfig.gridSize <= 4 ? '3rem' : currentLevelConfig.gridSize <= 7 ? '2.5rem' : '2rem' }}>{card.symbol}</span>
                       ) : (
-                        <i className={`bi bi-question-circle ${currentLevelConfig.pairs <= 6 ? 'fs-1' : 'fs-3'} text-muted`}></i>
+                        <i className={`bi bi-question-circle ${currentLevelConfig.gridSize <= 4 ? 'fs-1' : currentLevelConfig.gridSize <= 7 ? 'fs-3' : 'fs-4'} text-muted`}></i>
                       )}
                     </div>
                   </div>
@@ -389,7 +468,8 @@ const MemoryMatchGame = () => {
             <div className="col-md-6">
               <h6 className="fw-bold mb-2">Current Level Details:</h6>
               <ul className="mb-3">
-                <li>Pairs to match: {currentLevelConfig.pairs}</li>
+                <li>Grid size: {currentLevelConfig.gridSize}x{currentLevelConfig.gridSize}</li>
+                <li>Total cards: {currentLevelConfig.gridSize * currentLevelConfig.gridSize}</li>
                 <li>Recommended time: {currentLevelConfig.time}s</li>
                 <li>Maximum moves: {currentLevelConfig.maxMoves}</li>
                 <li>Difficulty: {currentLevelConfig.name}</li>

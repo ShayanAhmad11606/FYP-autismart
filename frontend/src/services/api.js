@@ -38,9 +38,18 @@ export const authAPI = {
   },
 
   // Verify OTP
-  verifyOtp: async (email, otp) => {
+  verifyOtp: async (verifyData) => {
     try {
-      const response = await api.post('/auth/verify-otp', { email, otp });
+      // Support both old signature (email, otp) and new signature (verifyData object)
+      let otpData;
+      if (typeof verifyData === 'string') {
+        const otp = arguments[1];
+        otpData = { email: verifyData, otp };
+      } else {
+        otpData = verifyData;
+      }
+      
+      const response = await api.post('/auth/verify-otp', otpData);
       if (response.data.success && response.data.data.token) {
         localStorage.setItem('token', response.data.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.data.user));
@@ -52,9 +61,18 @@ export const authAPI = {
   },
 
   // Login
-  login: async (email, password) => {
+  login: async (credentials) => {
     try {
-      const response = await api.post('/auth/login', { email, password });
+      // Support both old signature (email, password) and new signature (credentials object)
+      let loginData;
+      if (typeof credentials === 'string') {
+        const password = arguments[1];
+        loginData = { email: credentials, password };
+      } else {
+        loginData = credentials;
+      }
+      
+      const response = await api.post('/auth/login', loginData);
       if (response.data.success && response.data.data.token) {
         localStorage.setItem('token', response.data.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.data.user));
@@ -66,9 +84,17 @@ export const authAPI = {
   },
 
   // Resend OTP
-  resendOtp: async (email) => {
+  resendOtp: async (resendData) => {
     try {
-      const response = await api.post('/auth/resend-otp', { email });
+      // Support both old signature (email) and new signature (resendData object)
+      let data;
+      if (typeof resendData === 'string') {
+        data = { email: resendData };
+      } else {
+        data = resendData;
+      }
+      
+      const response = await api.post('/auth/resend-otp', data);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to resend OTP' };

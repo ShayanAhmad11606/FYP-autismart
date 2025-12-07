@@ -6,6 +6,7 @@ import Login from '../components/Auth/Login';
 import VerifyOtp from '../components/Auth/VerifyOtp';
 import ForgotPassword from '../components/Auth/ForgotPassword';
 import ResetPassword from '../components/Auth/ResetPassword';
+import PhoneAuth from '../components/Auth/PhoneAuth';
 import Dashboard from './Dashboard';
 import AdminDashboard from './Admin/AdminDashboard';
 import CaregiverDashboard from './CaregiverDashboard';
@@ -98,6 +99,14 @@ function AppContent() {
           }
         />
         <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route
+          path="/phone-login"
+          element={
+            <PublicRoute>
+              <PhoneAuth />
+            </PublicRoute>
+          }
+        />
         <Route
           path="/forgot-password"
           element={

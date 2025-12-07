@@ -6,6 +6,7 @@ import {
   resendOtp,
   forgotPassword,
   resetPassword,
+  firebaseLogin,
 } from '../controllers/authController.js';
 
 const router = express.Router();
@@ -39,5 +40,10 @@ router.post('/forgot-password', forgotPassword);
 // @desc    Reset password with OTP
 // @access  Public
 router.post('/reset-password', resetPassword);
+
+// @route   POST /api/auth/firebase-login
+// @desc    Login/Register with Firebase Phone Authentication
+// @access  Public
+router.post('/firebase-login', firebaseLogin);
 
 export default router;
