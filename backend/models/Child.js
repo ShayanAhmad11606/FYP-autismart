@@ -43,7 +43,14 @@ const childSchema = new mongoose.Schema({
     default: ''
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+// Virtual property to convert _id to id
+childSchema.virtual('id').get(function() {
+  return this._id.toHexString();
 });
 
 const Child = mongoose.model('Child', childSchema);

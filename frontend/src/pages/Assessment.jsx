@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useChild } from '../context/ChildContext';
 import { useAuth } from '../context/AuthContext';
 import Card from '../components/Card';
+import ChildSelector from '../components/ChildSelector';
 import '../styles/assessment.css';
 
 const Assessment = () => {
@@ -220,23 +221,31 @@ const Assessment = () => {
               <strong>Age Group: 8-10 years</strong> | Complete behavioral screening with 50 questions
             </p>
 
+            {/* Child Selector */}
+            <div className="mb-4">
+              <ChildSelector />
+            </div>
+
             {/* Child Selection Warning */}
             {requiresChildSelection && (
               <div className="alert alert-warning d-flex align-items-center mb-4" role="alert">
                 <i className="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
                 <div>
                   <h5 className="alert-heading mb-2">Child Selection Required</h5>
-                  <p className="mb-2">Please select a child before starting the assessment. The results will be recorded for the selected child.</p>
-                  <button 
-                    className="btn btn-warning btn-sm"
-                    onClick={() => window.location.href = '/child-management'}
-                  >
-                    <i className="bi bi-person-plus-fill me-2"></i>
-                    Go to Child Management
-                  </button>
+                  <p className="mb-2">Please select a child above before starting the assessment. The results will be recorded for the selected child.</p>
                 </div>
               </div>
             )}
+
+            {selectedChild && (
+              <div className="alert alert-success d-flex align-items-center mb-4" role="alert">
+                <i className="bi bi-person-check-fill me-3 fs-4"></i>
+                <div>
+                  Playing as <strong>{selectedChild.name}</strong> - Progress will be recorded automatically!
+                </div>
+              </div>
+            )}
+
             <div className="alert alert-info fade-in-up" style={{ 
               borderRadius: '15px', 
               border: 'none', 

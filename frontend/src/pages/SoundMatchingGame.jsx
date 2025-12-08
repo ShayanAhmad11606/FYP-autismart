@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useChild } from '../context/ChildContext';
+import ChildSelector from '../components/ChildSelector';
 import '../styles/soundMatching.css';
 
 const SoundMatchingGame = () => {
   const navigate = useNavigate();
+  const { selectedChild, recordActivity } = useChild();
   const [currentLevel, setCurrentLevel] = useState(1);
   const [score, setScore] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
@@ -163,9 +166,25 @@ const SoundMatchingGame = () => {
   };
 
   // Complete current level
-  const completeLevel = () => {
+  const completeLevel = async () => {
     setLevelComplete(true);
     setTotalScore(totalScore + score);
+
+    // Record activity if child is selected
+    if (selectedChild) {
+      try {
+        await recordActivity({
+          type: 'game',
+          name: 'Sound Matching',
+          level: currentLevel,
+          score: score,
+          duration: 0, // You can track actual duration if needed
+          completed: true
+        });
+      } catch (error) {
+        console.error('Error recording activity:', error);
+      }
+    }
   };
 
   // Move to next level
@@ -238,6 +257,26 @@ const SoundMatchingGame = () => {
             <div className="start-icon">🎵</div>
             <h2>Listen & Match</h2>
             <p>Listen to the sound and click the matching picture</p>
+
+            {/* Child Selector */}
+            <div className="mb-4">
+              <ChildSelector />
+            </div>
+
+            {!selectedChild && (
+              <div className="alert alert-warning">
+                <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                Please select a child to track progress!
+              </div>
+            )}
+
+            {selectedChild && (
+              <div className="alert alert-success">
+                <i className="bi bi-person-check-fill me-2"></i>
+                Playing as <strong>{selectedChild.name}</strong> - Progress will be recorded automatically!
+              </div>
+            )}
+
             <div className="level-info">
               <div className={`level-badge-large bg-${currentLevelConfig.color}`}>
                 Level {currentLevel}

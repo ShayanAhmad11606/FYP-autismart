@@ -61,7 +61,14 @@ const activitySchema = new mongoose.Schema({
     default: Date.now
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+// Virtual property to convert _id to id
+activitySchema.virtual('id').get(function() {
+  return this._id.toHexString();
 });
 
 // Index for faster queries

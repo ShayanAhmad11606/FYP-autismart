@@ -60,8 +60,15 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
 );
+
+// Virtual property to convert _id to id
+userSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
 
 // Hash password before saving
 userSchema.pre('save', async function () {
