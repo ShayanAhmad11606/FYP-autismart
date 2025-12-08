@@ -9,9 +9,8 @@ const Footer = () => {
         <div className="row g-4 py-5">
           {/* About Section */}
           <div className="col-lg-4 col-md-6">
-            <div className="footer-brand mb-3">
-              <i className="bi bi-heart-pulse-fill me-2"></i>
-              <span className="fw-bold fs-5">AutiSmart</span>
+            <div className="footer-brand mb-3 d-flex align-items-center">
+              <img src="/logo.PNG" alt="AutiSmart Logo" style={{ height: '35px' }} />
             </div>
             <p className="footer-text mb-3">
               Empowering families and children with autism through technology, discussion, and community support. Building a better future together.

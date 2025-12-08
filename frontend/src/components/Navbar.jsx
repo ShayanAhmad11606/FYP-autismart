@@ -27,9 +27,8 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-custom sticky-top">
       <div className="container-fluid px-4">
-          <Link className="navbar-brand fw-bold" to="/" onClick={closeMenu}>
-          <i className="bi bi-heart-pulse-fill me-2"></i>
-          AutiSmart
+          <Link className="navbar-brand fw-bold d-flex align-items-center" to="/" onClick={closeMenu}>
+          <img src="/logo.PNG" alt="AutiSmart Logo" style={{ height: '40px' }} />
         </Link>
         <button
           className="navbar-toggler"

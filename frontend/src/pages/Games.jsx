@@ -26,6 +26,16 @@ const Games = () => {
       route: '/games/sound-matching'
     },
     {
+      id: 10,
+      title: 'Color Matching',
+      description: 'Match color names to tiles to improve color recognition',
+      icon: 'bi-palette',
+      difficulty: 'Easy',
+      category: 'Visual',
+      color: 'success',
+      route: '/games/color-matching'
+    },
+    {
       id: 3,
       title: 'Puzzle Builder',
       description: 'Complete puzzles to develop problem-solving skills',
@@ -71,15 +81,6 @@ const Games = () => {
       color: 'danger'
     },
     {
-      id: 8,
-      title: 'Sound Match',
-      description: 'Match sounds to objects to improve auditory processing',
-      icon: 'bi-music-note-beamed',
-      difficulty: 'Easy',
-      category: 'Audio',
-      color: 'success'
-    },
-    {
       id: 9,
       title: 'Pattern Creator',
       description: 'Create and complete patterns to develop sequencing skills',
@@ -87,16 +88,6 @@ const Games = () => {
       difficulty: 'Hard',
       category: 'Logic',
       color: 'danger'
-    },
-    {
-      id: 10,
-      title: 'Color Matching',
-      description: 'Match color names to tiles to improve color recognition',
-      icon: 'bi-palette',
-      difficulty: 'Easy',
-      category: 'Visual',
-      color: 'success',
-      route: '/games/color-matching'
     }
   ];
 
