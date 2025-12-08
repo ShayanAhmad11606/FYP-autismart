@@ -175,8 +175,8 @@ const Resources = () => {
           <div className="d-grid gap-4">
             {filteredResources.map((resource) => (
               <Card key={resource.id}>
-                <div className="d-flex gap-3">
-                  <div className="text-primary-custom" style={{ fontSize: '2.5rem' }}>
+                  <div className="d-flex gap-3">
+                  <div style={{ fontSize: '2.5rem', color: '#59B5AA' }}>
                     <i className={`bi ${resource.icon}`}></i>
                   </div>
                   <div className="flex-grow-1">
@@ -191,7 +191,21 @@ const Resources = () => {
                           </small>
                         </div>
                       </div>
-                      <button className="btn btn-outline-primary btn-sm">
+                      <button 
+                        className="btn btn-outline-primary btn-sm"
+                        style={{
+                          borderColor: '#59B5AA',
+                          color: '#59B5AA'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = '#59B5AA';
+                          e.target.style.color = '#fff';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = 'transparent';
+                          e.target.style.color = '#59B5AA';
+                        }}
+                      >
                         <i className="bi bi-bookmark"></i>
                       </button>
                     </div>
@@ -219,7 +233,12 @@ const Resources = () => {
                         {resource.date}
                       </div>
                       <div className="d-flex gap-2">
-                        <button className="btn btn-primary btn-sm">
+                        <button 
+                          className="btn btn-primary btn-sm"
+                          style={{ backgroundColor: '#59B5AA', borderColor: '#59B5AA' }}
+                          onMouseEnter={(e) => e.target.style.backgroundColor = '#4a9d93'}
+                          onMouseLeave={(e) => e.target.style.backgroundColor = '#59B5AA'}
+                        >
                           <i className="bi bi-eye me-1"></i>
                           View
                         </button>
@@ -247,7 +266,12 @@ const Resources = () => {
             <p className="small mb-3" style={{ color: 'var(--text-secondary, #6c757d)' }}>
               A comprehensive guide covering all aspects of autism support and care
             </p>
-            <button className="btn btn-primary w-100 btn-sm">
+            <button 
+              className="btn btn-primary w-100 btn-sm"
+              style={{ backgroundColor: '#59B5AA', borderColor: '#59B5AA' }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#4a9d93'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#59B5AA'}
+            >
               Download Free
             </button>
           </Card>
@@ -257,7 +281,22 @@ const Resources = () => {
             <h5 className="mb-4" style={{ color: 'var(--text-primary, #000)' }}>Popular Topics</h5>
             <div className="d-grid gap-2">
               {['Communication', 'Behavior', 'Social Skills', 'Sensory', 'Education', 'Discussion'].map((topic) => (
-                <button key={topic} className="btn btn-outline-primary btn-sm text-start">
+                <button 
+                  key={topic} 
+                  className="btn btn-outline-primary btn-sm text-start"
+                  style={{
+                    borderColor: '#59B5AA',
+                    color: '#59B5AA'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = '#59B5AA';
+                    e.target.style.color = '#fff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.color = '#59B5AA';
+                  }}
+                >
                   <i className="bi bi-tag me-2"></i>
                   {topic}
                 </button>
@@ -297,7 +336,12 @@ const Resources = () => {
                 placeholder="Your email"
               />
             </div>
-            <button className="btn btn-primary w-100 btn-sm">
+            <button 
+              className="btn btn-primary w-100 btn-sm"
+              style={{ backgroundColor: '#59B5AA', borderColor: '#59B5AA' }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#4a9d93'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#59B5AA'}
+            >
               Subscribe
             </button>
           </Card>

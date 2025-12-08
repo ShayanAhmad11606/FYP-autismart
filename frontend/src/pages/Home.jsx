@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import '../styles/homeStats.css';
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -65,52 +66,48 @@ const Home = () => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !statsVisible) {
             setStatsVisible(true);
-            animateCounters();
+            const duration = 2000;
+            const steps = 60;
+            const stepDuration = duration / steps;
+
+            const targets = {
+              users: 10000,
+              therapists: 50,
+              games: 100,
+              satisfaction: 98
+            };
+
+            let currentStep = 0;
+
+            const interval = setInterval(() => {
+              currentStep++;
+              const progress = currentStep / steps;
+
+              setCounters({
+                users: Math.floor(targets.users * progress),
+                therapists: Math.floor(targets.therapists * progress),
+                games: Math.floor(targets.games * progress),
+                satisfaction: Math.floor(targets.satisfaction * progress)
+              });
+
+              if (currentStep >= steps) {
+                clearInterval(interval);
+                setCounters(targets);
+              }
+            }, stepDuration);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
 
-    const statsSection = document.querySelector('.stats-section');
+    const statsSection = document.querySelector('.stats-section-new');
     if (statsSection) {
       observer.observe(statsSection);
     }
 
     return () => observer.disconnect();
-  }, []);
-
-  const animateCounters = () => {
-    const duration = 2000;
-    const steps = 60;
-    const stepDuration = duration / steps;
-
-    const targets = {
-      users: 10000,
-      therapists: 50,
-      games: 100,
-      satisfaction: 98
-    };
-
-    let currentStep = 0;
-
-    const interval = setInterval(() => {
-      currentStep++;
-      const progress = currentStep / steps;
-
-      setCounters({
-        users: Math.floor(targets.users * progress),
-        therapists: Math.floor(targets.therapists * progress),
-        games: Math.floor(targets.games * progress),
-        satisfaction: Math.floor(targets.satisfaction * progress)
-      });
-
-      if (currentStep >= steps) {
-        clearInterval(interval);
-        setCounters(targets);
-      }
-    }, stepDuration);
-  };
+  }, [statsVisible]);
 
   return (
     <div>
@@ -224,24 +221,40 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="section-spacing bg-primary-light stats-section">
+      <section className="stats-section-new">
         <div className="container">
-          <div className="row g-4 text-center">
-            <div className="col-md-3 stat-item" style={{ animationDelay: '0.1s' }}>
-              <div className="stat-value">{counters.users > 0 ? `${(counters.users / 1000).toFixed(0)}K+` : '0'}</div>
-              <div className="stat-label">Active Users</div>
+          <div className="row g-0 text-center">
+            <div className="col-md-3 col-sm-6 stat-item-new" style={{ animationDelay: '0.1s' }}>
+              <div className="stat-content-new">
+                <div className={`stat-value-new ${statsVisible ? 'animate-count' : ''}`}>
+                  {counters.users > 0 ? `${(counters.users / 1000).toFixed(0)}K+` : '0'}
+                </div>
+                <div className="stat-label-new">ACTIVE USERS</div>
+              </div>
             </div>
-            <div className="col-md-3 stat-item" style={{ animationDelay: '0.2s' }}>
-              <div className="stat-value">{counters.therapists}+</div>
-              <div className="stat-label">Expert Therapists</div>
+            <div className="col-md-3 col-sm-6 stat-item-new" style={{ animationDelay: '0.2s' }}>
+              <div className="stat-content-new">
+                <div className={`stat-value-new ${statsVisible ? 'animate-count' : ''}`}>
+                  {counters.therapists}+
+                </div>
+                <div className="stat-label-new">EXPERT THERAPISTS</div>
+              </div>
             </div>
-            <div className="col-md-3 stat-item" style={{ animationDelay: '0.3s' }}>
-              <div className="stat-value">{counters.games}+</div>
-              <div className="stat-label">Interactive Therapy Games</div>
+            <div className="col-md-3 col-sm-6 stat-item-new" style={{ animationDelay: '0.3s' }}>
+              <div className="stat-content-new">
+                <div className={`stat-value-new ${statsVisible ? 'animate-count' : ''}`}>
+                  {counters.games}+
+                </div>
+                <div className="stat-label-new">INTERACTIVE GAMES</div>
+              </div>
             </div>
-            <div className="col-md-3 stat-item" style={{ animationDelay: '0.4s' }}>
-              <div className="stat-value">{counters.satisfaction}%</div>
-              <div className="stat-label">Satisfaction Rate</div>
+            <div className="col-md-3 col-sm-6 stat-item-new" style={{ animationDelay: '0.4s' }}>
+              <div className="stat-content-new">
+                <div className={`stat-value-new ${statsVisible ? 'animate-count' : ''}`}>
+                  {counters.satisfaction}%
+                </div>
+                <div className="stat-label-new">SATISFACTION RATE</div>
+              </div>
             </div>
           </div>
         </div>

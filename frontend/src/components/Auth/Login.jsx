@@ -5,10 +5,8 @@ import { useAuth } from '../../context/AuthContext';
 const Login = () => {
   const navigate = useNavigate();
   const { login, sessionExpired, setSessionExpired } = useAuth();
-  const [loginType, setLoginType] = useState('email'); // 'email' or 'phone'
   const [formData, setFormData] = useState({
     email: '',
-    phoneNumber: '',
     password: '',
   });
   const [error, setError] = useState('');
@@ -38,24 +36,15 @@ const Login = () => {
     e.preventDefault();
     setError('');
 
-    if (loginType === 'email') {
-      if (!formData.email || !formData.password) {
-        setError('Please fill in all fields');
-        return;
-      }
-    } else {
-      if (!formData.phoneNumber || !formData.password) {
-        setError('Please fill in all fields');
-        return;
-      }
+    if (!formData.email || !formData.password) {
+      setError('Please fill in all fields');
+      return;
     }
 
     setLoading(true);
 
     try {
-      const payload = loginType === 'email'
-        ? { email: formData.email, password: formData.password }
-        : { phoneNumber: formData.phoneNumber, password: formData.password };
+      const payload = { email: formData.email, password: formData.password };
         
       const response = await login(payload);
       
@@ -89,72 +78,24 @@ const Login = () => {
                 </div>
               )}
 
-              {/* Login Type Toggle */}
-              <div className="mb-4">
-                <label className="form-label fw-semibold">
-                  <i className="bi bi-box-arrow-in-right me-2"></i>
-                  Login With
-                </label>
-                <div className="btn-group w-100" role="group">
-                  <button
-                    type="button"
-                    className={`btn ${loginType === 'email' ? 'btn-primary' : 'btn-outline-primary'}`}
-                    onClick={() => setLoginType('email')}
-                  >
-                    <i className="bi bi-envelope-fill me-2"></i>
-                    Email
-                  </button>
-                  <button
-                    type="button"
-                    className={`btn ${loginType === 'phone' ? 'btn-primary' : 'btn-outline-primary'}`}
-                    onClick={() => setLoginType('phone')}
-                  >
-                    <i className="bi bi-phone-fill me-2"></i>
-                    Phone Number
-                  </button>
-                </div>
-              </div>
-
               <form onSubmit={handleSubmit}>
-                {/* Conditional Email or Phone Field */}
-                {loginType === 'email' ? (
-                  <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
-                      <i className="bi bi-envelope-fill me-2"></i>
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Enter your email"
-                      required
-                    />
-                  </div>
-                ) : (
-                  <div className="mb-3">
-                    <label htmlFor="phoneNumber" className="form-label">
-                      <i className="bi bi-phone-fill me-2"></i>
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      className="form-control"
-                      id="phoneNumber"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleChange}
-                      placeholder="+923001234567"
-                      required
-                    />
-                    <small className="form-text text-muted">
-                      Include country code (e.g., +92 for Pakistan)
-                    </small>
-                  </div>
-                )}
+                {/* Email Field */}
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    <i className="bi bi-envelope-fill me-2"></i>
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
 
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">

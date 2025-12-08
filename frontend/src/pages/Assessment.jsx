@@ -348,11 +348,29 @@ const Assessment = () => {
                       </div>
 
                       <div className="d-flex gap-3 justify-content-center">
-                        <button className="btn btn-primary" onClick={() => window.print()}>
+                        <button 
+                          className="btn btn-primary" 
+                          onClick={() => window.print()}
+                          style={{ backgroundColor: '#59B5AA', borderColor: '#59B5AA' }}
+                          onMouseEnter={(e) => e.target.style.backgroundColor = '#4a9d93'}
+                          onMouseLeave={(e) => e.target.style.backgroundColor = '#59B5AA'}
+                        >
                           <i className="bi bi-printer me-2"></i>
                           Print Results
                         </button>
-                        <button className="btn btn-outline-primary" onClick={resetAssessment}>
+                        <button 
+                          className="btn btn-outline-primary" 
+                          onClick={resetAssessment}
+                          style={{ borderColor: '#59B5AA', color: '#59B5AA' }}
+                          onMouseEnter={(e) => {
+                            e.target.style.backgroundColor = '#59B5AA';
+                            e.target.style.color = '#fff';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.target.style.backgroundColor = 'transparent';
+                            e.target.style.color = '#59B5AA';
+                          }}
+                        >
                           <i className="bi bi-arrow-clockwise me-2"></i>
                           Retake Assessment
                         </button>
@@ -371,6 +389,27 @@ const Assessment = () => {
                 type="button"
                 className={`btn ${currentLevel === 'easy' ? 'btn-primary' : 'btn-outline-primary'}`}
                 onClick={() => setCurrentLevel('easy')}
+                style={{
+                  backgroundColor: currentLevel === 'easy' ? '#59B5AA' : 'transparent',
+                  borderColor: '#59B5AA',
+                  color: currentLevel === 'easy' ? '#fff' : '#59B5AA'
+                }}
+                onMouseEnter={(e) => {
+                  if (currentLevel !== 'easy') {
+                    e.target.style.backgroundColor = '#59B5AA';
+                    e.target.style.color = '#fff';
+                  } else {
+                    e.target.style.backgroundColor = '#4a9d93';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (currentLevel !== 'easy') {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.color = '#59B5AA';
+                  } else {
+                    e.target.style.backgroundColor = '#59B5AA';
+                  }
+                }}
               >
                 <i className="bi bi-1-circle me-2"></i>
                 Level 1: Easy
@@ -382,6 +421,27 @@ const Assessment = () => {
                 type="button"
                 className={`btn ${currentLevel === 'intermediate' ? 'btn-primary' : 'btn-outline-primary'}`}
                 onClick={() => setCurrentLevel('intermediate')}
+                style={{
+                  backgroundColor: currentLevel === 'intermediate' ? '#59B5AA' : 'transparent',
+                  borderColor: '#59B5AA',
+                  color: currentLevel === 'intermediate' ? '#fff' : '#59B5AA'
+                }}
+                onMouseEnter={(e) => {
+                  if (currentLevel !== 'intermediate') {
+                    e.target.style.backgroundColor = '#59B5AA';
+                    e.target.style.color = '#fff';
+                  } else {
+                    e.target.style.backgroundColor = '#4a9d93';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (currentLevel !== 'intermediate') {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.color = '#59B5AA';
+                  } else {
+                    e.target.style.backgroundColor = '#59B5AA';
+                  }
+                }}
               >
                 <i className="bi bi-2-circle me-2"></i>
                 Level 2: Intermediate
@@ -393,6 +453,27 @@ const Assessment = () => {
                 type="button"
                 className={`btn ${currentLevel === 'advanced' ? 'btn-primary' : 'btn-outline-primary'}`}
                 onClick={() => setCurrentLevel('advanced')}
+                style={{
+                  backgroundColor: currentLevel === 'advanced' ? '#59B5AA' : 'transparent',
+                  borderColor: '#59B5AA',
+                  color: currentLevel === 'advanced' ? '#fff' : '#59B5AA'
+                }}
+                onMouseEnter={(e) => {
+                  if (currentLevel !== 'advanced') {
+                    e.target.style.backgroundColor = '#59B5AA';
+                    e.target.style.color = '#fff';
+                  } else {
+                    e.target.style.backgroundColor = '#4a9d93';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (currentLevel !== 'advanced') {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.color = '#59B5AA';
+                  } else {
+                    e.target.style.backgroundColor = '#59B5AA';
+                  }
+                }}
               >
                 <i className="bi bi-3-circle me-2"></i>
                 Level 3: Advanced
@@ -404,6 +485,27 @@ const Assessment = () => {
                 type="button"
                 className={`btn ${currentLevel === 'sensory' ? 'btn-primary' : 'btn-outline-primary'}`}
                 onClick={() => setCurrentLevel('sensory')}
+                style={{
+                  backgroundColor: currentLevel === 'sensory' ? '#59B5AA' : 'transparent',
+                  borderColor: '#59B5AA',
+                  color: currentLevel === 'sensory' ? '#fff' : '#59B5AA'
+                }}
+                onMouseEnter={(e) => {
+                  if (currentLevel !== 'sensory') {
+                    e.target.style.backgroundColor = '#59B5AA';
+                    e.target.style.color = '#fff';
+                  } else {
+                    e.target.style.backgroundColor = '#4a9d93';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (currentLevel !== 'sensory') {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.color = '#59B5AA';
+                  } else {
+                    e.target.style.backgroundColor = '#59B5AA';
+                  }
+                }}
               >
                 <i className="bi bi-stars me-2"></i>
                 Sensory
@@ -495,6 +597,9 @@ const Assessment = () => {
                           const currentIndex = levels.indexOf(currentLevel);
                           if (currentIndex < levels.length - 1) setCurrentLevel(levels[currentIndex + 1]);
                         }}
+                        style={{ backgroundColor: '#59B5AA', borderColor: '#59B5AA' }}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = '#4a9d93'}
+                        onMouseLeave={(e) => e.target.style.backgroundColor = '#59B5AA'}
                       >
                         Next Level
                         <i className="bi bi-arrow-right ms-2"></i>
@@ -504,6 +609,9 @@ const Assessment = () => {
                         type="submit"
                         className="btn btn-success"
                         disabled={getAnsweredCount() < getTotalQuestions()}
+                        style={{ backgroundColor: '#59B5AA', borderColor: '#59B5AA' }}
+                        onMouseEnter={(e) => !e.target.disabled && (e.target.style.backgroundColor = '#4a9d93')}
+                        onMouseLeave={(e) => !e.target.disabled && (e.target.style.backgroundColor = '#59B5AA')}
                       >
                         <i className="bi bi-check-circle me-2"></i>
                         Submit Assessment

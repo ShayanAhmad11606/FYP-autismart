@@ -229,7 +229,7 @@ const MemoryMatchGame = () => {
         <div className="card-body p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h6 className="mb-0 fw-bold">Level Progress</h6>
-            <span className="badge bg-primary">Total Score: {totalScore}</span>
+            <span className="badge" style={{ backgroundColor: '#59B5AA', color: '#fff' }}>Total Score: {totalScore}</span>
           </div>
           <div className="d-flex gap-2">
             {levels.map((level) => (
@@ -258,7 +258,7 @@ const MemoryMatchGame = () => {
         <div className="col-md-3">
           <div className="card border-0 shadow-sm" style={{ borderRadius: '12px' }}>
             <div className="card-body text-center">
-              <i className="bi bi-clock fs-3 text-primary mb-2"></i>
+              <i className="bi bi-clock fs-3 mb-2" style={{ color: '#59B5AA' }}></i>
               <h6 className="text-muted mb-1">Time</h6>
               <h4 className="mb-0 fw-bold">{formatTime(timer)}</h4>
               {bestTimes[currentLevel] && (
@@ -306,7 +306,7 @@ const MemoryMatchGame = () => {
             <i className="bi bi-eye-fill fs-4 me-3"></i>
             <div className="text-center">
               <h5 className="mb-1 fw-bold">Memorize the cards!</h5>
-              <p className="mb-0">Game starts in <span className="badge bg-primary fs-6">{previewTimer}</span> seconds...</p>
+              <p className="mb-0">Game starts in <span className="badge fs-6" style={{ backgroundColor: '#59B5AA', color: '#fff' }}>{previewTimer}</span> seconds...</p>
             </div>
           </div>
         </div>
@@ -331,7 +331,7 @@ const MemoryMatchGame = () => {
                   <div
                     className={`card h-100 border-0 shadow-sm ${
                       flipped.includes(index) || matched.includes(index) || showPreview
-                        ? 'bg-primary text-white'
+                        ? 'text-white'
                         : 'bg-light'
                     }`}
                     style={{
@@ -340,7 +340,8 @@ const MemoryMatchGame = () => {
                       borderRadius: '12px',
                       transition: 'all 0.3s ease',
                       transform: flipped.includes(index) || matched.includes(index) ? 'rotateY(0deg)' : 'rotateY(0deg)',
-                      opacity: matched.includes(index) ? 0.6 : 1
+                      opacity: matched.includes(index) ? 0.6 : 1,
+                      backgroundColor: (flipped.includes(index) || matched.includes(index) || showPreview) ? '#59B5AA' : ''
                     }}
                     onClick={() => handleCardClick(index)}
                     onMouseEnter={(e) => {
@@ -369,7 +370,19 @@ const MemoryMatchGame = () => {
 
           {/* Reset Button */}
           <div className="text-center mt-4">
-            <button className="btn btn-outline-primary btn-lg px-5" onClick={handleRestartLevel}>
+            <button 
+              className="btn btn-outline-primary btn-lg px-5" 
+              onClick={handleRestartLevel}
+              style={{ borderColor: '#59B5AA', color: '#59B5AA' }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#59B5AA';
+                e.target.style.color = '#fff';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = 'transparent';
+                e.target.style.color = '#59B5AA';
+              }}
+            >
               <i className="bi bi-arrow-clockwise me-2"></i>
               Restart Level
             </button>
@@ -408,7 +421,7 @@ const MemoryMatchGame = () => {
               <div className="row g-3 mb-4">
                 <div className="col-4">
                   <div className="p-3 bg-light rounded">
-                    <i className="bi bi-clock text-primary"></i>
+                    <i className="bi bi-clock" style={{ color: '#59B5AA' }}></i>
                     <div className="fw-bold mt-2">{formatTime(timer)}</div>
                     <small className="text-muted">Time</small>
                   </div>
@@ -436,7 +449,19 @@ const MemoryMatchGame = () => {
                       <i className="bi bi-arrow-right-circle me-2"></i>
                       Next Level
                     </button>
-                    <button className="btn btn-outline-primary" onClick={handleRestartLevel}>
+                    <button 
+                      className="btn btn-outline-primary" 
+                      onClick={handleRestartLevel}
+                      style={{ borderColor: '#59B5AA', color: '#59B5AA' }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = '#59B5AA';
+                        e.target.style.color = '#fff';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = 'transparent';
+                        e.target.style.color = '#59B5AA';
+                      }}
+                    >
                       <i className="bi bi-arrow-clockwise me-2"></i>
                       Replay Level
                     </button>
