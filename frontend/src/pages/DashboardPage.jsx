@@ -1,8 +1,11 @@
+import { Link } from 'react-router-dom';
+import { useChild } from '../context/ChildContext';
 import StatCard from '../components/StatCard';
 import Card from '../components/Card';
 import Badge from '../components/Badge';
 
 const Dashboard = () => {
+  const { childrenList, selectedChild, selectChild } = useChild();
   const recentActivities = [
     { activity: 'Completed Memory Match game', time: '2 hours ago', icon: 'bi-controller', color: 'success' },
     { activity: 'Assessment submitted', time: '1 day ago', icon: 'bi-clipboard-check', color: 'info' },
@@ -27,8 +30,66 @@ const Dashboard = () => {
               <i className="bi bi-speedometer2 me-2"></i>
               Dashboard
             </h1>
-            <p className="text-muted">Welcome back! Here's your child's progress overview</p>
+            <p className="text-muted">Welcome back! Here's your progress overview</p>
           </div>
+
+          {/* Children Quick Access */}
+          {childrenList.length > 0 && (
+            <Card title="My Children" className="mb-4">
+              <div className="row g-3">
+                {childrenList.map(child => (
+                  <div key={child.id} className="col-md-6">
+                    <div 
+                      className={`p-3 rounded border ${selectedChild?.id === child.id ? 'border-primary bg-primary-lighter' : 'border-light'}`}
+                      style={{ cursor: 'pointer', transition: 'all 0.3s' }}
+                      onClick={() => selectChild(child)}
+                    >
+                      <div className="d-flex align-items-center gap-3">
+                        <div 
+                          className="rounded-circle d-flex align-items-center justify-content-center"
+                          style={{ 
+                            width: '50px', 
+                            height: '50px', 
+                            background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
+                            color: 'white',
+                            fontSize: '1.25rem',
+                            fontWeight: '700'
+                          }}
+                        >
+                          {child.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-grow-1">
+                          <h6 className="mb-1">{child.name}</h6>
+                          <small className="text-muted">{child.age} years • {child.gender}</small>
+                        </div>
+                        {selectedChild?.id === child.id && (
+                          <i className="bi bi-check-circle-fill text-success fs-4"></i>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 d-flex gap-2">
+                <Link to="/children" className="btn btn-outline-primary btn-sm">
+                  <i className="bi bi-plus-circle me-2"></i>Manage Children
+                </Link>
+                <Link to="/child-reports" className="btn btn-outline-info btn-sm">
+                  <i className="bi bi-file-earmark-bar-graph me-2"></i>View Reports
+                </Link>
+              </div>
+            </Card>
+          )}
+
+          {childrenList.length === 0 && (
+            <div className="alert alert-info mb-4">
+              <h5><i className="bi bi-info-circle me-2"></i>Get Started</h5>
+              <p className="mb-2">Add your first child to start tracking their progress and activities.</p>
+              <Link to="/children" className="btn btn-primary btn-sm">
+                <i className="bi bi-plus-circle me-2"></i>Add Child
+              </Link>
+            </div>
+          )}
 
           {/* Stats Grid */}
           <div className="row g-4 mb-4">

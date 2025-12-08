@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { ThemeProvider } from '../context/ThemeContext';
+import { ChildProvider } from '../context/ChildContext';
 import Register from '../components/Auth/Register';
 import Login from '../components/Auth/Login';
 import VerifyOtp from '../components/Auth/VerifyOtp';
@@ -37,6 +38,8 @@ import Settings from '../pages/Settings';
 import ChangePassword from '../pages/ChangePassword';
 import Notifications from '../pages/Notifications';
 import Help from '../pages/Help';
+import ChildManagement from '../pages/ChildManagement';
+import ChildReports from '../pages/ChildReports';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -241,6 +244,22 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/child-management"
+          element={
+            <ProtectedRoute>
+              <ChildManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/child-reports"
+          element={
+            <ProtectedRoute>
+              <ChildReports />
+            </ProtectedRoute>
+          }
+        />
         
         {/* Admin Pages */}
         <Route
@@ -275,6 +294,24 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+
+        {/* Child Management Routes */}
+        <Route
+          path="/children"
+          element={
+            <ProtectedRoute>
+              <ChildManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/child-reports"
+          element={
+            <ProtectedRoute>
+              <ChildReports />
+            </ProtectedRoute>
+          }
+        />
         
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
@@ -289,9 +326,11 @@ function App() {
     <Router>
       <ThemeProvider>
         <AuthProvider>
-          <div className="min-vh-100 bg-light">
-            <AppContent />
-          </div>
+          <ChildProvider>
+            <div className="min-vh-100 bg-light">
+              <AppContent />
+            </div>
+          </ChildProvider>
         </AuthProvider>
       </ThemeProvider>
     </Router>

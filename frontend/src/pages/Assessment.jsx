@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useChild } from '../context/ChildContext';
+import { useAuth } from '../context/AuthContext';
 import Card from '../components/Card';
 import '../styles/assessment.css';
 
@@ -6,6 +8,8 @@ const Assessment = () => {
   const [answers, setAnswers] = useState({});
   const [currentLevel, setCurrentLevel] = useState('easy');
   const [showResults, setShowResults] = useState(false);
+  const { selectedChild } = useChild();
+  const { user } = useAuth();
 
   // Complete Assessment Questions - 50 Questions Categorized by Symptom Areas
   const assessmentData = {
@@ -200,6 +204,9 @@ const Assessment = () => {
     return icons[category] || 'bi-circle';
   };
 
+  // Check if caregiver and no child selected
+  const requiresChildSelection = user?.role === 'caregiver' && !selectedChild;
+
   return (
     <div className="container mt-4 mb-5">
       <div className="row">
@@ -212,6 +219,24 @@ const Assessment = () => {
             <p className="text-muted" style={{ fontSize: '1.15rem', marginBottom: '1rem' }}>
               <strong>Age Group: 8-10 years</strong> | Complete behavioral screening with 50 questions
             </p>
+
+            {/* Child Selection Warning */}
+            {requiresChildSelection && (
+              <div className="alert alert-warning d-flex align-items-center mb-4" role="alert">
+                <i className="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+                <div>
+                  <h5 className="alert-heading mb-2">Child Selection Required</h5>
+                  <p className="mb-2">Please select a child before starting the assessment. The results will be recorded for the selected child.</p>
+                  <button 
+                    className="btn btn-warning btn-sm"
+                    onClick={() => window.location.href = '/child-management'}
+                  >
+                    <i className="bi bi-person-plus-fill me-2"></i>
+                    Go to Child Management
+                  </button>
+                </div>
+              </div>
+            )}
             <div className="alert alert-info fade-in-up" style={{ 
               borderRadius: '15px', 
               border: 'none', 
@@ -608,13 +633,14 @@ const Assessment = () => {
                       <button
                         type="submit"
                         className="btn btn-success"
-                        disabled={getAnsweredCount() < getTotalQuestions()}
+                        disabled={getAnsweredCount() < getTotalQuestions() || requiresChildSelection}
                         style={{ backgroundColor: '#59B5AA', borderColor: '#59B5AA' }}
                         onMouseEnter={(e) => !e.target.disabled && (e.target.style.backgroundColor = '#4a9d93')}
                         onMouseLeave={(e) => !e.target.disabled && (e.target.style.backgroundColor = '#59B5AA')}
+                        title={requiresChildSelection ? 'Please select a child first' : ''}
                       >
                         <i className="bi bi-check-circle me-2"></i>
-                        Submit Assessment
+                        {requiresChildSelection ? 'Select Child First' : 'Submit Assessment'}
                       </button>
                     )}
                   </div>

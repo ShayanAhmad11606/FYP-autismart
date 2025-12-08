@@ -70,26 +70,33 @@
 
 /* Dark Theme - Deep blue for restful, night-friendly experience */
 [data-theme="dark"] {
-  --bg-primary: #1a2332;
-  --bg-secondary: #0f1419;
-  --bg-tertiary: #212d3f;
-  --text-primary: #e8eef5;
-  --text-secondary: #b4bcc8;
-  --text-muted: #8891a1;
-  --card-bg: #243142;
-  --card-hover: #2a3748;
-  --border-color: #344053;
-  --light-gray: #0f1419;
-  --charcoal: #e8eef5;
-  --light-border: #344053;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --bg-primary: #1e293b;
+  --bg-secondary: #0f172a;
+  --bg-tertiary: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --card-bg: #1e293b;
+  --card-hover: #334155;
+  --border-color: #475569;
+  --light-gray: #1e293b;
+  --charcoal: #f1f5f9;
+  --light-border: #475569;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
   
-  /* Adjust primary colors for dark mode */
-  --primary: #61C3B4;
-  --primary-light: #79C9A0;
-  --primary-lighter: #2a4a46;
+  /* Adjust primary colors for dark mode - brighter for better visibility */
+  --primary: #5eead4;
+  --primary-light: #99f6e4;
+  --primary-dark: #2dd4bf;
+  --primary-lighter: #134e4a;
+  
+  /* Better contrast for status colors */
+  --success: #6ee7b7;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #60a5fa;
 }
 
 [data-theme="dark"] body {

@@ -1,8 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+import { useChild } from '../context/ChildContext';
+import { useAuth } from '../context/AuthContext';
 import Card from '../components/Card';
 
 const Games = () => {
   const navigate = useNavigate();
+  const { selectedChild } = useChild();
+  const { user } = useAuth();
 
   const games = [
     {
@@ -92,6 +96,9 @@ const Games = () => {
   ];
 
   const categories = ['All', 'Memory', 'Visual', 'Logic', 'Math', 'Social', 'Audio'];
+  
+  // Check if caregiver and no child selected
+  const requiresChildSelection = user?.role === 'caregiver' && !selectedChild;
 
   return (
     <div className="container mt-4 mb-5">
@@ -104,6 +111,24 @@ const Games = () => {
           Choose from our collection of educational therapy games designed for autism development
         </p>
       </div>
+
+      {/* Child Selection Warning */}
+      {requiresChildSelection && (
+        <div className="alert alert-warning d-flex align-items-center mb-4" role="alert">
+          <i className="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+          <div>
+            <h5 className="alert-heading mb-2">Child Selection Required</h5>
+            <p className="mb-2">Please select a child before playing therapy games. The game results will be recorded for the selected child.</p>
+            <button 
+              className="btn btn-warning btn-sm"
+              onClick={() => navigate('/child-management')}
+            >
+              <i className="bi bi-person-plus-fill me-2"></i>
+              Go to Child Management
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Filter Buttons */}
       <div className="mb-4">
@@ -136,9 +161,11 @@ const Games = () => {
                 <button 
                   className="btn btn-primary w-100"
                   onClick={() => game.route ? navigate(game.route) : alert('Coming Soon!')}
+                  disabled={requiresChildSelection}
+                  title={requiresChildSelection ? 'Please select a child first' : ''}
                 >
                   <i className="bi bi-play-fill me-2"></i>
-                  Play Now
+                  {requiresChildSelection ? 'Select Child First' : 'Play Now'}
                 </button>
               </div>
             </Card>

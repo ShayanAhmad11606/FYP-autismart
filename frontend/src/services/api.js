@@ -206,4 +206,99 @@ export const adminAPI = {
   },
 };
 
+// Child Management API endpoints
+export const childAPI = {
+  // Add a new child
+  addChild: async (childData) => {
+    try {
+      const response = await api.post('/caregiver/children', childData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to add child' };
+    }
+  },
+
+  // Get all children for the logged-in caregiver
+  getChildren: async () => {
+    try {
+      const response = await api.get('/caregiver/children');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch children' };
+    }
+  },
+
+  // Get a specific child
+  getChild: async (childId) => {
+    try {
+      const response = await api.get(`/caregiver/children/${childId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch child' };
+    }
+  },
+
+  // Update child information
+  updateChild: async (childId, childData) => {
+    try {
+      const response = await api.put(`/caregiver/children/${childId}`, childData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to update child' };
+    }
+  },
+
+  // Delete a child
+  deleteChild: async (childId) => {
+    try {
+      const response = await api.delete(`/caregiver/children/${childId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to delete child' };
+    }
+  },
+
+  // Record an activity for a child
+  recordActivity: async (childId, activityData) => {
+    try {
+      const response = await api.post(`/caregiver/children/${childId}/activities`, activityData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to record activity' };
+    }
+  },
+
+  // Get activities for a child
+  getChildActivities: async (childId, limit = 50) => {
+    try {
+      const response = await api.get(`/caregiver/children/${childId}/activities?limit=${limit}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch activities' };
+    }
+  },
+
+  // Get child report with statistics
+  getChildReport: async (childId) => {
+    try {
+      const response = await api.get(`/caregiver/children/${childId}/report`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch report' };
+    }
+  },
+
+  // Download child report as PDF
+  downloadChildReportPDF: async (childId) => {
+    try {
+      const response = await api.get(`/caregiver/children/${childId}/report/download`, {
+        responseType: 'blob'
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to download report' };
+    }
+  },
+};
+
 export default api;

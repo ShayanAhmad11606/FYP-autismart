@@ -70,6 +70,386 @@
 }
 
 [data-theme="dark"] .card-header {
-  background-color: var(--card-bg);
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: var(--card-bg) !important;
+}
+
+/* Dashboard Cards - Better Contrast */
+[data-theme="dark"] .card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .card:hover {
+  background-color: var(--card-hover) !important;
+}
+
+[data-theme="dark"] .card-body {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .card-body * {
+  color: inherit;
+}
+
+[data-theme="dark"] .text-muted {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .small {
+  color: var(--text-secondary) !important;
+}
+
+/* Fix white backgrounds in dark mode - MORE AGGRESSIVE */
+[data-theme="dark"] [style*="background: #ffffff"],
+[data-theme="dark"] [style*="background:#ffffff"],
+[data-theme="dark"] [style*="background: rgb(255, 255, 255)"],
+[data-theme="dark"] [style*="background-color: #ffffff"],
+[data-theme="dark"] [style*="background-color:#ffffff"],
+[data-theme="dark"] [style*="background-color: #fff"],
+[data-theme="dark"] [style*="background-color:#fff"],
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .bg-light {
+  background: var(--card-bg) !important;
+  background-color: var(--card-bg) !important;
+}
+
+/* Override Bootstrap's white backgrounds */
+[data-theme="dark"] .caregiver-dashboard-wrapper .bg-white,
+[data-theme="dark"] .caregiver-dashboard-wrapper .bg-light,
+[data-theme="dark"] .caregiver-dashboard-wrapper [class*="bg-white"],
+[data-theme="dark"] .caregiver-dashboard-wrapper [class*="bg-light"] {
+  background-color: var(--card-bg) !important;
+}
+
+/* Fix any remaining light colored text */
+[data-theme="dark"] .caregiver-dashboard-wrapper [style*="color: #6DE6D1"],
+[data-theme="dark"] .caregiver-dashboard-wrapper [style*="color:#6DE6D1"],
+[data-theme="dark"] .caregiver-dashboard-wrapper [style*="color: #E2E8F2"],
+[data-theme="dark"] .caregiver-dashboard-wrapper [style*="color:#E2E8F2"],
+[data-theme="dark"] .caregiver-dashboard-wrapper [class*="text-light"] {
+  color: var(--text-primary) !important;
+}
+
+/* Badge colors for dark theme */
+[data-theme="dark"] .badge {
+  color: var(--bg-primary);
+}
+
+[data-theme="dark"] .badge.bg-success {
+  background-color: var(--success) !important;
+}
+
+[data-theme="dark"] .badge.bg-info {
+  background-color: var(--info) !important;
+}
+
+[data-theme="dark"] .badge.bg-warning {
+  background-color: var(--warning) !important;
+  color: var(--bg-primary) !important;
+}
+
+[data-theme="dark"] .badge.bg-primary {
+  background-color: var(--primary) !important;
+  color: var(--bg-primary) !important;
+}
+
+/* Better gradient visibility */
+[data-theme="dark"] .hero-section {
+  background: linear-gradient(135deg, #334155 0%, #1e293b 100%) !important;
+}
+
+/* Caregiver Dashboard Dark Theme */
+[data-theme="dark"] .caregiver-dashboard-wrapper {
+  background: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .card,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-body,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-header {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .text-white {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .opacity-90 {
+  opacity: 0.9 !important;
+}
+
+/* Force fix for stats cards (Total Children, Email, Account Type) */
+[data-theme="dark"] .caregiver-dashboard-wrapper .row.g-4.mb-4 .card,
+[data-theme="dark"] .caregiver-dashboard-wrapper .row.g-4.mb-4 .card-body,
+[data-theme="dark"] .caregiver-dashboard-wrapper .row.g-4.mb-4 .card * {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .row.g-4.mb-4 .text-muted,
+[data-theme="dark"] .caregiver-dashboard-wrapper .row.g-4.mb-4 .small {
+  color: var(--text-secondary) !important;
+}
+
+/* Fix inline styled backgrounds for dark theme */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card[style*="gradient"] {
+  background: var(--card-bg) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-body div[style*="gradient"]:not(.text-white):not([class*="rounded-circle"]) {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+}
+
+/* Child cards in dark mode */
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 > div[style*="gradient"] {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 > div[style*="gradient"]:hover {
+  background: var(--card-hover) !important;
+}
+
+/* Fix text colors in child cards */
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 h6,
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 .fw-bold {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 small,
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 .text-muted,
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 .small {
+  color: var(--text-secondary) !important;
+}
+
+/* Icon circles in child cards */
+[data-theme="dark"] .caregiver-dashboard-wrapper .rounded-circle[style*="gradient"] {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+}
+
+/* Info cards with gradient background */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card[style*="#667eea10"] {
+  background: rgba(94, 234, 212, 0.1) !important;
+}
+
+/* Account status cards gradient backgrounds */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-body .flex-shrink-0 div[style*="gradient"] {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+}
+
+/* Alert styling in dark mode */
+[data-theme="dark"] .caregiver-dashboard-wrapper .alert {
+/* Headings and text */
+[data-theme="dark"] .caregiver-dashboard-wrapper h1,
+[data-theme="dark"] .caregiver-dashboard-wrapper h2,
+[data-theme="dark"] .caregiver-dashboard-wrapper h3,
+[data-theme="dark"] .caregiver-dashboard-wrapper h4,
+[data-theme="dark"] .caregiver-dashboard-wrapper h5,
+[data-theme="dark"] .caregiver-dashboard-wrapper h6 {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .fw-bold {
+  color: var(--text-primary) !important;
+}
+
+/* Ensure all card text is visible */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h1,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h2,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h3,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h4,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h5,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h6,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card p,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card span:not(.badge),
+[data-theme="dark"] .caregiver-dashboard-wrapper .card div:not([class*="badge"]):not([class*="progress"]) {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .text-muted {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .card small.text-muted {
+  color: var(--text-secondary) !important;
+}
+
+/* Fix "Your Children" container heading and background */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-header.bg-white,
+[data-theme="dark"] .caregiver-dashboard-wrapper .bg-white.border-0 {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-header h5,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-header.bg-white * {
+  color: var(--text-primary) !important;
+}
+
+/* Fix children cards background and text */
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 .p-4,
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 .rounded-3 {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 h6,
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 .fw-bold,
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 small,
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 div {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 .text-muted {
+  color: var(--text-secondary) !important;
+}
+
+/* Fix "Getting Started" and "Need Help" sections */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-info,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-info .card-body,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-info * {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-info h5,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-info h6,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-info p {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-info small {
+  color: var(--text-secondary) !important;
+}data-theme="dark"] .caregiver-dashboard-wrapper .spinner-border {
+  color: var(--primary) !important;
+}
+
+/* Headings and text */
+[data-theme="dark"] .caregiver-dashboard-wrapper h1,
+[data-theme="dark"] .caregiver-dashboard-wrapper h2,
+[data-theme="dark"] .caregiver-dashboard-wrapper h3,
+[data-theme="dark"] .caregiver-dashboard-wrapper h4,
+[data-theme="dark"] .caregiver-dashboard-wrapper h5,
+[data-theme="dark"] .caregiver-dashboard-wrapper h6 {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .fw-bold {
+  color: var(--text-primary) !important;
+}
+
+/* Button styling in dark mode */
+[data-theme="dark"] .caregiver-dashboard-wrapper .btn-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: var(--bg-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .btn-outline-primary {
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .btn-outline-primary:hover {
+  background-color: var(--primary) !important;
+  color: var(--bg-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .btn-info {
+  background-color: var(--info) !important;
+  border-color: var(--info) !important;
+}
+
+/* Shadow adjustments for dark theme */
+[data-theme="dark"] .caregiver-dashboard-wrapper .shadow-sm {
+  box-shadow: var(--shadow-sm) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .shadow-lg {
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* Fix specific card sections */
+[data-theme="dark"] .caregiver-dashboard-wrapper .p-4,
+[data-theme="dark"] .caregiver-dashboard-wrapper .p-3,
+/* Ensure proper contrast for all nested elements */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card * {
   border-color: var(--border-color);
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .card [class*="text-"] {
+  color: inherit;
+}
+
+/* Nuclear option: Force all card backgrounds and text colors */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card > *,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .card-body,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .card-header,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .card-footer {
+  background-color: var(--card-bg) !important;
+  background: var(--card-bg) !important;
+}
+
+/* Force all text to be visible */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h1,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h2,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h3,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h4,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h5,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card h6,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .h1,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .h2,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .h3,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .h4,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .h5,
+[data-theme="dark"] .caregiver-dashboard-wrapper .card .h6 {
+  color: var(--text-primary) !important;
+}
+
+/* Fix numbers in stat cards */
+[data-theme="dark"] .caregiver-dashboard-wrapper .stat-value,
+[data-theme="dark"] .caregiver-dashboard-wrapper .fs-1,
+[data-theme="dark"] .caregiver-dashboard-wrapper .fs-2,
+[data-theme="dark"] .caregiver-dashboard-wrapper .fs-3,
+[data-theme="dark"] .caregiver-dashboard-wrapper .fs-4,
+[data-theme="dark"] .caregiver-dashboard-wrapper .fs-5,
+[data-theme="dark"] .caregiver-dashboard-wrapper .fs-6 {
+  color: var(--text-primary) !important;
+}
+
+/* Sidebar cards */
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-lg-4 .card,
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-lg-4 .card * {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-lg-4 .card small {
+  color: var(--text-secondary) !important;
+}
+
+/* Make sure icons are visible */
+[data-theme="dark"] .caregiver-dashboard-wrapper .bi {
+  color: inherit;
+}
+
+/* Fix border between cards */
+[data-theme="dark"] .caregiver-dashboard-wrapper .border {
+  border-color: var(--border-color) !important;
+}
+
+/* Ensure proper contrast for all nested elements */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card * {
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .card [class*="text-"] {
+  color: inherit;
 }

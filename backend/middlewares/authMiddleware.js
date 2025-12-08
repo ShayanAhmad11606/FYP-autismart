@@ -72,4 +72,7 @@ export const authMiddleware = async (req, res, next) => {
   }
 };
 
+// Alias for compatibility
+export const verifyToken = authMiddleware;
+
 export default authMiddleware;

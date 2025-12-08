@@ -28,12 +28,14 @@
 }
 
 .stat-value {
-  font-size: 2.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   background: linear-gradient(135deg, #61C3B4 0%, #79C9A0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Override gradient for text with icons */
@@ -43,7 +45,17 @@
   -webkit-text-fill-color: inherit;
   background-clip: unset;
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Better text size for email in stat cards */
+.stat-value {
+  max-width: 100%;
+}
+
+.stat-value:has(.text-truncate),
+.stat-value.text-truncate {
+  font-size: 0.9rem;
 }
 
 .stat-label {

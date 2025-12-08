@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useChild } from '../context/ChildContext';
 import Card from '../components/Card';
 import StatCard from '../components/StatCard';
 import Badge from '../components/Badge';
 
 const CaregiverDashboard = () => {
   const { user, logout } = useAuth();
+  const { childrenList, loading: childrenLoading } = useChild();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,35 +22,8 @@ const CaregiverDashboard = () => {
     navigate('/login');
   };
 
-  const childInfo = {
-    name: 'Alex',
-    age: 8,
-    diagnosis: 'Autism Spectrum Disorder',
-    diagnosisDate: 'March 2020'
-  };
-
-  const upcomingSessions = [
-    { id: 1, type: 'Speech Discussion', therapist: 'Dr. Sarah Johnson', date: '2025-11-28', time: '10:00 AM' },
-    { id: 2, type: 'Occupational Discussion', therapist: 'Dr. Mike Chen', date: '2025-11-29', time: '2:00 PM' },
-    { id: 3, type: 'ABA Discussion', therapist: 'Dr. Emily Brown', date: '2025-11-30', time: '11:00 AM' }
-  ];
-
-  const recentProgress = [
-    { skill: 'Communication', current: 75, previous: 68, trend: 'up' },
-    { skill: 'Social Skills', current: 62, previous: 58, trend: 'up' },
-    { skill: 'Emotional Regulation', current: 70, previous: 65, trend: 'up' },
-    { skill: 'Motor Skills', current: 80, previous: 80, trend: 'stable' }
-  ];
-
-  const todayTasks = [
-    { id: 1, task: 'Morning routine practice', completed: true },
-    { id: 2, task: 'Complete speech exercises', completed: true },
-    { id: 3, task: 'Play discussion session', completed: false },
-    { id: 4, task: 'Evening sensory activities', completed: false }
-  ];
-
   return (
-    <div className="min-vh-100" style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
+    <div className="min-vh-100 caregiver-dashboard-wrapper">
       <div className="container mt-4 mb-5">
         {/* Welcome Section */}
         <div className="row mb-4">
@@ -68,7 +43,8 @@ const CaregiverDashboard = () => {
                     Caregiver Dashboard
                   </h1>
                   <p className="mb-0 fs-5 opacity-90">
-                    Welcome back, <strong>{user?.name}</strong>! Track {childInfo.name}'s progress and upcoming activities.
+                    Welcome back, <strong>{user?.name}</strong>! 
+                    {childrenList.length > 0 ? ` Manage your ${childrenList.length} ${childrenList.length === 1 ? 'child' : 'children'} and track their progress.` : ' Add children to start tracking their progress.'}
                   </p>
                 </div>
               </div>
@@ -186,191 +162,216 @@ const CaregiverDashboard = () => {
 
         {/* Stats Overview */}
         <div className="row g-4 mb-4">
-          <div className="col-md-3">
+          <div className="col-md-4">
             <StatCard
-              value="12"
-              label="Sessions This Month"
-              icon="bi-calendar-check"
+              value={childrenList.length.toString()}
+              label="Total Children"
+              icon="bi-people"
               variant="primary"
             />
           </div>
-          <div className="col-md-3">
+          <div className="col-md-4">
             <StatCard
-              value="85%"
-              label="Overall Progress"
-              icon="bi-graph-up-arrow"
+              value={user?.email || 'N/A'}
+              label="Your Email"
+              icon="bi-envelope"
               variant="success"
             />
           </div>
-          <div className="col-md-3">
+          <div className="col-md-4">
             <StatCard
-              value="3"
-              label="Upcoming Sessions"
-              icon="bi-clock"
+              value={user?.role || 'Caregiver'}
+              label="Account Type"
+              icon="bi-person-badge"
               variant="info"
             />
           </div>
-          <div className="col-md-3">
-            <StatCard
-              value="24"
-              label="Therapy Games Played"
-              icon="bi-controller"
-              variant="warning"
-            />
+        </div>
+
+        {/* Child Management Section */}
+        <div className="row mb-4">
+          <div className="col-12">
+            <div className="card border-0 shadow-sm" style={{ borderRadius: '16px', background: 'linear-gradient(135deg, #667eea10 0%, #764ba210 100%)' }}>
+              <div className="card-body p-4">
+                <div className="row align-items-center">
+                  <div className="col-md-8">
+                    <h4 className="mb-2 fw-bold">
+                      <i className="bi bi-people-fill me-2 text-primary"></i>
+                      Child Management
+                    </h4>
+                    <p className="text-muted mb-3 mb-md-0">
+                      Manage your children's profiles, track their progress, and view detailed reports for each child.
+                    </p>
+                  </div>
+                  <div className="col-md-4">
+                    <div className="d-grid gap-2">
+                      <button 
+                        className="btn btn-primary btn-lg shadow-sm"
+                        onClick={() => navigate('/child-management')}
+                        style={{ borderRadius: '12px' }}
+                      >
+                        <i className="bi bi-person-plus-fill me-2"></i>
+                        Manage Children
+                      </button>
+                      <button 
+                        className="btn btn-outline-primary btn-lg"
+                        onClick={() => navigate('/child-reports')}
+                        style={{ borderRadius: '12px' }}
+                      >
+                        <i className="bi bi-file-earmark-bar-graph-fill me-2"></i>
+                        View Reports
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="row g-4">
           {/* Main Content */}
           <div className="col-lg-8">
-            {/* Child Information */}
-            <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '16px' }}>
-              <div className="card-header bg-white border-0 pt-4 px-4">
-                <h5 className="mb-0 fw-bold"><i className="bi bi-person-circle me-2 text-primary"></i>Child Information</h5>
+            {childrenLoading ? (
+              <div className="text-center py-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <p className="mt-3 text-muted">Loading children data...</p>
               </div>
-              <div className="card-body p-4">
-                <div className="row g-3">
-                  <div className="col-md-6">
-                    <div className="p-4 rounded-3" style={{ background: 'linear-gradient(135deg, #667eea15 0%, #764ba215 100%)', border: '1px solid #e9ecef' }}>
-                      <small className="text-muted d-block mb-2"><i className="bi bi-tag-fill me-1"></i>Name</small>
-                      <div className="fw-bold fs-5">{childInfo.name}</div>
-                    </div>
+            ) : childrenList.length === 0 ? (
+              <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '16px' }}>
+                <div className="card-body p-5 text-center">
+                  <div className="mb-4">
+                    <i className="bi bi-info-circle" style={{ fontSize: '4rem', color: '#667eea' }}></i>
                   </div>
-                  <div className="col-md-6">
-                    <div className="p-4 rounded-3" style={{ background: 'linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%)', border: '1px solid #e9ecef' }}>
-                      <small className="text-muted d-block mb-2"><i className="bi bi-calendar-heart me-1"></i>Age</small>
-                      <div className="fw-bold fs-5">{childInfo.age} years old</div>
-                    </div>
+                  <h4 className="mb-3">No Children Added Yet</h4>
+                  <p className="text-muted mb-4">
+                    Add your first child to start tracking their progress, assessments, and therapy activities. 
+                    Once you add children and they complete assessments or games, their data will appear here.
+                  </p>
+                  <button 
+                    className="btn btn-primary btn-lg"
+                    onClick={() => navigate('/child-management')}
+                    style={{ borderRadius: '12px' }}
+                  >
+                    <i className="bi bi-person-plus-fill me-2"></i>
+                    Add Your First Child
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Children List */}
+                <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '16px' }}>
+                  <div className="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0 fw-bold"><i className="bi bi-people-fill me-2 text-primary"></i>Your Children</h5>
+                    <button 
+                      className="btn btn-sm btn-primary"
+                      onClick={() => navigate('/child-management')}
+                      style={{ borderRadius: '8px' }}
+                    >
+                      <i className="bi bi-pencil-square me-1"></i>Manage
+                    </button>
                   </div>
-                  <div className="col-md-6">
-                    <div className="p-4 rounded-3" style={{ background: 'linear-gradient(135deg, #4facfe15 0%, #00f2fe15 100%)', border: '1px solid #e9ecef' }}>
-                      <small className="text-muted d-block mb-2"><i className="bi bi-heart-pulse-fill me-1"></i>Diagnosis</small>
-                      <div className="fw-bold fs-5">{childInfo.diagnosis}</div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="p-4 rounded-3" style={{ background: 'linear-gradient(135deg, #43e97b15 0%, #38f9d715 100%)', border: '1px solid #e9ecef' }}>
-                      <small className="text-muted d-block mb-2"><i className="bi bi-calendar3 me-1"></i>Diagnosis Date</small>
-                      <div className="fw-bold fs-5">{childInfo.diagnosisDate}</div>
+                  <div className="card-body p-4">
+                    <div className="row g-3">
+                      {childrenList.map((child) => (
+                        <div key={child._id} className="col-md-6">
+                          <div 
+                            className="p-4 rounded-3 border h-100" 
+                            style={{ 
+                              background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
+                              cursor: 'pointer',
+                              transition: 'all 0.3s ease'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.transform = 'translateY(-3px)';
+                              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.transform = 'translateY(0)';
+                              e.currentTarget.style.boxShadow = 'none';
+                            }}
+                            onClick={() => navigate('/child-reports')}
+                          >
+                            <div className="d-flex align-items-center mb-3">
+                              <div 
+                                className="rounded-circle d-flex align-items-center justify-content-center text-white me-3"
+                                style={{
+                                  width: '50px',
+                                  height: '50px',
+                                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                                }}
+                              >
+                                <i className="bi bi-person-fill fs-4"></i>
+                              </div>
+                              <div>
+                                <h6 className="mb-0 fw-bold">{child.name}</h6>
+                                <small className="text-muted">{child.age} years old</small>
+                              </div>
+                            </div>
+                            {child.gender && (
+                              <div className="mb-2">
+                                <small className="text-muted">
+                                  <i className="bi bi-gender-ambiguous me-1"></i>
+                                  {child.gender}
+                                </small>
+                              </div>
+                            )}
+                            {child.notes && (
+                              <div className="text-muted small" style={{ 
+                                overflow: 'hidden', 
+                                textOverflow: 'ellipsis', 
+                                whiteSpace: 'nowrap' 
+                              }}>
+                                <i className="bi bi-sticky me-1"></i>
+                                {child.notes}
+                              </div>
+                            )}
+                            <div className="mt-3">
+                              <Badge variant="info">
+                                <i className="bi bi-bar-chart-fill me-1"></i>View Reports
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Progress Tracking */}
-            <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '16px' }}>
-              <div className="card-header bg-white border-0 pt-4 px-4">
-                <h5 className="mb-0 fw-bold"><i className="bi bi-graph-up-arrow me-2 text-success"></i>Recent Progress</h5>
-              </div>
-              <div className="card-body p-4">
-                {recentProgress.map((item, idx) => (
-                  <div key={idx} className="mb-4 p-3 rounded-3" style={{ background: '#f8f9fa' }}>
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                      <div>
-                        <span className="fw-bold fs-6">{item.skill}</span>
-                        <div className="text-muted small mt-1">
-                          <i className="bi bi-arrow-right me-1"></i>
-                          {item.previous}% → {item.current}%
-                          {item.trend === 'up' && <i className="bi bi-arrow-up-circle-fill text-success ms-2"></i>}
-                          {item.trend === 'stable' && <i className="bi bi-dash-circle text-muted ms-2"></i>}
-                        </div>
-                      </div>
-                      <Badge variant={item.current >= 70 ? 'success' : item.current >= 50 ? 'warning' : 'danger'}>
-                        <i className="bi bi-star-fill me-1"></i>{item.current}%
-                      </Badge>
-                    </div>
-                    <div className="progress" style={{ height: '12px', borderRadius: '10px' }}>
-                      <div
-                        className={`progress-bar bg-${item.current >= 70 ? 'success' : item.current >= 50 ? 'warning' : 'danger'}`}
-                        style={{ width: `${item.current}%`, transition: 'width 1s ease' }}
-                      ></div>
-                    </div>
+                {/* Info Card */}
+                <div className="card border-0 shadow-sm" style={{ borderRadius: '16px', background: 'linear-gradient(135deg, #667eea10 0%, #764ba210 100%)' }}>
+                  <div className="card-body p-4">
+                    <h5 className="mb-3 fw-bold">
+                      <i className="bi bi-lightbulb-fill me-2 text-warning"></i>
+                      Next Steps
+                    </h5>
+                    <ul className="mb-0" style={{ paddingLeft: '1.5rem' }}>
+                      <li className="mb-2">Select a child and have them complete assessments or play therapy games</li>
+                      <li className="mb-2">View detailed progress reports in the "View Reports" section</li>
+                      <li className="mb-0">Download PDF reports to share with professionals</li>
+                    </ul>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Upcoming Sessions */}
-            <div className="card border-0 shadow-sm" style={{ borderRadius: '16px' }}>
-              <div className="card-header bg-white border-0 pt-4 px-4">
-                <h5 className="mb-0 fw-bold"><i className="bi bi-calendar-event me-2 text-info"></i>Upcoming Discussion Sessions</h5>
-              </div>
-              <div className="card-body p-4">
-                <div className="d-grid gap-3">
-                  {upcomingSessions.map((session) => (
-                    <div key={session.id} className="d-flex gap-3 p-4 rounded-3 border" style={{
-                      background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-                      transition: 'all 0.3s ease'
-                    }} onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateX(5px)';
-                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                    }} onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateX(0)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}>
-                      <div className="text-white" style={{
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                        borderRadius: '12px',
-                        width: '60px',
-                        height: '60px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <i className="bi bi-calendar-event fs-3"></i>
-                      </div>
-                      <div className="flex-grow-1">
-                        <div className="fw-bold fs-6 mb-2">{session.type}</div>
-                        <div className="text-muted small mb-1">
-                          <i className="bi bi-person-fill me-1"></i>
-                          {session.therapist}
-                        </div>
-                        <div className="text-muted small">
-                          <i className="bi bi-clock-fill me-1"></i>
-                          {session.date} at {session.time}
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <button className="btn btn-sm btn-primary rounded-pill px-3">
-                          <i className="bi bi-arrow-right-circle me-1"></i>View
-                        </button>
-                      </div>
-                    </div>
-                  ))}
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
 
           {/* Sidebar */}
           <div className="col-lg-4">
-            {/* Today's Tasks */}
-            <Card title="Today's Tasks" className="mb-4">
-              <div className="d-grid gap-2">
-                {todayTasks.map((task) => (
-                  <div key={task.id} className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      checked={task.completed}
-                      readOnly
-                    />
-                    <label className={`form-check-label ${task.completed ? 'text-decoration-line-through text-muted' : ''}`}>
-                      {task.task}
-                    </label>
-                  </div>
-                ))}
-              </div>
-              <button className="btn btn-primary w-100 mt-3">
-                <i className="bi bi-plus-circle me-2"></i>
-                Add Task
-              </button>
-            </Card>
-
             {/* Quick Actions */}
             <Card title="Quick Actions" className="mb-4">
               <div className="d-grid gap-2">
+                <button className="btn btn-outline-primary" onClick={() => navigate('/child-management')}>
+                  <i className="bi bi-person-plus-fill me-2"></i>
+                  Manage Children
+                </button>
+                <button className="btn btn-outline-primary" onClick={() => navigate('/child-reports')}>
+                  <i className="bi bi-file-earmark-bar-graph-fill me-2"></i>
+                  View Reports
+                </button>
                 <button className="btn btn-outline-primary" onClick={() => navigate('/assessment')}>
                   <i className="bi bi-clipboard-check me-2"></i>
                   Start Assessment
@@ -383,31 +384,72 @@ const CaregiverDashboard = () => {
                   <i className="bi bi-chat-dots me-2"></i>
                   Message Expert
                 </button>
-                <button className="btn btn-outline-primary" onClick={() => navigate('/sessions')}>
-                  <i className="bi bi-file-earmark-text me-2"></i>
-                  View Reports
-                </button>
               </div>
             </Card>
 
-            {/* Weekly Goal */}
-            <Card title="Weekly Goal" className="card-warning">
-              <div className="text-center mb-3">
-                <i className="bi bi-trophy-fill fs-1 text-warning"></i>
-              </div>
-              <h6 className="text-center mb-3">Complete 5 Discussion Sessions</h6>
-              <div className="mb-2">
-                <div className="d-flex justify-content-between mb-1">
-                  <small>Progress</small>
-                  <small className="fw-bold">3/5</small>
+            {/* Getting Started Guide */}
+            <Card title="Getting Started" className="mb-4">
+              <div className="d-flex flex-column gap-3">
+                <div className="d-flex align-items-start">
+                  <div 
+                    className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3"
+                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0 }}
+                  >
+                    1
+                  </div>
+                  <div>
+                    <h6 className="mb-1">Add Children</h6>
+                    <small className="text-muted">Create profiles for your children</small>
+                  </div>
                 </div>
-                <div className="progress">
-                  <div className="progress-bar bg-warning" style={{ width: '60%' }}></div>
+                <div className="d-flex align-items-start">
+                  <div 
+                    className="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3"
+                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0 }}
+                  >
+                    2
+                  </div>
+                  <div>
+                    <h6 className="mb-1">Select Child</h6>
+                    <small className="text-muted">Choose a child before starting activities</small>
+                  </div>
+                </div>
+                <div className="d-flex align-items-start">
+                  <div 
+                    className="rounded-circle bg-info text-white d-flex align-items-center justify-content-center me-3"
+                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0 }}
+                  >
+                    3
+                  </div>
+                  <div>
+                    <h6 className="mb-1">Complete Activities</h6>
+                    <small className="text-muted">Play games and do assessments</small>
+                  </div>
+                </div>
+                <div className="d-flex align-items-start">
+                  <div 
+                    className="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center me-3"
+                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0 }}
+                  >
+                    4
+                  </div>
+                  <div>
+                    <h6 className="mb-1">Track Progress</h6>
+                    <small className="text-muted">View reports and download PDFs</small>
+                  </div>
                 </div>
               </div>
-              <div className="text-center mt-3">
-                <Badge variant="warning">2 more to go!</Badge>
-              </div>
+            </Card>
+
+            {/* Help Card */}
+            <Card title="Need Help?" className="card-info">
+              <p className="mb-3 small">
+                If you have questions or need assistance, feel free to reach out to our support team.
+              </p>
+              <button className="btn btn-info w-100" onClick={() => navigate('/help')}>
+                <i className="bi bi-question-circle me-2"></i>
+                Visit Help Center
+              </button>
             </Card>
           </div>
         </div>

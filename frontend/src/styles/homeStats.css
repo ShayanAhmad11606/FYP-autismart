@@ -4,12 +4,8 @@
   background: linear-gradient(135deg, #B8E9E1 0%, #D4F1EC 100%);
   padding: 40px 0;
   margin: 60px 0;
-  width: 100vw;
+  width: 100%;
   position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
 }
 
 .stat-item-new {

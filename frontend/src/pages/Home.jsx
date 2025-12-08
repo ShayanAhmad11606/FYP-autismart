@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import '../styles/homeStats.css';
 
 const Home = () => {
+  const { isAuthenticated } = useAuth();
   const [isVisible, setIsVisible] = useState(false);
   const [statsVisible, setStatsVisible] = useState(false);
   const [counters, setCounters] = useState({
@@ -123,12 +125,25 @@ const Home = () => {
             </span>
           </p>
           <div className="d-flex gap-3 justify-content-center flex-wrap slide-up delay-2">
-            <Link to="/register" className="btn btn-light btn-lg btn-hover-lift">
-              Get Started
-            </Link>
-            <Link to="/games" className="btn btn-outline-light btn-lg btn-hover-lift">
-              Explore Therapy Games
-            </Link>
+            {!isAuthenticated ? (
+              <>
+                <Link to="/register" className="btn btn-light btn-lg btn-hover-lift">
+                  Get Started
+                </Link>
+                <Link to="/games" className="btn btn-outline-light btn-lg btn-hover-lift">
+                  Explore Therapy Games
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/dashboard" className="btn btn-light btn-lg btn-hover-lift">
+                  Go to Dashboard
+                </Link>
+                <Link to="/games" className="btn btn-outline-light btn-lg btn-hover-lift">
+                  Explore Therapy Games
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -261,21 +276,23 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="section-spacing">
-        <div className="container">
-          <div className="card text-white cta-card" style={{ backgroundColor: '#61C3B4' }}>
-            <div className="card-body text-center p-5">
-              <h2 className="mb-3 fade-in-up">Ready to Get Started?</h2>
-              <p className="lead mb-4 fade-in-up" style={{ animationDelay: '0.2s' }}>
-                Join thousands of families using AutiSmart to support their children's development
-              </p>
-              <Link to="/register" className="btn btn-light btn-lg btn-hover-lift pulse-on-hover" style={{ animationDelay: '0.4s' }}>
-                Create Free Account
-              </Link>
+      {!isAuthenticated && (
+        <section className="section-spacing">
+          <div className="container">
+            <div className="card text-white cta-card" style={{ backgroundColor: '#61C3B4' }}>
+              <div className="card-body text-center p-5">
+                <h2 className="mb-3 fade-in-up">Ready to Get Started?</h2>
+                <p className="lead mb-4 fade-in-up" style={{ animationDelay: '0.2s' }}>
+                  Join thousands of families using AutiSmart to support their children's development
+                </p>
+                <Link to="/register" className="btn btn-light btn-lg btn-hover-lift pulse-on-hover" style={{ animationDelay: '0.4s' }}>
+                  Create Free Account
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 };

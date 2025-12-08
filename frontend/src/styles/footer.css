@@ -1,10 +1,75 @@
 /* Footer Styles - Warm and informative */
 
 .footer {
-  background: linear-gradient(135deg, #61C3B4 0%, #4da09a 100%);
-  color: white;
+  background: #f9fafb;
+  color: #374151;
   margin-top: var(--space-2xl);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Light theme footer */
+[data-theme="light"] .footer {
+  background: #f9fafb;
+  color: #374151;
+  border-top: 1px solid #e5e7eb;
+}
+
+[data-theme="light"] .footer-brand {
+  color: #1f2937;
+}
+
+[data-theme="light"] .footer-text {
+  color: #6b7280;
+}
+
+[data-theme="light"] .footer-heading {
+  color: #1f2937;
+}
+
+[data-theme="light"] .footer-links a {
+  color: #6b7280;
+}
+
+[data-theme="light"] .footer-links a:hover {
+  color: #61C3B4;
+}
+
+[data-theme="light"] .footer-social-link {
+  background-color: #61C3B4;
+  color: white;
+}
+
+[data-theme="light"] .footer-social-link:hover {
+  background-color: #4da09a;
+  color: white;
+}
+
+/* Dark theme footer */
+[data-theme="dark"] .footer {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: white;
+  border-top: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .footer-brand {
+  color: white;
+}
+
+[data-theme="dark"] .footer-text {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="dark"] .footer-heading {
+  color: white;
+}
+
+[data-theme="dark"] .footer-links a {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .footer-links a:hover {
+  color: #5eead4;
 }
 
 .footer-brand {

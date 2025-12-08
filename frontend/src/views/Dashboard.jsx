@@ -1,9 +1,30 @@
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect to role-specific dashboard
+  useEffect(() => {
+    if (user) {
+      switch (user.role) {
+        case 'admin':
+          navigate('/admin', { replace: true });
+          break;
+        case 'caregiver':
+          navigate('/caregiver-dashboard', { replace: true });
+          break;
+        case 'expert':
+          navigate('/expert-dashboard', { replace: true });
+          break;
+        default:
+          // Keep on this dashboard for other roles
+          break;
+      }
+    }
+  }, [user, navigate]);
 
   const handleLogout = () => {
     logout();

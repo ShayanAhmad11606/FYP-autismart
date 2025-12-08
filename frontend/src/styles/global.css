@@ -6,6 +6,12 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--charcoal);
@@ -40,6 +46,11 @@ body {
 }
 
 /* Utilities */
+.caregiver-dashboard-wrapper {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  transition: background-color var(--transition);
+}
+
 .text-primary-custom {
   color: var(--primary);
 }

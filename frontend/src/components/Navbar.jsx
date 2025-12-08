@@ -69,10 +69,16 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link className="nav-link" to="/children" onClick={closeMenu}>My Children</Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link" to="/assessment" onClick={closeMenu}>Assessment</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/games" onClick={closeMenu}>Therapy Games</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/child-reports" onClick={closeMenu}>Reports</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/tracker" onClick={closeMenu}>Tracker</Link>
@@ -89,10 +95,55 @@ const Navbar = () => {
               </>
             )}
             
-            {isAuthenticated && user?.role !== 'user' && (
+            {isAuthenticated && user?.role === 'admin' && (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/" onClick={closeMenu}>Home</Link>
+                  <Link className="nav-link" to="/admin" onClick={closeMenu}>
+                    <i className="bi bi-speedometer2 me-1"></i>Admin Dashboard
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
+                </li>
+              </>
+            )}
+            
+            {isAuthenticated && user?.role === 'caregiver' && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/caregiver-dashboard" onClick={closeMenu}>Dashboard</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/child-management" onClick={closeMenu}>Children</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/assessment" onClick={closeMenu}>Assessment</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/games" onClick={closeMenu}>Therapy Games</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/child-reports" onClick={closeMenu}>Reports</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/tracker" onClick={closeMenu}>Tracker</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/therapy" onClick={closeMenu}>Discussion</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
+                </li>
+              </>
+            )}
+            
+            {isAuthenticated && user?.role === 'expert' && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/expert-dashboard" onClick={closeMenu}>Dashboard</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/assessment" onClick={closeMenu}>Assessment</Link>
@@ -108,15 +159,6 @@ const Navbar = () => {
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/resources" onClick={closeMenu}>Resources</Link>
-                </li>
-                <li className="nav-item">
-                  <Link 
-                    className="nav-link" 
-                    to={user?.role === 'admin' ? '/admin' : '/dashboard'} 
-                    onClick={closeMenu}
-                  >
-                    Dashboard
-                  </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>

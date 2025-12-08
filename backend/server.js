@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import childRoutes from './routes/childRoutes.js';
 import { verifyEmailConfig } from './config/email.js';
 
 // Load environment variables
@@ -57,6 +58,7 @@ connectDB();
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/caregiver', childRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {

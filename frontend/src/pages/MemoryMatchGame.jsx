@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useChild } from '../context/ChildContext';
+import ChildSelector from '../components/ChildSelector';
 
 const MemoryMatchGame = () => {
   const navigate = useNavigate();
+  const { selectedChild, recordActivity } = useChild();
   const [cards, setCards] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
@@ -175,6 +178,28 @@ const MemoryMatchGame = () => {
           if (!bestTimes[currentLevel] || timer < bestTimes[currentLevel]) {
             setBestTimes({ ...bestTimes, [currentLevel]: timer });
           }
+
+          // Record activity if child is selected
+          if (selectedChild) {
+            recordActivity({
+              activityType: 'game',
+              activityName: 'Memory Match',
+              score: score,
+              maxScore: 1000,
+              percentage: (score / 1000) * 100,
+              duration: timer,
+              attempts: 1,
+              difficulty: currentLevelConfig.name.toLowerCase(),
+              correctAnswers: matched.length / 2,
+              incorrectAnswers: Math.max(0, moves - (matched.length / 2)),
+              details: {
+                level: currentLevel,
+                levelName: currentLevelConfig.name,
+                moves: moves,
+                gridSize: currentLevelConfig.gridSize
+              }
+            }).catch(err => console.error('Failed to record activity:', err));
+          }
         }
       } else {
         // No match - flip back after delay
@@ -223,6 +248,23 @@ const MemoryMatchGame = () => {
           Back to Therapy Games
         </button>
       </div>
+
+      {/* Child Selector */}
+      <ChildSelector />
+
+      {/* Activity tracking notice */}
+      {!selectedChild && (
+        <div className="alert alert-info mb-4">
+          <i className="bi bi-info-circle me-2"></i>
+          Select a child above to track their progress and performance automatically.
+        </div>
+      )}
+      {selectedChild && (
+        <div className="alert alert-success mb-4">
+          <i className="bi bi-check-circle me-2"></i>
+          Playing as <strong>{selectedChild.name}</strong> - Progress will be recorded automatically!
+        </div>
+      )}
 
       {/* Level Progress Bar */}
       <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '12px' }}>

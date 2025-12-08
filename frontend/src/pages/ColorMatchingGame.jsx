@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useChild } from '../context/ChildContext';
+import ChildSelector from '../components/ChildSelector';
 import '../styles/colorMatching.css';
 
 const ColorMatchingGame = () => {
   const navigate = useNavigate();
+  const { selectedChild, recordActivity } = useChild();
 
   // Game levels configuration
   const levels = [
@@ -192,6 +195,28 @@ const ColorMatchingGame = () => {
     }
 
     setLevelComplete(true);
+
+    // Record activity if child is selected
+    if (selectedChild) {
+      recordActivity({
+        activityType: 'game',
+        activityName: 'Color Matching',
+        score: finalScore,
+        maxScore: 10000,
+        percentage: (finalScore / 10000) * 100,
+        duration: level.timeLimit - timer,
+        attempts: 1,
+        difficulty: level.name.toLowerCase(),
+        correctAnswers: roundsWon,
+        incorrectAnswers: mistakes,
+        details: {
+          level: currentLevel,
+          levelName: level.name,
+          roundsCompleted: roundsWon,
+          timeRemaining: timer
+        }
+      }).catch(err => console.error('Failed to record activity:', err));
+    }
   };
 
   // Calculate final score for level
@@ -252,6 +277,25 @@ const ColorMatchingGame = () => {
         <h1 className="game-title">
           <i className="bi bi-palette"></i> Color Matching Game
         </h1>
+      </div>
+
+      <div className="container mt-3">
+        {/* Child Selector */}
+        <ChildSelector />
+
+        {/* Activity tracking notice */}
+        {!selectedChild && (
+          <div className="alert alert-info mt-3">
+            <i className="bi bi-info-circle me-2"></i>
+            Select a child above to track their progress and performance automatically.
+          </div>
+        )}
+        {selectedChild && (
+          <div className="alert alert-success mt-3">
+            <i className="bi bi-check-circle me-2"></i>
+            Playing as <strong>{selectedChild.name}</strong> - Progress will be recorded automatically!
+          </div>
+        )}
       </div>
 
       {/* Start Screen */}
