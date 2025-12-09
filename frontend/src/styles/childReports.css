@@ -259,12 +259,34 @@
 }
 
 /* Dark Theme */
-[data-theme="dark"] .child-bio-card,
-[data-theme="dark"] .stat-card,
-[data-theme="dark"] .assessment-card,
-[data-theme="dark"] .chart-container,
+[data-theme="dark"] .child-bio-card {
+  background: #1e293b !important;
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .stat-card {
+  background: #1e293b !important;
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .assessment-card {
+  background: #1e293b !important;
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .chart-container {
+  background: #1e293b !important;
+  border-color: var(--border-color);
+}
+
 [data-theme="dark"] .table-responsive {
-  background: var(--card-bg);
+  background: #1e293b !important;
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .assessment-item {
+  background: #0f172a !important;
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .table {
@@ -284,9 +306,17 @@
 }
 
 [data-theme="dark"] .form-select {
-  background: var(--card-bg);
+  background: #1e293b !important;
   border-color: var(--border-color);
   color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-label {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .child-bio-card strong {
+  color: var(--primary);
 }
 
 /* Responsive */

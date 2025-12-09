@@ -111,21 +111,35 @@
 
 /* Dark Theme */
 [data-theme="dark"] .child-selector {
-  background: var(--card-bg);
+  background: #1e293b !important;
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .child-selector-label {
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .child-option {
-  background: var(--bg-primary);
+  background: #0f172a !important;
   border-color: var(--border-color);
 }
 
 [data-theme="dark"] .child-option:hover {
-  background: var(--bg-secondary);
+  background: #334155 !important;
+  border-color: var(--primary);
 }
 
 [data-theme="dark"] .child-option.active {
-  background: var(--primary-lighter);
+  background: #134e4a !important;
   border-color: var(--primary);
+}
+
+[data-theme="dark"] .child-option-name {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .child-option-details {
+  color: var(--text-secondary);
 }
 
 /* Responsive */

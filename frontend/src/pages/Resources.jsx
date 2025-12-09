@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import Card from '../components/Card';
 import Badge from '../components/Badge';
 
@@ -110,6 +111,25 @@ const Resources = () => {
     ? resources 
     : resources.filter(r => r.category === selectedCategory);
 
+  const { isDark } = useTheme();
+
+  // Dark theme colors
+  const darkInputStyles = {
+    backgroundColor: '#23283b',
+    borderColor: '#394056',
+    color: '#eaf6fb',
+  };
+  const darkInputGroupText = {
+    backgroundColor: '#23283b',
+    borderColor: '#394056',
+    color: '#eaf6fb',
+  };
+  const darkSelectStyles = {
+    backgroundColor: '#23283b',
+    borderColor: '#394056',
+    color: '#eaf6fb',
+  };
+
   return (
     <div className="container mt-4 mb-5">
       <div className="mb-4">
@@ -126,18 +146,21 @@ const Resources = () => {
       <div className="row g-3 mb-4">
         <div className="col-md-8">
           <div className="input-group">
-            <span className="input-group-text" style={{
-              backgroundColor: 'var(--card-bg, #fff)',
-              borderColor: 'var(--border-color, #ced4da)',
-              color: 'var(--text-primary, #000)'
-            }}>
+            <span
+              className="input-group-text"
+              style={isDark ? darkInputGroupText : {
+                backgroundColor: 'var(--card-bg, #fff)',
+                borderColor: 'var(--border-color, #ced4da)',
+                color: 'var(--text-primary, #000)'
+              }}
+            >
               <i className="bi bi-search"></i>
             </span>
             <input
               type="text"
               className="form-control"
               placeholder="Search resources..."
-              style={{
+              style={isDark ? darkInputStyles : {
                 backgroundColor: 'var(--card-bg, #fff)',
                 borderColor: 'var(--border-color, #ced4da)',
                 color: 'var(--text-primary, #000)'
@@ -146,7 +169,10 @@ const Resources = () => {
           </div>
         </div>
         <div className="col-md-4">
-          <select className="form-select">
+          <select
+            className="form-select"
+            style={isDark ? darkSelectStyles : {}}
+          >
             <option>Sort by: Most Recent</option>
             <option>Sort by: Most Popular</option>
             <option>Sort by: A-Z</option>

@@ -247,7 +247,42 @@ textarea.form-control {
 }
 
 /* Dark Theme */
-[data-theme="dark"] .child-card,
+[data-theme="dark"] .child-card {
+  background: #1e293b !important;
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .child-card-header {
+  background: #1e293b !important;
+  border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .child-card-body {
+  background: #1e293b !important;
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .child-card-body p {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .child-card-body strong {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .child-card-actions {
+  background: #1e293b !important;
+  border-top-color: var(--border-color);
+}
+
+[data-theme="dark"] .child-info h4 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .child-info p {
+  color: var(--text-secondary);
+}
+
 [data-theme="dark"] .modal-content {
   background: var(--card-bg);
 }

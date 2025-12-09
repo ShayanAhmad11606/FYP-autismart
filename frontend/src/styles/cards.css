@@ -37,11 +37,24 @@
   border-left: 4px solid var(--info);
 }
 
+
+/* Card header custom for both themes */
+.card-header-custom {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+}
+
 /* Dark theme card adjustments */
 [data-theme="dark"] .card {
   background-color: var(--card-bg);
   border-color: var(--border-color);
   color: var(--text-primary);
+}
+
+[data-theme="dark"] .card-header-custom {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 /* Accessibility - Reduce motion */

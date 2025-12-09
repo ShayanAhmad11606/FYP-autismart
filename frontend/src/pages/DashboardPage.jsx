@@ -82,13 +82,13 @@ const Dashboard = () => {
           )}
 
           {childrenList.length === 0 && (
-            <div className="alert alert-info mb-4">
+            <Card title="Getting Started" className="mb-4">
               <h5><i className="bi bi-info-circle me-2"></i>Get Started</h5>
               <p className="mb-2">Add your first child to start tracking their progress and activities.</p>
               <Link to="/children" className="btn btn-primary btn-sm">
                 <i className="bi bi-plus-circle me-2"></i>Add Child
               </Link>
-            </div>
+            </Card>
           )}
 
           {/* Stats Grid */}
