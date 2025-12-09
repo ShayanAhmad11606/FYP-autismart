@@ -127,6 +127,36 @@ const Assessment = () => {
     return { totalScore, totalQuestions, categoryScores };
   };
 
+  const getAutismLevel = (score, total) => {
+    const percentage = (score / (total * 3)) * 100;
+    
+    if (percentage <= 40) {
+      return {
+        level: 'Beginner Level',
+        color: 'success',
+        message: 'The child shows mild or minimal autism characteristics. They may require basic support and intervention.',
+        icon: 'bi-star-fill',
+        description: 'Low support needs - Child demonstrates good functional abilities with minimal assistance required.'
+      };
+    } else if (percentage <= 60) {
+      return {
+        level: 'Intermediate Level',
+        color: 'warning',
+        message: 'The child shows moderate autism characteristics. They may benefit from regular therapeutic support and structured interventions.',
+        icon: 'bi-star-half',
+        description: 'Moderate support needs - Child requires consistent support in daily activities and social interactions.'
+      };
+    } else {
+      return {
+        level: 'Advanced Level',
+        color: 'danger',
+        message: 'The child shows significant autism characteristics. They may require intensive support, specialized interventions, and professional guidance.',
+        icon: 'bi-stars',
+        description: 'High support needs - Child needs substantial assistance across multiple areas of development.'
+      };
+    }
+  };
+
   const getScoreInterpretation = (score, total) => {
     const percentage = (score / (total * 3)) * 100;
     
@@ -304,8 +334,31 @@ const Assessment = () => {
                 {(() => {
                   const { totalScore, totalQuestions, categoryScores } = calculateScore();
                   const interpretation = getScoreInterpretation(totalScore, totalQuestions);
+                  const autismLevel = getAutismLevel(totalScore, totalQuestions);
                   return (
                     <>
+                      {/* Autism Level Display - Main Highlight */}
+                      <div className={`alert alert-${autismLevel.color} mb-4`} style={{ 
+                        borderRadius: '20px', 
+                        border: 'none', 
+                        boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
+                        padding: '2rem'
+                      }}>
+                        <div className="mb-3">
+                          <i className={`${autismLevel.icon} me-2`} style={{ fontSize: '3rem' }}></i>
+                        </div>
+                        <h2 className="mb-3" style={{ fontWeight: '800', fontSize: '2.2rem' }}>
+                          {autismLevel.level}
+                        </h2>
+                        <p className="mb-2" style={{ fontSize: '1.2rem', fontWeight: '600' }}>
+                          {autismLevel.message}
+                        </p>
+                        <p className="mb-0" style={{ fontSize: '1rem', opacity: '0.9' }}>
+                          <i className="bi bi-info-circle me-2"></i>
+                          {autismLevel.description}
+                        </p>
+                      </div>
+
                       <div className={`alert alert-${interpretation.color} mb-3`}>
                         <h4>
                           <i className={`${interpretation.icon} me-2`}></i>
@@ -622,7 +675,7 @@ const Assessment = () => {
                     )}
                   </div>
                   <div className="d-flex gap-2">
-                    {currentLevel !== 'sensory' ? (
+                    {currentLevel !== 'sensory' && (
                       <button
                         type="button"
                         className="btn btn-primary"
@@ -638,18 +691,22 @@ const Assessment = () => {
                         Next Level
                         <i className="bi bi-arrow-right ms-2"></i>
                       </button>
-                    ) : (
+                    )}
+                    {currentLevel === 'sensory' && (
                       <button
                         type="submit"
                         className="btn btn-success"
                         disabled={getAnsweredCount() < getTotalQuestions() || requiresChildSelection}
-                        style={{ backgroundColor: '#59B5AA', borderColor: '#59B5AA' }}
+                        style={{ 
+                          backgroundColor: getAnsweredCount() < getTotalQuestions() || requiresChildSelection ? '#6c757d' : '#59B5AA', 
+                          borderColor: getAnsweredCount() < getTotalQuestions() || requiresChildSelection ? '#6c757d' : '#59B5AA' 
+                        }}
                         onMouseEnter={(e) => !e.target.disabled && (e.target.style.backgroundColor = '#4a9d93')}
                         onMouseLeave={(e) => !e.target.disabled && (e.target.style.backgroundColor = '#59B5AA')}
-                        title={requiresChildSelection ? 'Please select a child first' : ''}
+                        title={requiresChildSelection ? 'Please select a child first' : getAnsweredCount() < getTotalQuestions() ? `Please answer all questions (${getAnsweredCount()}/${getTotalQuestions()})` : 'Submit Assessment'}
                       >
                         <i className="bi bi-check-circle me-2"></i>
-                        {requiresChildSelection ? 'Select Child First' : 'Submit Assessment'}
+                        {requiresChildSelection ? 'Select Child First' : getAnsweredCount() < getTotalQuestions() ? `Answer All (${getAnsweredCount()}/${getTotalQuestions()})` : 'Submit Assessment'}
                       </button>
                     )}
                   </div>

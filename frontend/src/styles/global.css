@@ -26,11 +26,21 @@ body {
 }
 
 [data-theme="dark"] .bg-light {
-  background-color: var(--bg-secondary) !important;
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
 }
 
 [data-theme="dark"] .text-muted {
   color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .text-dark {
+  color: var(--text-primary) !important;
 }
 
 /* Accessibility - Reduce motion for users who prefer it */
@@ -49,6 +59,11 @@ body {
 .caregiver-dashboard-wrapper {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   transition: background-color var(--transition);
+}
+
+/* Dark mode for caregiver dashboard */
+[data-theme="dark"] .caregiver-dashboard-wrapper {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%) !important;
 }
 
 .text-primary-custom {

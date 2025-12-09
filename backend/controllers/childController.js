@@ -141,6 +141,36 @@ export const getChildren = async (req, res) => {
   }
 };
 
+// Get all children (for experts and admins)
+export const getAllChildren = async (req, res) => {
+  try {
+    // Only experts and admins can access all children
+    if (req.user.role !== 'expert' && req.user.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Only experts and admins can view all patients.'
+      });
+    }
+
+    const children = await Child.find()
+      .populate('caregiverId', 'name email phone')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: children,
+      count: children.length
+    });
+  } catch (error) {
+    console.error('Error fetching all children:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch all children',
+      error: error.message
+    });
+  }
+};
+
 // Get a specific child
 export const getChild = async (req, res) => {
   try {
@@ -529,122 +559,290 @@ function generateCognitiveAssessment(stats) {
 
 // Helper function to generate PDF content
 function generatePDFContent(doc, child, stats, cognitiveAssessment) {
-  const currentDate = new Date().toLocaleDateString();
+  const currentDate = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 
-  // Header
-  doc.fontSize(24).fillColor('#61C3B4').text('AutiSmart Progress Report', { align: 'center' });
+  // Header with decorative line
+  doc.fontSize(32).fillColor('#61C3B4').font('Helvetica-Bold').text('AutiSmart', { align: 'center' });
+  doc.fontSize(22).fillColor('#333').font('Helvetica').text('Child Progress Report', { align: 'center' });
+  doc.moveDown(0.4);
+  doc.fontSize(11).fillColor('#888').text(`Generated on ${currentDate}`, { align: 'center' });
+  doc.moveDown(0.8);
+  
+  // Decorative line
+  doc.moveTo(50, doc.y).lineTo(doc.page.width - 50, doc.y).strokeColor('#61C3B4').lineWidth(3).stroke();
+  doc.moveDown(2.5);
+
+  // Child Information with improved layout
+  doc.fontSize(18).fillColor('#333').font('Helvetica-Bold').text('Child Information');
   doc.moveDown(0.5);
-  doc.fontSize(12).fillColor('#666').text(`Generated on ${currentDate}`, { align: 'center' });
+  
+  // Draw a subtle background box
+  const infoBoxY = doc.y;
+  doc.fontSize(12).fillColor('#666').font('Helvetica');
+  
+  // Use a table-like format
+  const leftColumn = 80;
+  let y = doc.y;
+  
+  doc.fillColor('#666').text('Name: ', leftColumn, y, { continued: true });
+  doc.fillColor('#333').text(child.name);
+  
+  doc.fillColor('#666').text('Age: ', leftColumn, undefined, { continued: true });
+  doc.fillColor('#333').text(`${child.age} years`);
+  
+  doc.fillColor('#666').text('Gender: ', leftColumn, undefined, { continued: true });
+  doc.fillColor('#333').text(child.gender);
+  
+  if (child.dateOfBirth) {
+    const formattedDOB = new Date(child.dateOfBirth).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    doc.fillColor('#666').text('Date of Birth: ', leftColumn, undefined, { continued: true });
+    doc.fillColor('#333').text(formattedDOB);
+  }
+  
+  if (child.diagnosis) {
+    doc.fillColor('#666').text('Diagnosis: ', leftColumn, undefined, { continued: true });
+    doc.fillColor('#333').text(child.diagnosis);
+  }
+  
+  if (child.specialNeeds) {
+    doc.fillColor('#666').text('Special Needs: ', leftColumn, undefined, { continued: true });
+    doc.fillColor('#333').text(child.specialNeeds);
+  }
+  
+  doc.moveDown(0.5);
+  // Light separator line
+  doc.moveTo(70, doc.y).lineTo(doc.page.width - 70, doc.y).strokeColor('#ddd').lineWidth(1).stroke();
   doc.moveDown(2);
 
-  // Child Information
-  doc.fontSize(18).fillColor('#333').text('Child Information');
-  doc.moveDown(0.5);
-  doc.fontSize(12).fillColor('#666');
-  doc.text(`Name: ${child.name}`);
-  doc.text(`Age: ${child.age} years`);
-  doc.text(`Gender: ${child.gender}`);
-  if (child.dateOfBirth) doc.text(`Date of Birth: ${child.dateOfBirth}`);
-  if (child.diagnosis) doc.text(`Diagnosis: ${child.diagnosis}`);
-  if (child.specialNeeds) doc.text(`Special Needs: ${child.specialNeeds}`);
-  doc.moveDown(2);
-
-  // Activity Summary
-  doc.fontSize(18).fillColor('#333').text('Activity Summary');
-  doc.moveDown(0.5);
-  doc.fontSize(12).fillColor('#666');
+  // Activity Summary with visual boxes
+  doc.fontSize(18).fillColor('#333').font('Helvetica-Bold').text('Activity Summary');
+  doc.moveDown(1);
+  doc.font('Helvetica');
   
   if (stats.totalActivities > 0) {
-    doc.text(`Total Activities: ${stats.totalActivities}`);
-    doc.text(`Games Played: ${stats.totalGames}`);
-    doc.text(`Assessments Completed: ${stats.totalAssessments}`);
-    doc.text(`Therapy Sessions: ${stats.totalTherapySessions}`);
-    doc.text(`Average Score: ${stats.averageScore.toFixed(1)}%`);
+    doc.fontSize(12).fillColor('#666');
+    const boxWidth = 120;
+    const boxHeight = 60;
+    const spacing = 15;
+    const startX = 80;
+    let currentX = startX;
+    const currentY = doc.y;
+    
+    // Helper function to draw stat box
+    const drawStatBox = (x, y, label, value, color) => {
+      doc.rect(x, y, boxWidth, boxHeight).fillAndStroke(color, '#ddd');
+      doc.fontSize(24).fillColor('#333').text(value.toString(), x, y + 8, { width: boxWidth, align: 'center' });
+      doc.fontSize(10).fillColor('#666').text(label, x, y + 38, { width: boxWidth, align: 'center' });
+    };
+    
+    // Draw boxes (simplified for linear layout)
+    doc.fontSize(12).fillColor('#666');
+    doc.text('Total Activities Completed: ', 80, currentY, { continued: true });
+    doc.fillColor('#333').font('Helvetica-Bold').text(`${stats.totalActivities}`);
+    
+    doc.font('Helvetica').fillColor('#666').text('Games Played: ', 80, undefined, { continued: true });
+    doc.fillColor('#333').font('Helvetica-Bold').text(`${stats.totalGames}`);
+    
+    doc.font('Helvetica').fillColor('#666').text('Assessments Completed: ', 80, undefined, { continued: true });
+    doc.fillColor('#333').font('Helvetica-Bold').text(`${stats.totalAssessments}`);
+    
+    doc.font('Helvetica').fillColor('#666').text('Therapy Sessions: ', 80, undefined, { continued: true });
+    doc.fillColor('#333').font('Helvetica-Bold').text(`${stats.totalTherapySessions}`);
+    
+    doc.moveDown(0.8);
+    doc.fontSize(15).fillColor('#61C3B4').font('Helvetica-Bold').text(`Average Performance Score: ${stats.averageScore.toFixed(1)}%`, 80);
+    doc.font('Helvetica');
   } else {
-    doc.text('No activities recorded yet.');
+    doc.fontSize(12).fillColor('#999').text('No activities recorded yet.');
     doc.moveDown(0.5);
     doc.fontSize(11).fillColor('#888');
     doc.text('Have the child complete assessments or play therapy games to see performance data here.');
   }
+  doc.moveDown(0.5);
+  doc.moveTo(70, doc.y).lineTo(doc.page.width - 70, doc.y).strokeColor('#ddd').lineWidth(1).stroke();
   doc.moveDown(2);
 
   // Performance by Activity
   if (Object.keys(stats.byActivityType).length > 0) {
-    doc.fontSize(18).fillColor('#333').text('Performance by Activity');
-    doc.moveDown(0.5);
-    doc.fontSize(12).fillColor('#666');
+    doc.fontSize(18).fillColor('#333').font('Helvetica-Bold').text('Performance by Activity Type');
+    doc.moveDown(0.6);
+    doc.fontSize(11).fillColor('#888').font('Helvetica').text(`Breakdown of ${Object.keys(stats.byActivityType).length} different ${Object.keys(stats.byActivityType).length === 1 ? 'activity' : 'activities'}`);
+    doc.moveDown(1);
     
-    Object.keys(stats.byActivityType).forEach(activityName => {
+    Object.keys(stats.byActivityType).forEach((activityName, index) => {
       const activityData = stats.byActivityType[activityName];
-      doc.text(`${activityName}:`);
-      doc.text(`  • Attempts: ${activityData.count}`);
-      doc.text(`  • Average Score: ${activityData.averageScore.toFixed(1)}%`);
-      doc.moveDown(0.3);
+      
+      // Activity name in bold
+      doc.fontSize(13).fillColor('#333').font('Helvetica-Bold').text(`${index + 1}. ${activityName}`);
+      doc.fontSize(11).fillColor('#666').font('Helvetica');
+      doc.text('   Attempts: ', { continued: true });
+      doc.fillColor('#333').text(`${activityData.count}`);
+      
+      // Color code the average score
+      const avgScore = activityData.averageScore.toFixed(1);
+      let scoreColor = '#666';
+      let performanceLabel = '';
+      if (activityData.averageScore >= 80) {
+        scoreColor = '#52b788';
+        performanceLabel = ' (Excellent)';
+      } else if (activityData.averageScore >= 60) {
+        scoreColor = '#61C3B4';
+        performanceLabel = ' (Good)';
+      } else if (activityData.averageScore >= 40) {
+        scoreColor = '#f4a261';
+        performanceLabel = ' (Fair)';
+      } else {
+        scoreColor = '#e63946';
+        performanceLabel = ' (Needs Improvement)';
+      }
+      
+      doc.fillColor('#666').text('   Average Score: ', { continued: true });
+      doc.fillColor(scoreColor).font('Helvetica-Bold').text(`${avgScore}%`, { continued: true });
+      doc.fillColor('#888').fontSize(11).font('Helvetica').text(performanceLabel);
+      doc.moveDown(0.6);
     });
+    doc.moveDown(0.5);
+    doc.moveTo(70, doc.y).lineTo(doc.page.width - 70, doc.y).strokeColor('#ddd').lineWidth(1).stroke();
     doc.moveDown(1);
   }
 
-  // Cognitive Assessment
+  // Cognitive Assessment - ensure it starts on a new page for better readability
   if (stats.totalActivities > 0) {
     doc.addPage();
+  } else if (doc.y > 650) {
+    doc.addPage();
   }
-  doc.fontSize(18).fillColor('#333').text('Cognitive Assessment');
-  doc.moveDown(0.5);
-  doc.fontSize(12).fillColor('#666');
+  
+  doc.fontSize(18).fillColor('#333').font('Helvetica-Bold').text('Cognitive Assessment');
+  doc.moveDown(1);
+  doc.font('Helvetica');
   
   if (stats.totalActivities > 0) {
-    doc.text(`Overall Level: ${cognitiveAssessment.overallLevel}`);
-    doc.text(`Progress Trend: ${cognitiveAssessment.progressTrend}`);
+    // Overall level with colored badge
+    doc.fontSize(13).fillColor('#666').text('Overall Level: ', { continued: true });
+    let levelColor = '#666';
+    if (cognitiveAssessment.overallLevel === 'Excellent') levelColor = '#52b788';
+    else if (cognitiveAssessment.overallLevel === 'Good') levelColor = '#61C3B4';
+    else if (cognitiveAssessment.overallLevel === 'Fair') levelColor = '#f4a261';
+    else if (cognitiveAssessment.overallLevel === 'Needs Support') levelColor = '#e63946';
+    doc.fillColor(levelColor).font('Helvetica-Bold').text(cognitiveAssessment.overallLevel);
+    doc.font('Helvetica');
+    
+    // Progress trend
+    doc.fillColor('#666').text('Progress Trend: ', { continued: true });
+    let trendColor = '#666';
+    if (cognitiveAssessment.progressTrend === 'Improving') trendColor = '#52b788';
+    else if (cognitiveAssessment.progressTrend === 'Declining') trendColor = '#e63946';
+    else trendColor = '#61C3B4';
+    doc.fillColor(trendColor).font('Helvetica-Bold').text(cognitiveAssessment.progressTrend);
+    doc.font('Helvetica');
   } else {
-    doc.text('Assessment data will appear here once activities are completed.');
+    doc.fontSize(11).fillColor('#888').text('Assessment data will appear here once activities are completed.');
   }
-  doc.moveDown(1);
+  doc.moveDown(1.8);
 
   if (cognitiveAssessment.strengths.length > 0) {
-    doc.fontSize(14).fillColor('#52b788').text('Strengths:');
-    doc.fontSize(12).fillColor('#666');
+    doc.fontSize(15).fillColor('#52b788').font('Helvetica-Bold').text('Strengths');
+    doc.fontSize(12).fillColor('#666').font('Helvetica');
+    doc.moveDown(0.3);
     cognitiveAssessment.strengths.forEach(strength => {
-      doc.text(`  • ${strength}`);
+      doc.text(`  • ${strength}`, { lineGap: 2 });
     });
-    doc.moveDown(1);
+    doc.moveDown(1.2);
   }
 
   if (cognitiveAssessment.areasForImprovement.length > 0) {
-    doc.fontSize(14).fillColor('#f4a261').text('Areas for Improvement:');
-    doc.fontSize(12).fillColor('#666');
+    doc.fontSize(15).fillColor('#f4a261').font('Helvetica-Bold').text('Areas for Improvement');
+    doc.fontSize(12).fillColor('#666').font('Helvetica');
+    doc.moveDown(0.3);
     cognitiveAssessment.areasForImprovement.forEach(area => {
-      doc.text(`  • ${area}`);
+      doc.text(`  • ${area}`, { lineGap: 2 });
     });
-    doc.moveDown(1);
+    doc.moveDown(1.2);
   }
 
   if (cognitiveAssessment.recommendations.length > 0) {
-    doc.fontSize(14).fillColor('#61C3B4').text('Recommendations:');
-    doc.fontSize(12).fillColor('#666');
+    doc.fontSize(15).fillColor('#61C3B4').font('Helvetica-Bold').text('Recommendations');
+    doc.fontSize(12).fillColor('#666').font('Helvetica');
+    doc.moveDown(0.3);
     cognitiveAssessment.recommendations.forEach(rec => {
-      doc.text(`  • ${rec}`);
+      doc.text(`  • ${rec}`, { lineGap: 2 });
     });
-    doc.moveDown(1);
+    doc.moveDown(1.2);
   }
 
   // Recent Activities
   if (stats.recentActivities && stats.recentActivities.length > 0) {
     doc.addPage();
-    doc.fontSize(18).fillColor('#333').text('Recent Activities');
-    doc.moveDown(0.5);
+    doc.fontSize(18).fillColor('#333').font('Helvetica-Bold').text('Recent Activities');
+    doc.moveDown(0.4);
+    doc.fontSize(11).fillColor('#888').font('Helvetica').text(`Showing last ${Math.min(stats.recentActivities.length, 10)} activities`);
+    doc.moveDown(0.3);
+    doc.moveTo(50, doc.y).lineTo(doc.page.width - 50, doc.y).strokeColor('#ddd').lineWidth(1).stroke();
+    doc.moveDown(1);
     
     stats.recentActivities.slice(0, 10).forEach((activity, index) => {
-      const date = activity.completedAt?.toDate ? 
-        activity.completedAt.toDate().toLocaleDateString() : 
+      // Check if we need a new page
+      if (doc.y > 700) {
+        doc.addPage();
+      }
+      
+      const date = activity.completedAt ? 
+        new Date(activity.completedAt).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }) : 
         'N/A';
       
-      doc.fontSize(12).fillColor('#333').text(`${index + 1}. ${activity.activityName}`);
-      doc.fontSize(10).fillColor('#666');
-      doc.text(`   Date: ${date}`);
-      doc.text(`   Type: ${activity.activityType}`);
-      doc.text(`   Score: ${activity.score}/${activity.maxScore} (${activity.percentage.toFixed(1)}%)`);
-      doc.text(`   Duration: ${Math.floor(activity.duration / 60)}m ${activity.duration % 60}s`);
-      doc.moveDown(0.5);
+      // Activity number and name
+      doc.fontSize(13).fillColor('#333').font('Helvetica-Bold').text(`${index + 1}. ${activity.activityName}`);
+      doc.fontSize(11).fillColor('#666').font('Helvetica');
+      
+      // Date
+      doc.text('   Date: ', { continued: true });
+      doc.fillColor('#333').text(date);
+      
+      // Type
+      doc.fillColor('#666').text('   Type: ', { continued: true });
+      doc.fillColor('#333').text(activity.activityType.charAt(0).toUpperCase() + activity.activityType.slice(1));
+      
+      // Score with color coding
+      let scoreColor = '#666';
+      if (activity.percentage >= 80) scoreColor = '#52b788';
+      else if (activity.percentage >= 60) scoreColor = '#61C3B4';
+      else if (activity.percentage >= 40) scoreColor = '#f4a261';
+      else scoreColor = '#e63946';
+      
+      doc.fillColor('#666').text('   Score: ', { continued: true });
+      doc.fillColor(scoreColor).font('Helvetica-Bold').text(`${activity.score}/${activity.maxScore} (${activity.percentage.toFixed(1)}%)`);
+      
+      // Duration
+      doc.fillColor('#666').font('Helvetica').text('   Duration: ', { continued: true });
+      doc.fillColor('#333').text(`${Math.floor(activity.duration / 60)}m ${activity.duration % 60}s`);
+      
+      // Difficulty if available
+      if (activity.difficulty) {
+        doc.fillColor('#666').text('   Difficulty: ', { continued: true });
+        doc.fillColor('#333').text(activity.difficulty.charAt(0).toUpperCase() + activity.difficulty.slice(1));
+      }
+      
+      doc.moveDown(0.4);
+      // Light separator between activities
+      if (index < Math.min(stats.recentActivities.length, 10) - 1) {
+        doc.moveTo(70, doc.y).lineTo(doc.page.width - 70, doc.y).strokeColor('#eee').lineWidth(0.5).stroke();
+        doc.moveDown(0.4);
+      }
     });
   }
 

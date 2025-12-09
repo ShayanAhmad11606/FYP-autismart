@@ -146,7 +146,7 @@
 }
 
 .bg-info {
-  background: linear-gradient(90deg, #85BCE2 0%, #61C3B4 100%) !important;
+  background: linear-gradient(90deg, #5EBEB0 0%, #61C3B4 100%) !important;
 }
 
 /* Question Cards */
@@ -258,7 +258,7 @@
 }
 
 .badge.bg-info {
-  background: linear-gradient(135deg, #85BCE2 0%, #61C3B4 100%) !important;
+  background: linear-gradient(135deg, #5EBEB0 0%, #61C3B4 100%) !important;
 }
 
 .badge.bg-light {

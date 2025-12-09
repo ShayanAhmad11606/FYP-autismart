@@ -29,22 +29,33 @@ const CaregiverDashboard = () => {
         <div className="row mb-4">
           <div className="col-12">
             <div className="card border-0 shadow-lg" style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: '#5EBEB0',
               borderRadius: '20px',
               overflow: 'hidden'
             }}>
               <div className="card-body p-4 p-md-5 text-white position-relative">
-                <div className="position-absolute top-0 end-0 opacity-10" style={{ fontSize: '10rem' }}>
+                <div className="position-absolute top-0 end-0 opacity-10 d-none d-md-block" style={{ fontSize: '10rem', right: '-2rem', top: '-2rem' }}>
                   <i className="bi bi-heart-fill"></i>
                 </div>
-                <div className="position-relative">
-                  <h1 className="mb-3 fw-bold" style={{textShadow: '0 2px 8px rgba(0,0,0,0.2)'}}>
-                    <i className="bi bi-heart-fill me-3"></i>
-                    Caregiver Dashboard
+                <div className="position-relative" style={{ zIndex: 1 }}>
+                  <h1 className="mb-3 fw-bold d-flex align-items-center flex-wrap" style={{
+                    textShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                    fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+                    lineHeight: '1.3'
+                  }}>
+                    <i className="bi bi-heart-fill me-2 me-md-3"></i>
+                    <span>Caregiver Dashboard</span>
                   </h1>
-                  <p className="mb-0 fs-5 opacity-90">
-                    Welcome back, <strong>{user?.name}</strong>! 
-                    {childrenList.length > 0 ? ` Manage your ${childrenList.length} ${childrenList.length === 1 ? 'child' : 'children'} and track their progress.` : ' Add children to start tracking their progress.'}
+                  <p className="mb-0 opacity-90" style={{
+                    fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+                    lineHeight: '1.6',
+                    maxWidth: '100%',
+                    wordWrap: 'break-word'
+                  }}>
+                    Welcome back, <strong>{user?.name}</strong>!{' '}
+                    {childrenList.length > 0 
+                      ? `Manage your ${childrenList.length} ${childrenList.length === 1 ? 'child' : 'children'} and track their progress.` 
+                      : 'Add children to start tracking their progress.'}
                   </p>
                 </div>
               </div>
@@ -70,7 +81,7 @@ const CaregiverDashboard = () => {
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
                     <div style={{
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      background: '#5EBEB0',
                       borderRadius: '16px',
                       padding: '1rem',
                       color: 'white'
@@ -105,7 +116,7 @@ const CaregiverDashboard = () => {
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
                     <div style={{
-                      background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                      background: '#5EBEB0',
                       borderRadius: '16px',
                       padding: '1rem',
                       color: 'white'
@@ -140,7 +151,7 @@ const CaregiverDashboard = () => {
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
                     <div style={{
-                      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                      background: '#5EBEB0',
                       borderRadius: '16px',
                       padding: '1rem',
                       color: 'white'
@@ -163,40 +174,95 @@ const CaregiverDashboard = () => {
         {/* Stats Overview */}
         <div className="row g-4 mb-4">
           <div className="col-md-4">
-            <StatCard
-              value={childrenList.length.toString()}
-              label="Total Children"
-              icon="bi-people"
-              variant="primary"
-            />
+            <div className="card border-0 shadow-sm h-100" style={{
+              borderRadius: '16px',
+              borderLeft: '4px solid #5EBEB0',
+              transition: 'all 0.3s ease'
+            }}>
+              <div className="card-body p-4">
+                <div className="d-flex justify-content-between align-items-start">
+                  <div className="flex-grow-1">
+                    <div className="text-muted small text-uppercase fw-semibold mb-2" style={{ letterSpacing: '0.5px' }}>
+                      Total Children
+                    </div>
+                    <div className="fs-1 fw-bold" style={{
+                      background: 'linear-gradient(135deg, #5EBEB0 0%, #61C3B4 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    }}>
+                      {childrenList.length}
+                    </div>
+                  </div>
+                  <div className="fs-2" style={{ color: '#5EBEB0', opacity: '0.5' }}>
+                    <i className="bi bi-people"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="col-md-4">
-            <StatCard
-              value={user?.email || 'N/A'}
-              label="Your Email"
-              icon="bi-envelope"
-              variant="success"
-            />
+            <div className="card border-0 shadow-sm h-100" style={{
+              borderRadius: '16px',
+              borderLeft: '4px solid #5EBEB0',
+              transition: 'all 0.3s ease'
+            }}>
+              <div className="card-body p-4">
+                <div className="d-flex justify-content-between align-items-start">
+                  <div className="flex-grow-1 overflow-hidden">
+                    <div className="text-muted small text-uppercase fw-semibold mb-2" style={{ letterSpacing: '0.5px' }}>
+                      Your Email
+                    </div>
+                    <div className="fw-semibold" style={{
+                      fontSize: 'clamp(0.875rem, 1.5vw, 1.25rem)',
+                      color: '#5EBEB0',
+                      wordBreak: 'break-all',
+                      lineHeight: '1.4'
+                    }}>
+                      {user?.email || 'N/A'}
+                    </div>
+                  </div>
+                  <div className="fs-2 ms-2 flex-shrink-0" style={{ color: '#5EBEB0', opacity: '0.5' }}>
+                    <i className="bi bi-envelope"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="col-md-4">
-            <StatCard
-              value={user?.role || 'Caregiver'}
-              label="Account Type"
-              icon="bi-person-badge"
-              variant="info"
-            />
+            <div className="card border-0 shadow-sm h-100" style={{
+              borderRadius: '16px',
+              borderLeft: '4px solid #5EBEB0',
+              transition: 'all 0.3s ease'
+            }}>
+              <div className="card-body p-4">
+                <div className="d-flex justify-content-between align-items-start">
+                  <div className="flex-grow-1">
+                    <div className="text-muted small text-uppercase fw-semibold mb-2" style={{ letterSpacing: '0.5px' }}>
+                      Account Type
+                    </div>
+                    <div className="fs-3 fw-bold text-capitalize" style={{ color: '#5EBEB0' }}>
+                      {user?.role || 'Caregiver'}
+                    </div>
+                  </div>
+                  <div className="fs-2" style={{ color: '#5EBEB0', opacity: '0.5' }}>
+                    <i className="bi bi-person-badge"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Child Management Section */}
         <div className="row mb-4">
           <div className="col-12">
-            <div className="card border-0 shadow-sm" style={{ borderRadius: '16px', background: 'linear-gradient(135deg, #667eea10 0%, #764ba210 100%)' }}>
+            <div className="card border-0 shadow-sm" style={{ borderRadius: '16px', background: 'linear-gradient(135deg, #5EBEB010 0%, #61C3B410 100%)' }}>
               <div className="card-body p-4">
                 <div className="row align-items-center">
                   <div className="col-md-8">
                     <h4 className="mb-2 fw-bold">
-                      <i className="bi bi-people-fill me-2 text-primary"></i>
+                      <i className="bi bi-people-fill me-2" style={{ color: '#5EBEB0' }}></i>
                       Child Management
                     </h4>
                     <p className="text-muted mb-3 mb-md-0">
@@ -206,17 +272,17 @@ const CaregiverDashboard = () => {
                   <div className="col-md-4">
                     <div className="d-grid gap-2">
                       <button 
-                        className="btn btn-primary btn-lg shadow-sm"
+                        className="btn btn-lg shadow-sm"
                         onClick={() => navigate('/child-management')}
-                        style={{ borderRadius: '12px' }}
+                        style={{ borderRadius: '12px', background: '#5EBEB0', color: 'white' }}
                       >
                         <i className="bi bi-person-plus-fill me-2"></i>
                         Manage Children
                       </button>
                       <button 
-                        className="btn btn-outline-primary btn-lg"
+                        className="btn btn-lg"
                         onClick={() => navigate('/child-reports')}
-                        style={{ borderRadius: '12px' }}
+                        style={{ borderRadius: '12px', border: '2px solid #5EBEB0', color: '#5EBEB0', background: 'transparent' }}
                       >
                         <i className="bi bi-file-earmark-bar-graph-fill me-2"></i>
                         View Reports
@@ -243,7 +309,7 @@ const CaregiverDashboard = () => {
               <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '16px' }}>
                 <div className="card-body p-5 text-center">
                   <div className="mb-4">
-                    <i className="bi bi-info-circle" style={{ fontSize: '4rem', color: '#667eea' }}></i>
+                    <i className="bi bi-info-circle" style={{ fontSize: '4rem', color: '#5EBEB0' }}></i>
                   </div>
                   <h4 className="mb-3">No Children Added Yet</h4>
                   <p className="text-muted mb-4">
@@ -264,12 +330,12 @@ const CaregiverDashboard = () => {
               <>
                 {/* Children List */}
                 <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '16px' }}>
-                  <div className="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0 fw-bold"><i className="bi bi-people-fill me-2 text-primary"></i>Your Children</h5>
+                  <div className="card-header border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0 fw-bold"><i className="bi bi-people-fill me-2" style={{ color: '#5EBEB0' }}></i>Your Children</h5>
                     <button 
-                      className="btn btn-sm btn-primary"
+                      className="btn btn-sm"
                       onClick={() => navigate('/child-management')}
-                      style={{ borderRadius: '8px' }}
+                      style={{ borderRadius: '8px', background: '#5EBEB0', color: 'white' }}
                     >
                       <i className="bi bi-pencil-square me-1"></i>Manage
                     </button>
@@ -279,9 +345,8 @@ const CaregiverDashboard = () => {
                       {childrenList.map((child) => (
                         <div key={child._id} className="col-md-6">
                           <div 
-                            className="p-4 rounded-3 border h-100" 
+                            className="p-4 rounded-3 border h-100 child-card-bg" 
                             style={{ 
-                              background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
                               cursor: 'pointer',
                               transition: 'all 0.3s ease'
                             }}
@@ -301,7 +366,7 @@ const CaregiverDashboard = () => {
                                 style={{
                                   width: '50px',
                                   height: '50px',
-                                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                                  background: '#5EBEB0'
                                 }}
                               >
                                 <i className="bi bi-person-fill fs-4"></i>
@@ -364,23 +429,23 @@ const CaregiverDashboard = () => {
             {/* Quick Actions */}
             <Card title="Quick Actions" className="mb-4">
               <div className="d-grid gap-2">
-                <button className="btn btn-outline-primary" onClick={() => navigate('/child-management')}>
+                <button className="btn" style={{ border: '2px solid #5EBEB1', color: '#5EBEB1', background: 'transparent' }} onClick={() => navigate('/child-management')}>
                   <i className="bi bi-person-plus-fill me-2"></i>
                   Manage Children
                 </button>
-                <button className="btn btn-outline-primary" onClick={() => navigate('/child-reports')}>
+                <button className="btn" style={{ border: '2px solid #5EBEB1', color: '#5EBEB1', background: 'transparent' }} onClick={() => navigate('/child-reports')}>
                   <i className="bi bi-file-earmark-bar-graph-fill me-2"></i>
                   View Reports
                 </button>
-                <button className="btn btn-outline-primary" onClick={() => navigate('/assessment')}>
+                <button className="btn" style={{ border: '2px solid #5EBEB1', color: '#5EBEB1', background: 'transparent' }} onClick={() => navigate('/assessment')}>
                   <i className="bi bi-clipboard-check me-2"></i>
                   Start Assessment
                 </button>
-                <button className="btn btn-outline-primary" onClick={() => navigate('/games')}>
+                <button className="btn" style={{ border: '2px solid #5EBEB1', color: '#5EBEB1', background: 'transparent' }} onClick={() => navigate('/games')}>
                   <i className="bi bi-controller me-2"></i>
                   Play Therapy Games
                 </button>
-                <button className="btn btn-outline-primary" onClick={() => navigate('/communication')}>
+                <button className="btn" style={{ border: '2px solid #5EBEB1', color: '#5EBEB1', background: 'transparent' }} onClick={() => navigate('/communication')}>
                   <i className="bi bi-chat-dots me-2"></i>
                   Message Expert
                 </button>
@@ -392,8 +457,8 @@ const CaregiverDashboard = () => {
               <div className="d-flex flex-column gap-3">
                 <div className="d-flex align-items-start">
                   <div 
-                    className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3"
-                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0 }}
+                    className="rounded-circle text-white d-flex align-items-center justify-content-center me-3"
+                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0, background: '#5EBEB1' }}
                   >
                     1
                   </div>
@@ -404,8 +469,8 @@ const CaregiverDashboard = () => {
                 </div>
                 <div className="d-flex align-items-start">
                   <div 
-                    className="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3"
-                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0 }}
+                    className="rounded-circle text-white d-flex align-items-center justify-content-center me-3"
+                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0, background: '#5EBEB1' }}
                   >
                     2
                   </div>
@@ -416,8 +481,8 @@ const CaregiverDashboard = () => {
                 </div>
                 <div className="d-flex align-items-start">
                   <div 
-                    className="rounded-circle bg-info text-white d-flex align-items-center justify-content-center me-3"
-                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0 }}
+                    className="rounded-circle text-white d-flex align-items-center justify-content-center me-3"
+                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0, background: '#5EBEB1' }}
                   >
                     3
                   </div>
@@ -428,8 +493,8 @@ const CaregiverDashboard = () => {
                 </div>
                 <div className="d-flex align-items-start">
                   <div 
-                    className="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center me-3"
-                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0 }}
+                    className="rounded-circle text-white d-flex align-items-center justify-content-center me-3"
+                    style={{ width: '32px', height: '32px', fontSize: '14px', flexShrink: 0, background: '#5EBEB1' }}
                   >
                     4
                   </div>
@@ -446,7 +511,7 @@ const CaregiverDashboard = () => {
               <p className="mb-3 small">
                 If you have questions or need assistance, feel free to reach out to our support team.
               </p>
-              <button className="btn btn-info w-100" onClick={() => navigate('/help')}>
+              <button className="btn w-100" style={{ background: '#5EBEB1', color: 'white' }} onClick={() => navigate('/help')}>
                 <i className="bi bi-question-circle me-2"></i>
                 Visit Help Center
               </button>

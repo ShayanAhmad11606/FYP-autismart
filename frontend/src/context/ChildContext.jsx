@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { childAPI } from '../services/api';
+import { useAuth } from './AuthContext';
 
 const ChildContext = createContext();
 
@@ -12,15 +13,27 @@ export const useChild = () => {
 };
 
 export const ChildProvider = ({ children }) => {
+  const { preloadedData, isAuthenticated } = useAuth();
   const [selectedChild, setSelectedChild] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load children list on mount
+  // Use preloaded data from AuthContext if available
   useEffect(() => {
-    loadChildren();
-  }, []);
+    if (isAuthenticated && preloadedData?.children && !isInitialized) {
+      loadChildren(preloadedData.children);
+    } else if (isAuthenticated && !isInitialized && !preloadedData) {
+      loadChildren();
+    } else if (!isAuthenticated) {
+      // Reset state when user logs out
+      setChildrenList([]);
+      setSelectedChild(null);
+      setIsInitialized(false);
+      setLoading(false);
+    }
+  }, [isAuthenticated, preloadedData, isInitialized]);
 
   // Load selected child from localStorage
   useEffect(() => {
@@ -33,12 +46,20 @@ export const ChildProvider = ({ children }) => {
     }
   }, [childrenList]);
 
-  const loadChildren = async () => {
+  const loadChildren = async (preloadedData = null) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await childAPI.getChildren();
-      setChildrenList(response.data || []);
+      
+      // Use preloaded data if available, otherwise fetch
+      if (preloadedData) {
+        setChildrenList(preloadedData || []);
+        setIsInitialized(true);
+      } else {
+        const response = await childAPI.getChildren();
+        setChildrenList(response.data || []);
+        setIsInitialized(true);
+      }
     } catch (err) {
       console.error('Error loading children:', err);
       setError(err.message || 'Failed to load children');
@@ -126,7 +147,9 @@ export const ChildProvider = ({ children }) => {
     updateChild,
     deleteChild,
     recordActivity,
-    refreshChildren: loadChildren
+    refreshChildren: loadChildren,
+    preloadChildren: loadChildren,
+    isInitialized
   };
 
   return <ChildContext.Provider value={value}>{children}</ChildContext.Provider>;

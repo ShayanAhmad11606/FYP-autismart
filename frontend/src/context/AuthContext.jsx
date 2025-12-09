@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI } from '../services/api';
+import { authAPI, childAPI } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [sessionExpired, setSessionExpired] = useState(false);
+  const [preloadedData, setPreloadedData] = useState(null);
 
   // Auto logout after 3 minutes of inactivity
   useEffect(() => {
@@ -77,9 +78,31 @@ export const AuthProvider = ({ children }) => {
     const currentUser = authAPI.getCurrentUser();
     if (currentUser) {
       setUser(currentUser);
+      // Preload essential data for existing session
+      preloadUserData();
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
+
+  // Preload essential data after login
+  const preloadUserData = async () => {
+    try {
+      // Fetch all essential data in parallel
+      const [childrenResponse] = await Promise.all([
+        childAPI.getChildren().catch(() => ({ data: [] }))
+        // Add more API calls here as needed (activities, reports, etc.)
+      ]);
+      
+      setPreloadedData({
+        children: childrenResponse.data || []
+      });
+    } catch (err) {
+      console.error('Error preloading data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const login = async (credentials) => {
     // Support both old signature (email, password) and new signature (credentials object)
@@ -95,6 +118,10 @@ export const AuthProvider = ({ children }) => {
     
     const response = await authAPI.login(loginData);
     setUser(response.data.user);
+    
+    // Preload user data immediately after login
+    await preloadUserData();
+    
     return response;
   };
 
@@ -117,12 +144,17 @@ export const AuthProvider = ({ children }) => {
     
     const response = await authAPI.verifyOtp(otpData);
     setUser(response.data.user);
+    
+    // Preload user data immediately after OTP verification
+    await preloadUserData();
+    
     return response;
   };
 
   const logout = () => {
     authAPI.logout();
     setUser(null);
+    setPreloadedData(null);
   };
 
   const value = {
@@ -135,6 +167,7 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!user,
     sessionExpired,
     setSessionExpired,
+    preloadedData,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

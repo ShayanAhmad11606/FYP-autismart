@@ -106,7 +106,7 @@
   color: var(--text-secondary) !important;
 }
 
-/* Fix white backgrounds in dark mode - MORE AGGRESSIVE */
+/* Fix white backgrounds in dark mode - COMPREHENSIVE */
 [data-theme="dark"] [style*="background: #ffffff"],
 [data-theme="dark"] [style*="background:#ffffff"],
 [data-theme="dark"] [style*="background: rgb(255, 255, 255)"],
@@ -118,6 +118,51 @@
 [data-theme="dark"] .bg-light {
   background: var(--card-bg) !important;
   background-color: var(--card-bg) !important;
+}
+
+/* Fix ALL instances of bg-white and bg-light in ANY component */
+[data-theme="dark"] div.bg-white,
+[data-theme="dark"] div.bg-light,
+[data-theme="dark"] span.bg-white,
+[data-theme="dark"] span.bg-light,
+[data-theme="dark"] p.bg-white,
+[data-theme="dark"] p.bg-light,
+[data-theme="dark"] section.bg-white,
+[data-theme="dark"] section.bg-light,
+[data-theme="dark"] .p-2.bg-light,
+[data-theme="dark"] .p-3.bg-light,
+[data-theme="dark"] .py-4.bg-light,
+[data-theme="dark"] .py-5.bg-light {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* CRITICAL: Force override any element with white/light in background style attribute */
+[data-theme="dark"] [style*="background: linear-gradient(135deg, #ffffff"],
+[data-theme="dark"] [style*="background: linear-gradient(135deg, #f8f9fa"] {
+  background: var(--card-bg) !important;
+}
+
+[data-theme="dark"] [style*="background: linear-gradient(135deg, #ffffff"]:hover,
+[data-theme="dark"] [style*="background: linear-gradient(135deg, #f8f9fa"]:hover {
+  background: var(--card-hover) !important;
+}
+
+/* Child card background - theme aware */
+[data-theme="dark"] .child-card-bg {
+  background-color: var(--card-bg) !important;
+}
+
+[data-theme="dark"] .child-card-bg:hover {
+  background-color: var(--card-hover) !important;
+}
+
+/* Input group text elements */
+[data-theme="dark"] .input-group-text.bg-white,
+[data-theme="dark"] .input-group-text {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
 }
 
 /* Override Bootstrap's white backgrounds */
@@ -160,9 +205,27 @@
   color: var(--bg-primary) !important;
 }
 
-/* Better gradient visibility */
-[data-theme="dark"] .hero-section {
-  background: linear-gradient(135deg, #334155 0%, #1e293b 100%) !important;
+/* Better gradient visibility - removed duplicate, handled in hero.css */
+
+/* Fix rounded bg-light elements in Communication and other pages */
+[data-theme="dark"] .rounded-circle.bg-light,
+[data-theme="dark"] .rounded.bg-light,
+[data-theme="dark"] .bg-light.rounded,
+[data-theme="dark"] .d-flex.gap-3.p-3.bg-light,
+[data-theme="dark"] .d-flex.gap-3.p-2.bg-light {
+  background-color: var(--card-bg) !important;
+}
+
+/* Fix text colors inside light backgrounds in dark mode */
+[data-theme="dark"] .bg-light *,
+[data-theme="dark"] .bg-white * {
+  color: var(--text-primary);
+}
+
+/* Ensure proper contrast for all utility backgrounds */
+[data-theme="dark"] .bg-primary-light {
+  background-color: var(--primary-lighter) !important;
+  color: var(--text-primary) !important;
 }
 
 /* Caregiver Dashboard Dark Theme */
@@ -247,6 +310,11 @@
 
 /* Alert styling in dark mode */
 [data-theme="dark"] .caregiver-dashboard-wrapper .alert {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
 /* Headings and text */
 [data-theme="dark"] .caregiver-dashboard-wrapper h1,
 [data-theme="dark"] .caregiver-dashboard-wrapper h2,
@@ -326,22 +394,11 @@
 
 [data-theme="dark"] .caregiver-dashboard-wrapper .card-info small {
   color: var(--text-secondary) !important;
-}data-theme="dark"] .caregiver-dashboard-wrapper .spinner-border {
+}
+
+/* Loading indicators in dark mode */
+[data-theme="dark"] .caregiver-dashboard-wrapper .spinner-border {
   color: var(--primary) !important;
-}
-
-/* Headings and text */
-[data-theme="dark"] .caregiver-dashboard-wrapper h1,
-[data-theme="dark"] .caregiver-dashboard-wrapper h2,
-[data-theme="dark"] .caregiver-dashboard-wrapper h3,
-[data-theme="dark"] .caregiver-dashboard-wrapper h4,
-[data-theme="dark"] .caregiver-dashboard-wrapper h5,
-[data-theme="dark"] .caregiver-dashboard-wrapper h6 {
-  color: var(--text-primary) !important;
-}
-
-[data-theme="dark"] .caregiver-dashboard-wrapper .fw-bold {
-  color: var(--text-primary) !important;
 }
 
 /* Button styling in dark mode */
@@ -375,9 +432,6 @@
   box-shadow: var(--shadow-lg) !important;
 }
 
-/* Fix specific card sections */
-[data-theme="dark"] .caregiver-dashboard-wrapper .p-4,
-[data-theme="dark"] .caregiver-dashboard-wrapper .p-3,
 /* Ensure proper contrast for all nested elements */
 [data-theme="dark"] .caregiver-dashboard-wrapper .card * {
   border-color: var(--border-color);
@@ -444,6 +498,183 @@
 [data-theme="dark"] .caregiver-dashboard-wrapper .border {
   border-color: var(--border-color) !important;
 }
+
+/* ==================== GLOBAL DARK MODE FIXES ==================== */
+
+/* Fix ALL pages with bg-white and bg-light - COMPREHENSIVE */
+[data-theme="dark"] *[class*="bg-white"],
+[data-theme="dark"] *[class*="bg-light"] {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Sessions, Reports, Profile pages - Fix all bg-light elements */
+[data-theme="dark"] .text-center.py-5.bg-light,
+[data-theme="dark"] .text-center.py-4.bg-light,
+[data-theme="dark"] .p-3.bg-light,
+[data-theme="dark"] .p-2.bg-light,
+[data-theme="dark"] .d-flex.gap-3.p-3.bg-light,
+[data-theme="dark"] .d-flex.gap-3.p-2.bg-light {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Fix message/conversation cards in Communication page */
+[data-theme="dark"] .p-3.rounded.cursor-pointer.bg-light,
+[data-theme="dark"] .p-3.rounded.cursor-pointer {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .p-3.rounded.cursor-pointer:hover {
+  background-color: var(--card-hover) !important;
+}
+
+/* Fix primary-light backgrounds in dark mode */
+[data-theme="dark"] .bg-primary-light.border-primary {
+  background-color: var(--primary-lighter) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Fix avatar circles and rounded elements */
+[data-theme="dark"] .rounded-circle.bg-light.d-flex {
+  background-color: var(--card-bg) !important;
+}
+
+/* Fix all empty state messages */
+[data-theme="dark"] .text-center.py-5.bg-light.rounded,
+[data-theme="dark"] .text-center.py-4.bg-light.rounded {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Game pages - Fix stats and summary cards */
+[data-theme="dark"] .p-3.bg-light.rounded,
+[data-theme="dark"] .p-2.bg-light.rounded {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Leaderboard - Fix achievement items */
+[data-theme="dark"] .d-flex.gap-3.p-2.bg-light.rounded {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Dashboard page - Fix activity items */
+[data-theme="dark"] .p-2.bg-light.rounded {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Fix all inline white backgrounds */
+[data-theme="dark"] div[style*="background-color: white"],
+[data-theme="dark"] div[style*="background-color: #fff"],
+[data-theme="dark"] div[style*="background-color: #ffffff"],
+[data-theme="dark"] div[style*="background: white"],
+[data-theme="dark"] div[style*="background: #fff"],
+[data-theme="dark"] div[style*="background: #ffffff"] {
+  background-color: var(--card-bg) !important;
+  background: var(--card-bg) !important;
+}
+
+/* Ensure text in these elements is visible */
+[data-theme="dark"] .bg-light h1,
+[data-theme="dark"] .bg-light h2,
+[data-theme="dark"] .bg-light h3,
+[data-theme="dark"] .bg-light h4,
+[data-theme="dark"] .bg-light h5,
+[data-theme="dark"] .bg-light h6,
+[data-theme="dark"] .bg-light p,
+[data-theme="dark"] .bg-light span,
+[data-theme="dark"] .bg-light div {
+  color: var(--text-primary) !important;
+}
+
+/* Fix banners and hero sections on all pages */
+[data-theme="dark"] .hero-banner,
+[data-theme="dark"] .page-banner,
+[data-theme="dark"] .banner-section {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* CRITICAL FIX: Override inline white gradient styles in caregiver dashboard */
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 > div[style*="linear-gradient(135deg, #ffffff"] {
+  background: var(--card-bg) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .col-md-6 > div[style*="linear-gradient(135deg, #ffffff"]:hover {
+  background: var(--card-hover) !important;
+}
+
+/* Fix "Your Children" card header with bg-white class */
+[data-theme="dark"] .caregiver-dashboard-wrapper .card-header.bg-white.border-0 {
+  background-color: var(--card-bg) !important;
+  background: var(--card-bg) !important;
+}
+
+/* Override any white/light gradient backgrounds in child cards */
+[data-theme="dark"] .caregiver-dashboard-wrapper .p-4.rounded-3.border[style*="background"] {
+  background: var(--card-bg) !important;
+}
+
+[data-theme="dark"] .caregiver-dashboard-wrapper .p-4.rounded-3.border[style*="background"]:hover {
+  background: var(--card-hover) !important;
+}
+
+/* Fix Bootstrap default white backgrounds */
+[data-theme="dark"] .container .bg-white,
+[data-theme="dark"] .container-fluid .bg-white {
+  background-color: var(--card-bg) !important;
+}
+
+/* Input groups */
+[data-theme="dark"] .input-group-text {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Forms in dark mode */
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--primary) !important;
+}
+
+/* Dropdowns */
+[data-theme="dark"] .dropdown-menu {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background-color: var(--card-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Fix any remaining white sections */
+[data-theme="dark"] section.bg-white,
+[data-theme="dark"] section.bg-light,
+[data-theme="dark"] div.bg-white,
+[data-theme="dark"] div.bg-light {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
 
 /* Ensure proper contrast for all nested elements */
 [data-theme="dark"] .caregiver-dashboard-wrapper .card * {

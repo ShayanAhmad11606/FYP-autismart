@@ -1,7 +1,7 @@
 /* Hero Section Styles - Welcoming and hopeful */
 
 .hero-section {
-  background: linear-gradient(135deg, #61C3B4 0%, #85BCE2 50%, #79C9A0 100%);
+  background: linear-gradient(135deg, #61C3B4 0%, #5EBEB0 50%, #79C9A0 100%);
   color: white;
   padding: var(--space-2xl) 0;
   border-radius: 0px;
@@ -10,6 +10,12 @@
   position: relative;
   overflow: hidden;
   animation: backgroundFlow 15s ease-in-out infinite;
+}
+
+/* Dark mode hero section */
+[data-theme="dark"] .hero-section {
+  background: linear-gradient(135deg, #2a4946 0%, #1e3a37 50%, #3a5550 100%) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 @keyframes backgroundFlow {
@@ -46,7 +52,7 @@
 .hero-section h1 {
   font-size: 3.5rem;
   font-weight: 800;
-  background: linear-gradient(45deg, #ffffff 0%, #F6BA82 25%, #ffffff 50%, #85BCE2 75%, #ffffff 100%);
+  background: linear-gradient(45deg, #ffffff 0%, #F6BA82 25%, #ffffff 50%, #5EBEB0 75%, #ffffff 100%);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

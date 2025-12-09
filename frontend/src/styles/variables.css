@@ -13,7 +13,7 @@
   --accent-coral-light: #f2a68f;
   --accent-peach: #F6BA82; /* Peach/Orange */
   --accent-peach-light: #f9cb9f;
-  --accent-sky: #85BCE2; /* Sky Blue */
+  --accent-sky: #5EBEB0; /* Teal */
   --accent-mint: #79C9A0; /* Mint Green */
   --accent-teal: #61C3B4; /* Teal */
   
@@ -34,8 +34,8 @@
   --warning-light: #f9d1a8;
   --danger: #EC896E; /* Coral */
   --danger-light: #f2ad96;
-  --info: #85BCE2; /* Blue */
-  --info-light: #aacfe9;
+  --info: #5EBEB0; /* Teal */
+  --info-light: #8ed4ca;
   
   /* Spacing Scale */
   --space-xs: 4px;
@@ -93,5 +93,5 @@
   --primary-lighter: #2a4a46;
   --accent-coral: #EC896E;
   --accent-peach: #F6BA82;
-  --accent-sky: #85BCE2;
+  --accent-sky: #5EBEB0;
 }

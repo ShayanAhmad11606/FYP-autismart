@@ -104,14 +104,24 @@ const ChildReports = () => {
 
   // Prepare chart data
   const progressChartData = reportData?.statistics?.progressOverTime ? {
-    labels: reportData.statistics.progressOverTime.map(item => item.date),
+    labels: reportData.statistics.progressOverTime.map(item => 
+      new Date(item.date).toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric' 
+      })
+    ),
     datasets: [{
-      label: 'Average Score',
+      label: 'Average Score (%)',
       data: reportData.statistics.progressOverTime.map(item => item.averageScore),
       borderColor: '#61C3B4',
       backgroundColor: 'rgba(97, 195, 180, 0.1)',
       fill: true,
-      tension: 0.4
+      tension: 0.4,
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      pointBackgroundColor: '#61C3B4',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2
     }]
   } : null;
 
@@ -119,14 +129,18 @@ const ChildReports = () => {
     labels: Object.keys(reportData.statistics.byActivityType),
     datasets: [{
       label: 'Average Score (%)',
-      data: Object.values(reportData.statistics.byActivityType).map(item => item.averageScore),
+      data: Object.values(reportData.statistics.byActivityType).map(item => item.averageScore.toFixed(1)),
       backgroundColor: [
         '#61C3B4',
         '#79C9A0',
         '#b4a7d6',
         '#f4a261',
-        '#87ceeb'
-      ]
+        '#5EBEB0',
+        '#52b788'
+      ],
+      borderColor: '#fff',
+      borderWidth: 2,
+      borderRadius: 8
     }]
   } : null;
 
@@ -205,7 +219,11 @@ const ChildReports = () => {
                       </div>
                       {reportData.child.dateOfBirth && (
                         <div className="col-md-6 mb-3">
-                          <strong>Date of Birth:</strong> {reportData.child.dateOfBirth}
+                          <strong>Date of Birth:</strong> {new Date(reportData.child.dateOfBirth).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
                         </div>
                       )}
                       {reportData.child.diagnosis && (
@@ -350,13 +368,51 @@ const ChildReports = () => {
                       responsive: true,
                       maintainAspectRatio: false,
                       plugins: {
-                        legend: { display: true },
-                        title: { display: false }
+                        legend: { 
+                          display: true,
+                          position: 'top',
+                          labels: {
+                            font: { size: 14, weight: '600' },
+                            padding: 15,
+                            usePointStyle: true
+                          }
+                        },
+                        title: { display: false },
+                        tooltip: {
+                          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                          padding: 12,
+                          titleFont: { size: 14, weight: 'bold' },
+                          bodyFont: { size: 13 },
+                          cornerRadius: 8,
+                          displayColors: true,
+                          callbacks: {
+                            label: function(context) {
+                              return `Score: ${context.parsed.y.toFixed(1)}%`;
+                            }
+                          }
+                        }
                       },
                       scales: {
                         y: {
                           beginAtZero: true,
-                          max: 100
+                          max: 100,
+                          ticks: {
+                            callback: function(value) {
+                              return value + '%';
+                            },
+                            font: { size: 12 }
+                          },
+                          grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                          }
+                        },
+                        x: {
+                          ticks: {
+                            font: { size: 12 }
+                          },
+                          grid: {
+                            display: false
+                          }
                         }
                       }
                     }}
@@ -376,12 +432,41 @@ const ChildReports = () => {
                       maintainAspectRatio: false,
                       plugins: {
                         legend: { display: false },
-                        title: { display: false }
+                        title: { display: false },
+                        tooltip: {
+                          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                          padding: 12,
+                          titleFont: { size: 14, weight: 'bold' },
+                          bodyFont: { size: 13 },
+                          cornerRadius: 8,
+                          callbacks: {
+                            label: function(context) {
+                              return `Average: ${context.parsed.y}%`;
+                            }
+                          }
+                        }
                       },
                       scales: {
                         y: {
                           beginAtZero: true,
-                          max: 100
+                          max: 100,
+                          ticks: {
+                            callback: function(value) {
+                              return value + '%';
+                            },
+                            font: { size: 12 }
+                          },
+                          grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                          }
+                        },
+                        x: {
+                          ticks: {
+                            font: { size: 12 }
+                          },
+                          grid: {
+                            display: false
+                          }
                         }
                       }
                     }}
@@ -401,6 +486,7 @@ const ChildReports = () => {
                         <th>Activity</th>
                         <th>Type</th>
                         <th>Score</th>
+                        <th>Duration</th>
                         <th>Date</th>
                       </tr>
                     </thead>
@@ -410,7 +496,7 @@ const ChildReports = () => {
                           <td>{activity.activityName}</td>
                           <td>
                             <span className={`badge bg-${getActivityTypeBadgeClass(activity.activityType)}`}>
-                              {activity.activityType}
+                              {activity.activityType.charAt(0).toUpperCase() + activity.activityType.slice(1)}
                             </span>
                           </td>
                           <td>
@@ -419,8 +505,17 @@ const ChildReports = () => {
                             </span>
                           </td>
                           <td>
-                            {activity.completedAt?.toDate ? 
-                              activity.completedAt.toDate().toLocaleDateString() : 
+                            {activity.duration ? 
+                              `${Math.floor(activity.duration / 60)}m ${activity.duration % 60}s` : 
+                              'N/A'}
+                          </td>
+                          <td>
+                            {activity.completedAt ? 
+                              new Date(activity.completedAt).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                              }) : 
                               'N/A'}
                           </td>
                         </tr>

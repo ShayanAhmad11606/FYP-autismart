@@ -228,6 +228,16 @@ export const childAPI = {
     }
   },
 
+  // Get all children (for experts and admins)
+  getAllChildren: async () => {
+    try {
+      const response = await api.get('/caregiver/all-children');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch all children' };
+    }
+  },
+
   // Get a specific child
   getChild: async (childId) => {
     try {

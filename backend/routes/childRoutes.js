@@ -7,6 +7,9 @@ const router = express.Router();
 // All routes require authentication
 router.use(verifyToken);
 
+// Get all children (for experts and admins)
+router.get('/all-children', childController.getAllChildren);
+
 // Child management routes
 router.post('/children', childController.addChild);
 router.get('/children', childController.getChildren);

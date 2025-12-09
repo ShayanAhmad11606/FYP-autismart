@@ -58,8 +58,8 @@
 
 [data-theme="dark"] .theme-toggle__knob {
   left: calc(100% - 4px - 28px);
-  background: radial-gradient(circle at 35% 35%, #9ac4e8 0%, #85BCE2 100%);
-  box-shadow: 0 4px 12px rgba(133, 188, 226, 0.5), 0 0 20px rgba(154, 196, 232, 0.3);
+  background: radial-gradient(circle at 35% 35%, #8ed4ca 0%, #5EBEB0 100%);
+  box-shadow: 0 4px 12px rgba(94, 190, 176, 0.5), 0 0 20px rgba(142, 212, 202, 0.3);
 }
 
 [data-theme="dark"] .theme-toggle__icon--moon { display: block; }
@@ -74,8 +74,8 @@
 
 .theme-toggle__knob.is-on {
   left: calc(100% - 4px - 28px);
-  background: radial-gradient(circle at 35% 35%, #9ac4e8 0%, #85BCE2 100%);
-  box-shadow: 0 4px 12px rgba(133, 188, 226, 0.5), 0 0 20px rgba(154, 196, 232, 0.3);
+  background: radial-gradient(circle at 35% 35%, #8ed4ca 0%, #5EBEB0 100%);
+  box-shadow: 0 4px 12px rgba(94, 190, 176, 0.5), 0 0 20px rgba(142, 212, 202, 0.3);
 }
 
 /* Make the toggle sit nicely inside navbar */

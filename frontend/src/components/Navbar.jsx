@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import ThemeToggle from './ThemeToggle';
@@ -18,6 +18,25 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
+  // Close menu when clicking outside or pressing escape
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') closeMenu();
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const handleLogout = () => {
     logout();
     closeMenu();
@@ -25,23 +44,33 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-custom sticky-top">
-      <div className="container-fluid px-4">
-          <Link className="navbar-brand fw-bold d-flex align-items-center" to="/" onClick={closeMenu}>
-          <img src="/logo.PNG" alt="AutiSmart Logo" style={{ height: '40px' }} />
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={toggleMenu}
-          aria-controls="navbarNav"
-          aria-expanded={isOpen}
-          aria-label="Toggle navigation"
-          style={{ border: '1px solid rgba(255,255,255,0.3)' }}
-        >
-          <span className="navbar-toggler-icon" style={{ filter: 'invert(1)' }}></span>
-        </button>
-        <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id="navbarNav">
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="navbar-overlay" 
+          onClick={closeMenu}
+          aria-hidden="true"
+        />
+      )}
+      
+      <nav className="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div className="container-fluid px-4">
+            <Link className="navbar-brand fw-bold d-flex align-items-center" to="/" onClick={closeMenu}>
+            <img src="/logo.PNG" alt="AutiSmart Logo" style={{ height: '40px' }} />
+          </Link>
+          <button
+            className={`navbar-toggler ${isOpen ? 'active' : ''}`}
+            type="button"
+            onClick={toggleMenu}
+            aria-controls="navbarNav"
+            aria-expanded={isOpen}
+            aria-label="Toggle navigation"
+            style={{ border: '1px solid rgba(255,255,255,0.3)' }}
+          >
+            <span className="navbar-toggler-icon" style={{ filter: 'invert(1)' }}></span>
+          </button>
+          <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
             {!isAuthenticated && (
               <>
@@ -198,6 +227,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    </>
   );
 };
 

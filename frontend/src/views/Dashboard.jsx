@@ -76,7 +76,7 @@ const Dashboard = () => {
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
                     <div style={{
-                      background: '#51A79F',
+                      background: '#5EBEB0',
                       borderRadius: '16px',
                       padding: '1rem',
                       color: 'white'
@@ -113,7 +113,7 @@ const Dashboard = () => {
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
                     <div style={{
-                      background: '#51A79F',
+                      background: '#5EBEB0',
                       borderRadius: '16px',
                       padding: '1rem',
                       color: 'white'
@@ -148,7 +148,7 @@ const Dashboard = () => {
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
                     <div style={{
-                      background: '#51A79F',
+                      background: '#5EBEB0',
                       borderRadius: '16px',
                       padding: '1rem',
                       color: 'white'

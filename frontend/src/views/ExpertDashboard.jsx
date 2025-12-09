@@ -4,16 +4,39 @@ import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import StatCard from '../components/StatCard';
 import Badge from '../components/Badge';
+import { childAPI } from '../services/api';
 
 const ExpertDashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (user && user.role !== 'expert') {
       navigate('/dashboard');
     }
   }, [user, navigate]);
+
+  useEffect(() => {
+    fetchPatients();
+  }, []);
+
+  const fetchPatients = async () => {
+    try {
+      setLoading(true);
+      const response = await childAPI.getAllChildren();
+      if (response.success) {
+        setPatients(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching patients:', error);
+      setError(error.message || 'Failed to fetch patients');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -26,12 +49,16 @@ const ExpertDashboard = () => {
     { id: 3, patient: 'Lily Williams', caregiver: 'Sarah Williams', time: '4:00 PM', type: 'Occupational Discussion', status: 'upcoming' }
   ];
 
-  const recentPatients = [
-    { id: 1, name: 'Alex Doe', age: 8, therapyType: 'Speech Discussion', progress: 75, lastSession: '2025-11-25' },
-    { id: 2, name: 'Emma Smith', age: 6, therapyType: 'ABA Discussion', progress: 68, lastSession: '2025-11-24' },
-    { id: 3, name: 'Lily Williams', age: 7, therapyType: 'Occupational Discussion', progress: 82, lastSession: '2025-11-26' },
-    { id: 4, name: 'Jack Brown', age: 9, therapyType: 'Social Skills', progress: 70, lastSession: '2025-11-23' }
-  ];
+  // Transform real patient data for display
+  const recentPatients = patients.map(child => ({
+    id: child._id,
+    name: child.name,
+    age: child.age,
+    therapyType: child.diagnosis || 'General Care',
+    progress: 0, // This would need to be calculated from activities
+    lastSession: child.updatedAt ? new Date(child.updatedAt).toISOString().split('T')[0] : 'N/A',
+    caregiver: child.caregiverId?.name || 'Unknown'
+  }));
 
   const pendingReviews = [
     { id: 1, patient: 'Alex Doe', type: 'Assessment', date: '2025-11-26', priority: 'high' },
@@ -52,7 +79,7 @@ const ExpertDashboard = () => {
         <div className="row mb-4">
           <div className="col-12">
             <div className="card border-0 shadow-lg" style={{
-              background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+              background: 'linear-gradient(135deg, #ADA9D3 0%, #9B96C9 100%)',
               borderRadius: '20px',
               overflow: 'hidden'
             }}>
@@ -68,6 +95,18 @@ const ExpertDashboard = () => {
                   <p className="mb-0 fs-5 opacity-90">
                     Welcome back, <strong>Dr. {user?.name}</strong>! You have <span className="fw-bold">{todaySessions.length}</span> sessions scheduled today.
                   </p>
+                  {loading && (
+                    <div className="mt-2">
+                      <span className="spinner-border spinner-border-sm me-2"></span>
+                      Loading patients...
+                    </div>
+                  )}
+                  {error && (
+                    <div className="alert alert-warning mt-2 mb-0" role="alert">
+                      <i className="bi bi-exclamation-triangle me-2"></i>
+                      {error}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -92,7 +131,7 @@ const ExpertDashboard = () => {
                 <div className="d-flex align-items-center">
                   <div className="flex-shrink-0">
                     <div style={{
-                      background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                      background: 'linear-gradient(135deg, #ADA9D3 0%, #9B96C9 100%)',
                       borderRadius: '16px',
                       padding: '1rem',
                       color: 'white'
@@ -186,7 +225,7 @@ const ExpertDashboard = () => {
         <div className="row g-4 mb-4">
           <div className="col-md-3">
             <StatCard
-              value={myPatients.length.toString()}
+              value={recentPatients.length.toString()}
               label="Active Patients"
               icon="bi-people"
               variant="primary"
@@ -240,7 +279,7 @@ const ExpertDashboard = () => {
                       e.currentTarget.style.boxShadow = 'none';
                     }}>
                       <div className="text-white" style={{
-                        background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                        background: 'linear-gradient(135deg, #ADA9D3 0%, #9B96C9 100%)',
                         borderRadius: '12px',
                         width: '60px',
                         height: '60px',
@@ -283,49 +322,56 @@ const ExpertDashboard = () => {
                 <h5 className="mb-0 fw-bold"><i className="bi bi-people-fill me-2 text-success"></i>My Patients</h5>
               </div>
               <div className="card-body p-0">
-                <div className="table-responsive">
-                  <table className="table table-hover mb-0">
-                    <thead style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
-                      <tr>
-                        <th className="px-4 py-3 border-0">Patient</th>
-                        <th className="py-3 border-0">Age</th>
-                        <th className="py-3 border-0">Discussion Type</th>
-                        <th className="py-3 border-0">Progress</th>
-                        <th className="py-3 border-0">Last Session</th>
-                        <th className="py-3 border-0">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {myPatients.map((patient) => (
-                        <tr key={patient.id} style={{ transition: 'background 0.2s ease' }}>
-                          <td className="fw-bold px-4 py-3"><i className="bi bi-person-circle me-2 text-primary"></i>{patient.name}</td>
-                          <td className="py-3">{patient.age} years</td>
-                          <td className="py-3">
-                            <Badge variant="info"><i className="bi bi-activity me-1"></i>{patient.therapyType}</Badge>
-                          </td>
-                          <td className="py-3">
-                            <div className="d-flex align-items-center gap-2">
-                              <div className="progress" style={{ width: '100px', height: '10px', borderRadius: '10px' }}>
-                                <div
-                                  className={`progress-bar bg-${patient.progress >= 70 ? 'success' : 'warning'}`}
-                                  style={{ width: `${patient.progress}%`, transition: 'width 1s ease' }}
-                                ></div>
-                              </div>
-                              <small className="fw-bold">{patient.progress}%</small>
-                            </div>
-                          </td>
-                          <td className="text-muted py-3"><i className="bi bi-calendar3 me-1"></i>{patient.lastSession}</td>
-                          <td className="py-3">
-                            <button className="btn btn-sm btn-outline-primary rounded-pill px-3">
-                              <i className="bi bi-eye me-1"></i>
-                              View
-                            </button>
-                          </td>
+                {loading ? (
+                  <div className="text-center py-5">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-3 text-muted">Loading patients...</p>
+                  </div>
+                ) : recentPatients.length === 0 ? (
+                  <div className="text-center py-5">
+                    <i className="bi bi-people fs-1 text-muted"></i>
+                    <p className="mt-3 text-muted">No patients found in the database</p>
+                    <p className="text-muted small">Patients will appear here once caregivers add children to the system</p>
+                  </div>
+                ) : (
+                  <div className="table-responsive">
+                    <table className="table table-hover mb-0">
+                      <thead style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
+                        <tr>
+                          <th className="px-4 py-3 border-0">Patient</th>
+                          <th className="py-3 border-0">Age</th>
+                          <th className="py-3 border-0">Diagnosis</th>
+                          <th className="py-3 border-0">Caregiver</th>
+                          <th className="py-3 border-0">Last Updated</th>
+                          <th className="py-3 border-0">Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {recentPatients.map((patient) => (
+                          <tr key={patient.id} style={{ transition: 'background 0.2s ease' }}>
+                            <td className="fw-bold px-4 py-3"><i className="bi bi-person-circle me-2 text-primary"></i>{patient.name}</td>
+                            <td className="py-3">{patient.age} years</td>
+                            <td className="py-3">
+                              <Badge variant="info"><i className="bi bi-activity me-1"></i>{patient.therapyType}</Badge>
+                            </td>
+                            <td className="py-3">
+                              <small className="text-muted"><i className="bi bi-person-fill me-1"></i>{patient.caregiver}</small>
+                            </td>
+                            <td className="text-muted py-3"><i className="bi bi-calendar3 me-1"></i>{patient.lastSession}</td>
+                            <td className="py-3">
+                              <button className="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                <i className="bi bi-eye me-1"></i>
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
           </div>
