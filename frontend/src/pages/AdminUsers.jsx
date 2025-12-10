@@ -1,27 +1,180 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import Badge from '../components/Badge';
+import Toast from '../components/Toast';
+import { adminAPI } from '../services/api';
 
 const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filterRole, setFilterRole] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState('create'); // 'create' or 'edit'
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  const [submitting, setSubmitting] = useState(false);
 
-  const users = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', phone: '+1234567890', role: 'caregiver', status: 'Active', joined: '2025-01-15', lastActive: '2 hours ago' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '+1234567891', role: 'expert', status: 'Active', joined: '2025-02-20', lastActive: '1 day ago' },
-    { id: 3, name: 'Mike Johnson', email: 'mike@example.com', phone: '+1234567892', role: 'caregiver', status: 'Active', joined: '2025-03-10', lastActive: '3 hours ago' },
-    { id: 4, name: 'Sarah Williams', email: 'sarah@example.com', phone: '+1234567893', role: 'expert', status: 'Inactive', joined: '2025-01-25', lastActive: '2 weeks ago' },
-    { id: 5, name: 'Tom Brown', email: 'tom@example.com', phone: '+1234567894', role: 'caregiver', status: 'Active', joined: '2025-04-05', lastActive: '5 hours ago' },
-    { id: 6, name: 'Emily Davis', email: 'emily@example.com', phone: '+1234567895', role: 'admin', status: 'Active', joined: '2025-01-01', lastActive: '1 hour ago' }
-  ];
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    role: 'caregiver',
+    isVerified: true
+  });
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await adminAPI.getAllUsers();
+      setUsers(Array.isArray(response.data) ? response.data : []);
+    } catch (error) {
+      console.error('Fetch users error:', error);
+      const errorMessage = error?.message || error?.response?.data?.message || 'Failed to fetch users';
+      showToast(errorMessage, 'danger');
+      setUsers([]); // Ensure users is always an array
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
+  };
+
+  const handleCreateNew = () => {
+    setModalMode('create');
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      password: '',
+      role: 'caregiver',
+      isVerified: true
+    });
+    setShowModal(true);
+  };
+
+  const handleEdit = (user) => {
+    setModalMode('edit');
+    setSelectedUser(user);
+    setFormData({
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+      isVerified: user.isVerified,
+      password: '' // Don't populate password for edit
+    });
+    setShowModal(true);
+  };
+
+  const handleDelete = async (userId) => {
+    if (!window.confirm('Are you sure you want to delete this user?')) return;
+
+    try {
+      setLoading(true);
+      await adminAPI.deleteUser(userId);
+      showToast('User deleted successfully', 'success');
+      await fetchUsers();
+    } catch (error) {
+      console.error('Delete error:', error);
+      const errorMessage = error?.message || error?.response?.data?.message || 'Failed to delete user';
+      showToast(errorMessage, 'danger');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.name || !formData.email || !formData.phone) {
+      showToast('Please fill all required fields', 'warning');
+      return;
+    }
+
+    if (modalMode === 'create' && !formData.password) {
+      showToast('Password is required for new users', 'warning');
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      if (modalMode === 'create') {
+        await adminAPI.createUser(formData);
+        showToast('User created successfully', 'success');
+      } else {
+        const updateData = { ...formData };
+        if (!updateData.password) delete updateData.password; // Don't send empty password
+        await adminAPI.updateUser(selectedUser._id, updateData);
+        showToast('User updated successfully', 'success');
+      }
+      setShowModal(false);
+      await fetchUsers();
+    } catch (error) {
+      console.error('Submit error:', error);
+      // Extract error message from various possible error structures
+      let errorMessage = 'Failed to save user';
+      if (error?.message) {
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+      showToast(errorMessage, 'danger');
+      // Keep modal open on error so user can fix it
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const filteredUsers = Array.isArray(users) ? users.filter(user => {
+    if (!user) return false;
+    const matchesSearch = (user.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                         (user.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                         (user.phone || '').includes(searchTerm);
+    const matchesRole = !filterRole || user.role === filterRole;
+    return matchesSearch && matchesRole;
+  }) : [];
 
   return (
     <div className="container-fluid mt-4 mb-5">
-      <div className="mb-4">
-        <h1 className="text-primary-custom">
-          <i className="bi bi-people me-2"></i>
-          User Management
-        </h1>
-        <p className="text-muted">Manage all platform users and their permissions</p>
+      {toast.show && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '80px',
+            right: '20px',
+            zIndex: 10000,
+            maxWidth: '400px',
+          }}
+        >
+          <Toast 
+            message={toast.message} 
+            type={toast.type}
+            onClose={() => setToast({ show: false, message: '', type: 'success' })}
+          />
+        </div>
+      )}
+
+      <div className="mb-4 d-flex justify-content-between align-items-center">
+        <div>
+          <h1 className="text-primary-custom">
+            <i className="bi bi-people me-2"></i>
+            User Management
+          </h1>
+          <p className="text-muted">Manage all platform users and their permissions</p>
+        </div>
+        <button className="btn btn-primary" onClick={handleCreateNew}>
+          <i className="bi bi-person-plus me-2"></i>
+          Add New User
+        </button>
       </div>
 
       {/* Stats */}
@@ -41,8 +194,8 @@ const AdminUsers = () => {
           <Card className="card-success">
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                <div className="stat-value">{users.filter(u => u.status === 'Active').length}</div>
-                <div className="stat-label">Active Users</div>
+                <div className="stat-value">{users.filter(u => u.isVerified).length}</div>
+                <div className="stat-label">Verified Users</div>
               </div>
               <i className="bi bi-person-check-fill fs-1 text-success opacity-50"></i>
             </div>
@@ -74,7 +227,7 @@ const AdminUsers = () => {
 
       {/* Search and Actions */}
       <div className="row g-3 mb-4">
-        <div className="col-md-6">
+        <div className="col-md-9">
           <div className="input-group">
             <span className="input-group-text bg-white">
               <i className="bi bi-search"></i>
@@ -89,100 +242,214 @@ const AdminUsers = () => {
           </div>
         </div>
         <div className="col-md-3">
-          <select className="form-select">
-            <option>All Roles</option>
-            <option>Caregiver</option>
-            <option>Expert</option>
-            <option>Admin</option>
+          <select className="form-select" value={filterRole} onChange={(e) => setFilterRole(e.target.value)}>
+            <option value="">All Roles</option>
+            <option value="caregiver">Caregiver</option>
+            <option value="expert">Expert</option>
+            <option value="admin">Admin</option>
           </select>
-        </div>
-        <div className="col-md-3">
-          <button className="btn btn-primary w-100">
-            <i className="bi bi-person-plus me-2"></i>
-            Add New User
-          </button>
         </div>
       </div>
 
       {/* Users Table */}
       <Card>
-        <div className="table-responsive">
-          <table className="table table-hover mb-0">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Joined</th>
-                <th>Last Active</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td className="fw-medium">{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.phone}</td>
-                  <td>
-                    <Badge variant={
-                      user.role === 'admin' ? 'danger' :
-                      user.role === 'expert' ? 'success' : 'primary'
-                    }>
-                      {user.role}
-                    </Badge>
-                  </td>
-                  <td>
-                    <Badge variant={user.status === 'Active' ? 'success' : 'warning'}>
-                      {user.status}
-                    </Badge>
-                  </td>
-                  <td>{user.joined}</td>
-                  <td className="text-muted small">{user.lastActive}</td>
-                  <td>
-                    <div className="d-flex gap-1">
-                      <button className="btn btn-sm btn-outline-primary">
-                        <i className="bi bi-eye"></i>
-                      </button>
-                      <button className="btn btn-sm btn-outline-secondary">
-                        <i className="bi bi-pencil"></i>
-                      </button>
-                      <button className="btn btn-sm btn-outline-danger">
-                        <i className="bi bi-trash"></i>
-                      </button>
-                    </div>
-                  </td>
+        {loading ? (
+          <div className="text-center py-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : filteredUsers.length === 0 ? (
+          <div className="text-center py-5">
+            <i className="bi bi-inbox fs-1 text-muted"></i>
+            <p className="text-muted mt-2">No users found</p>
+          </div>
+        ) : (
+          <div className="table-responsive">
+            <table className="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Role</th>
+                  <th>Verified</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filteredUsers.map((user) => (
+                  <tr key={user._id}>
+                    <td className="fw-medium">{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.phone}</td>
+                    <td>
+                      <Badge variant={
+                        user.role === 'admin' ? 'danger' :
+                        user.role === 'expert' ? 'success' : 'primary'
+                      }>
+                        {user.role}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Badge variant={user.isVerified ? 'success' : 'warning'}>
+                        {user.isVerified ? 'Verified' : 'Pending'}
+                      </Badge>
+                    </td>
+                    <td className="text-muted small">
+                      {new Date(user.createdAt).toLocaleDateString()}
+                    </td>
+                    <td>
+                      <div className="d-flex gap-1">
+                        <button 
+                          className="btn btn-sm btn-outline-primary"
+                          onClick={() => handleEdit(user)}
+                          title="Edit"
+                        >
+                          <i className="bi bi-pencil"></i>
+                        </button>
+                        <button 
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => handleDelete(user._id)}
+                          title="Delete"
+                        >
+                          <i className="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-        {/* Pagination */}
-        <div className="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
-          <span className="text-muted small">Showing 1-6 of 6 users</span>
-          <nav>
-            <ul className="pagination pagination-sm mb-0">
-              <li className="page-item disabled">
-                <a className="page-link" href="#">Previous</a>
-              </li>
-              <li className="page-item active">
-                <a className="page-link" href="#">1</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">2</a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        {/* Pagination Info */}
+        {!loading && filteredUsers.length > 0 && (
+          <div className="mt-3 pt-3 border-top">
+            <span className="text-muted small">Showing {filteredUsers.length} of {users.length} users</span>
+          </div>
+        )}
       </Card>
+
+      {/* Modal for Create/Edit */}
+      {showModal && (
+        <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">
+                  {modalMode === 'create' ? 'Add New User' : 'Edit User'}
+                </h5>
+                <button 
+                  type="button" 
+                  className="btn-close" 
+                  onClick={() => !submitting && setShowModal(false)}
+                  disabled={submitting}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label className="form-label">Name *</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Email *</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Phone *</label>
+                    <input
+                      type="tel"
+                      className="form-control"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">
+                      Password {modalMode === 'create' && '*'}
+                    </label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      required={modalMode === 'create'}
+                      placeholder={modalMode === 'edit' ? 'Leave blank to keep current password' : ''}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Role *</label>
+                    <select
+                      className="form-select"
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      required
+                    >
+                      <option value="caregiver">Caregiver</option>
+                      <option value="expert">Expert</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </div>
+                  <div className="mb-3">
+                    <div className="form-check form-switch">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        checked={formData.isVerified}
+                        onChange={(e) => setFormData({ ...formData, isVerified: e.target.checked })}
+                      />
+                      <label className="form-check-label">
+                        Verified User
+                      </label>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-end gap-2">
+                    <button 
+                      type="button" 
+                      className="btn btn-secondary" 
+                      onClick={() => setShowModal(false)}
+                      disabled={submitting}
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary"
+                      disabled={submitting}
+                    >
+                      {submitting ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          {modalMode === 'create' ? 'Creating...' : 'Updating...'}
+                        </>
+                      ) : (
+                        modalMode === 'create' ? 'Create User' : 'Update User'
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

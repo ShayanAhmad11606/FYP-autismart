@@ -132,6 +132,16 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link className="nav-link" to="/admin-users" onClick={closeMenu}>
+                    <i className="bi bi-people me-1"></i>Users
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/assessment-management" onClick={closeMenu}>
+                    <i className="bi bi-clipboard-data me-1"></i>Assessments
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link" to="/about" onClick={closeMenu}>About</Link>
                 </li>
               </>

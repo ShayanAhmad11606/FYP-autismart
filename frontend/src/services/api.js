@@ -25,6 +25,35 @@ api.interceptors.request.use(
   }
 );
 
+// Add response interceptor for handling errors
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Handle unauthorized errors
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      // Only redirect if not already on login page
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
+      }
+    }
+    
+    // Handle network errors
+    if (!error.response) {
+      console.error('Network error:', error);
+      return Promise.reject({
+        success: false,
+        message: 'Network error. Please check your connection.',
+      });
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
 // Auth API endpoints
 export const authAPI = {
   // Register new user
@@ -307,6 +336,80 @@ export const childAPI = {
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to download report' };
+    }
+  },
+};
+
+// Assessment API endpoints
+export const assessmentAPI = {
+  // Get all active assessments
+  getAssessments: async () => {
+    try {
+      const response = await api.get('/assessments');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch assessments' };
+    }
+  },
+
+  // Get active assessment by level
+  getAssessmentByLevel: async (level) => {
+    try {
+      const response = await api.get(`/assessments/${level}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch assessment' };
+    }
+  },
+
+  // Admin: Create new assessment
+  createAssessment: async (assessmentData) => {
+    try {
+      const response = await api.post('/admin/assessments', assessmentData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to create assessment' };
+    }
+  },
+
+  // Admin: Get all assessments (including inactive)
+  getAllAssessments: async (filters = {}) => {
+    try {
+      const params = new URLSearchParams(filters).toString();
+      const response = await api.get(`/admin/assessments${params ? `?${params}` : ''}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch assessments' };
+    }
+  },
+
+  // Admin: Get single assessment by ID
+  getAssessmentById: async (assessmentId) => {
+    try {
+      const response = await api.get(`/admin/assessments/${assessmentId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to fetch assessment' };
+    }
+  },
+
+  // Admin: Update assessment
+  updateAssessment: async (assessmentId, assessmentData) => {
+    try {
+      const response = await api.put(`/admin/assessments/${assessmentId}`, assessmentData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to update assessment' };
+    }
+  },
+
+  // Admin: Delete assessment
+  deleteAssessment: async (assessmentId) => {
+    try {
+      const response = await api.delete(`/admin/assessments/${assessmentId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to delete assessment' };
     }
   },
 };

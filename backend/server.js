@@ -5,6 +5,7 @@ import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import childRoutes from './routes/childRoutes.js';
+import assessmentRoutes from './routes/assessmentRoutes.js';
 import { verifyEmailConfig } from './config/email.js';
 
 // Load environment variables
@@ -59,6 +60,7 @@ connectDB();
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/caregiver', childRoutes);
+app.use('/api/assessments', assessmentRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {

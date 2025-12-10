@@ -1,19 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useChild } from '../context/ChildContext';
 import { useAuth } from '../context/AuthContext';
 import Card from '../components/Card';
 import ChildSelector from '../components/ChildSelector';
+import Toast from '../components/Toast';
+import { assessmentAPI } from '../services/api';
 import '../styles/assessment.css';
 
 const Assessment = () => {
   const [answers, setAnswers] = useState({});
   const [currentLevel, setCurrentLevel] = useState('easy');
   const [showResults, setShowResults] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
   const { selectedChild } = useChild();
   const { user } = useAuth();
 
-  // Complete Assessment Questions - 50 Questions Categorized by Symptom Areas
-  const assessmentData = {
+  // State for assessment data from backend
+  const [assessmentData, setAssessmentData] = useState({
     easy: {
       title: 'Level 1 - Easy (Observation Based)',
       description: 'Basic observation questions about daily interactions',
@@ -88,6 +92,46 @@ const Assessment = () => {
         { id: 'sen_5', category: 'Sensory Sensitivity', question: 'Covering ears at sudden sounds?', options: ['Rarely', 'Sometimes', 'Often'], scores: [1, 2, 3] }
       ]
     }
+  });
+
+  // Fetch assessments on component mount
+  useEffect(() => {
+    fetchAssessments();
+  }, []);
+
+  const fetchAssessments = async () => {
+    try {
+      setLoading(true);
+      const response = await assessmentAPI.getAssessments();
+      if (response.success && response.data) {
+        // Transform backend data to match existing structure
+        const transformedData = {};
+        Object.keys(response.data).forEach(level => {
+          if (response.data[level]) {
+            transformedData[level] = {
+              title: response.data[level].title,
+              description: response.data[level].description,
+              questions: response.data[level].questions
+            };
+          }
+        });
+        
+        // Only update if we have data, otherwise keep default/fallback
+        if (Object.keys(transformedData).length > 0) {
+          setAssessmentData(transformedData);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch assessments:', error);
+      showToast('Using default assessment questions', 'info');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
   };
 
   const handleAnswer = (questionId, optionIndex, score) => {
@@ -238,8 +282,23 @@ const Assessment = () => {
   // Check if caregiver and no child selected
   const requiresChildSelection = user?.role === 'caregiver' && !selectedChild;
 
+  if (loading) {
+    return (
+      <div className="container mt-4 mb-5">
+        <div className="text-center py-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading assessments...</span>
+          </div>
+          <p className="text-muted mt-3">Loading assessment questions...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mt-4 mb-5">
+      {toast.show && <Toast message={toast.message} type={toast.type} />}
+      
       <div className="row">
         <div className="col-lg-10 mx-auto">
           <div className="mb-4 fade-in-up">

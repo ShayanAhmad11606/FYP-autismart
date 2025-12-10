@@ -207,12 +207,12 @@ const ColorMatchingGame = () => {
         duration: level.timeLimit - timer,
         attempts: 1,
         difficulty: level.name.toLowerCase(),
-        correctAnswers: roundsWon,
+        correctAnswers: roundsCompleted,
         incorrectAnswers: mistakes,
         details: {
           level: currentLevel,
           levelName: level.name,
-          roundsCompleted: roundsWon,
+          roundsCompleted: roundsCompleted,
           timeRemaining: timer
         }
       }).catch(err => console.error('Failed to record activity:', err));

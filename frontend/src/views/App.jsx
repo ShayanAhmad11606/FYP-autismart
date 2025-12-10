@@ -271,6 +271,22 @@ function AppContent() {
           }
         />
         <Route
+          path="/admin-users"
+          element={
+            <ProtectedRoute>
+              <AdminUsers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/assessment-management"
+          element={
+            <ProtectedRoute>
+              <AssessmentManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/users"
           element={
             <ProtectedRoute>

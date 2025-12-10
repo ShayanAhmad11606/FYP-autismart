@@ -5,9 +5,12 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import './index.css'
 import './styles/custom.css'
 import App from './views/App.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </StrictMode>,
 )

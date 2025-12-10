@@ -34,18 +34,45 @@ const ChildReports = () => {
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showChildList, setShowChildList] = useState(false);
 
+  // Load saved child ID from localStorage or use first child
   useEffect(() => {
     if (childrenList.length > 0 && !selectedChildId) {
-      setSelectedChildId(childrenList[0].id);
+      const savedChildId = localStorage.getItem('lastSelectedChildForReport');
+      
+      // Check if saved child still exists in the list
+      const childExists = savedChildId && childrenList.some(child => child.id === savedChildId);
+      
+      if (childExists) {
+        setSelectedChildId(savedChildId);
+      } else {
+        setSelectedChildId(childrenList[0].id);
+      }
     }
   }, [childrenList]);
 
+  // Save selected child ID to localStorage whenever it changes
   useEffect(() => {
     if (selectedChildId) {
+      localStorage.setItem('lastSelectedChildForReport', selectedChildId);
       loadReport();
     }
   }, [selectedChildId]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showChildList && !event.target.closest('.position-relative')) {
+        setShowChildList(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showChildList]);
 
   const loadReport = async () => {
     try {
@@ -161,19 +188,102 @@ const ChildReports = () => {
         </div>
 
         {/* Child Selector */}
-        <div className="mb-4">
+        <div className="mb-4 position-relative">
           <label className="form-label">Select Child:</label>
-          <select
-            className="form-select"
-            value={selectedChildId}
-            onChange={(e) => setSelectedChildId(e.target.value)}
-          >
-            {childrenList.map(child => (
-              <option key={child.id} value={child.id}>
-                {child.name} - {child.age} years
-              </option>
-            ))}
-          </select>
+          <div className="d-flex gap-2 align-items-center">
+            <button 
+              className="btn d-flex align-items-center justify-content-between w-100"
+              style={{ 
+                maxWidth: '400px',
+                border: '2px solid #5EBDB0',
+                color: '#5EBDB0',
+                backgroundColor: 'transparent'
+              }}
+              onClick={() => setShowChildList(!showChildList)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#5EBDB0';
+                e.currentTarget.style.color = '#fff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = '#5EBDB0';
+              }}
+            >
+              <span>
+                <i className="bi bi-person-circle me-2"></i>
+                {selectedChild ? `${selectedChild.name} - ${selectedChild.age} years` : 'Select a child'}
+              </span>
+              <i className={`bi bi-chevron-${showChildList ? 'up' : 'down'}`}></i>
+            </button>
+          </div>
+          
+          {/* Dropdown List */}
+          {showChildList && (
+            <div 
+              className="card position-absolute shadow-lg mt-2" 
+              style={{ 
+                maxWidth: '400px', 
+                width: '100%',
+                zIndex: 1050,
+                maxHeight: '400px',
+                overflowY: 'auto'
+              }}
+            >
+              <div className="list-group list-group-flush">
+                {childrenList.map(child => (
+                  <button
+                    key={child.id}
+                    className={`list-group-item list-group-item-action d-flex align-items-center`}
+                    style={{
+                      backgroundColor: child.id === selectedChildId ? '#5EBDB0' : 'transparent',
+                      color: child.id === selectedChildId ? '#fff' : 'inherit',
+                      border: 'none',
+                      borderBottom: '1px solid #dee2e6'
+                    }}
+                    onClick={() => {
+                      setSelectedChildId(child.id);
+                      localStorage.setItem('lastSelectedChildForReport', child.id);
+                      setShowChildList(false);
+                    }}
+                  >
+                    <div className="d-flex align-items-center w-100">
+                      <div 
+                        className="rounded-circle d-flex align-items-center justify-content-center me-3"
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          backgroundColor: child.id === selectedChildId ? '#fff' : '#5EBDB0',
+                          color: child.id === selectedChildId ? '#5EBDB0' : '#fff',
+                          fontSize: '1.5rem',
+                          fontWeight: 'bold'
+                        }}
+                      >
+                        {child.profileImage ? (
+                          <img 
+                            src={child.profileImage} 
+                            alt={child.name}
+                            className="rounded-circle"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        ) : (
+                          child.name.charAt(0).toUpperCase()
+                        )}
+                      </div>
+                      <div className="flex-grow-1">
+                        <h6 className="mb-0">{child.name}</h6>
+                        <small className={child.id === selectedChildId ? 'text-white-50' : 'text-muted'}>
+                          {child.age} years old {child.gender && `• ${child.gender}`}
+                        </small>
+                      </div>
+                      {child.id === selectedChildId && (
+                        <i className="bi bi-check-circle-fill text-white"></i>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {loading && (
@@ -475,6 +585,66 @@ const ChildReports = () => {
               </div>
             )}
 
+            {/* Game Progress by Type */}
+            {reportData.statistics.byActivityType && Object.keys(reportData.statistics.byActivityType).filter(name => 
+              ['Memory Match', 'Color Matching', 'Sound Matching'].includes(name)
+            ).length > 0 && (
+              <div className="report-section">
+                <h3 className="section-title">
+                  <i className="bi bi-controller me-2"></i>
+                  Game Progress Details
+                </h3>
+                <div className="row g-3">
+                  {Object.entries(reportData.statistics.byActivityType)
+                    .filter(([name]) => ['Memory Match', 'Color Matching', 'Sound Matching'].includes(name))
+                    .map(([gameName, stats]) => (
+                    <div key={gameName} className="col-md-4">
+                      <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '12px' }}>
+                        <div className="card-body">
+                          <div className="d-flex align-items-center mb-3">
+                            <div className="me-3">
+                              {gameName === 'Memory Match' && <i className="bi bi-grid-3x3-gap fs-2 text-primary"></i>}
+                              {gameName === 'Color Matching' && <i className="bi bi-palette fs-2 text-success"></i>}
+                              {gameName === 'Sound Matching' && <i className="bi bi-music-note-beamed fs-2 text-info"></i>}
+                            </div>
+                            <div>
+                              <h5 className="mb-0">{gameName}</h5>
+                              <small className="text-muted">Times Played: {stats.count}</small>
+                            </div>
+                          </div>
+                          <div className="mb-2">
+                            <div className="d-flex justify-content-between mb-1">
+                              <small>Average Score</small>
+                              <small className="fw-bold">{stats.averageScore.toFixed(1)}%</small>
+                            </div>
+                            <div className="progress" style={{ height: '8px' }}>
+                              <div 
+                                className={`progress-bar ${
+                                  stats.averageScore >= 80 ? 'bg-success' : 
+                                  stats.averageScore >= 60 ? 'bg-primary' : 
+                                  stats.averageScore >= 40 ? 'bg-warning' : 'bg-danger'
+                                }`}
+                                style={{ width: `${stats.averageScore}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                          <div className="mt-3 pt-3 border-top">
+                            <div className="d-flex justify-content-between">
+                              <span className="text-muted">
+                                <i className="bi bi-trophy-fill text-warning me-1"></i>
+                                Total Points
+                              </span>
+                              <span className="fw-bold">{Math.round(stats.totalScore)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Recent Activities */}
             {reportData.statistics.recentActivities && reportData.statistics.recentActivities.length > 0 && (
               <div className="report-section">
@@ -493,7 +663,17 @@ const ChildReports = () => {
                     <tbody>
                       {reportData.statistics.recentActivities.slice(0, 10).map((activity, index) => (
                         <tr key={index}>
-                          <td>{activity.activityName}</td>
+                          <td>
+                            {activity.activityName === 'Memory Match' && <i className="bi bi-grid-3x3-gap me-2 text-primary"></i>}
+                            {activity.activityName === 'Color Matching' && <i className="bi bi-palette me-2 text-success"></i>}
+                            {activity.activityName === 'Sound Matching' && <i className="bi bi-music-note-beamed me-2 text-info"></i>}
+                            {activity.activityName}
+                            {activity.details?.level && (
+                              <span className="badge bg-secondary ms-2" style={{ fontSize: '0.7rem' }}>
+                                Level {activity.details.level}
+                              </span>
+                            )}
+                          </td>
                           <td>
                             <span className={`badge bg-${getActivityTypeBadgeClass(activity.activityType)}`}>
                               {activity.activityType.charAt(0).toUpperCase() + activity.activityType.slice(1)}

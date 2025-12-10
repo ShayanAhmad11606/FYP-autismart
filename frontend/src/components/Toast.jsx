@@ -131,6 +131,11 @@ const Toast = ({ message, type, onClose }) => {
   );
 };
 
+// Simple Toast component for direct usage (without hook)
+export const SimpleToast = ({ message, type = 'info', onClose }) => {
+  return <Toast message={message} type={type} onClose={onClose} />;
+};
+
 // Add animation styles to document
 if (typeof document !== 'undefined') {
   const style = document.createElement('style');
@@ -149,4 +154,5 @@ if (typeof document !== 'undefined') {
   document.head.appendChild(style);
 }
 
-export default useToast;
+// Export Toast component as default
+export default Toast;

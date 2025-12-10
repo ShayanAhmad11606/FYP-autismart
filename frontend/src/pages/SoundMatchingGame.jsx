@@ -174,12 +174,21 @@ const SoundMatchingGame = () => {
     if (selectedChild) {
       try {
         await recordActivity({
-          type: 'game',
-          name: 'Sound Matching',
-          level: currentLevel,
+          activityType: 'game',
+          activityName: 'Sound Matching',
           score: score,
-          duration: 0, // You can track actual duration if needed
-          completed: true
+          maxScore: currentLevelConfig.roundsNeeded * 10,
+          percentage: (score / (currentLevelConfig.roundsNeeded * 10)) * 100,
+          duration: 0,
+          attempts: 1,
+          difficulty: currentLevelConfig.name.toLowerCase(),
+          correctAnswers: roundsCompleted,
+          incorrectAnswers: 0,
+          details: {
+            level: currentLevel,
+            levelName: currentLevelConfig.name,
+            roundsCompleted: roundsCompleted
+          }
         });
       } catch (error) {
         console.error('Error recording activity:', error);
