@@ -79,7 +79,14 @@ const ChildReports = () => {
       setLoading(true);
       setError('');
       const response = await childService.getChildReport(selectedChildId);
-      setReportData(response.data);
+      
+      // Transform data structure: stats endpoint returns { child, totalActivities, ... }
+      // Component expects { child, statistics: { totalActivities, ... } }
+      const { child, ...statistics } = response.data;
+      setReportData({
+        child,
+        statistics
+      });
     } catch (err) {
       console.error('Error loading report:', err);
       setError(err.message || 'Failed to load report');
@@ -90,18 +97,30 @@ const ChildReports = () => {
 
   const handleDownloadPDF = async () => {
     try {
+      setError(''); // Clear any previous errors
       const blob = await childService.downloadChildReportPDF(selectedChildId);
+      
+      // Check if blob is valid
+      if (!blob || blob.size === 0) {
+        throw new Error('Received empty PDF file');
+      }
+      
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       const child = childrenList.find(c => c.id === selectedChildId);
-      a.download = `report-${child?.name.replace(/\s+/g, '-')}-${Date.now()}.pdf`;
+      a.download = `report-${child?.name.replace(/\s+/g, '-') || 'child'}-${Date.now()}.pdf`;
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      
+      // Cleanup
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }, 100);
     } catch (err) {
-      alert('Failed to download PDF: ' + err.message);
+      console.error('PDF Download Error:', err);
+      alert('Failed to download PDF. Please disable IDM for localhost or try a different browser. Error: ' + (err.message || 'Unknown error'));
     }
   };
 
@@ -404,68 +423,70 @@ const ChildReports = () => {
             </div>
 
             {/* Cognitive Assessment */}
-            <div className="report-section">
-              <h3 className="section-title">Cognitive Assessment</h3>
-              <div className="assessment-card">
-                <div className="row mb-4">
-                  <div className="col-md-6">
-                    <div className="assessment-item">
-                      <strong>Overall Level:</strong>
-                      <span className={`badge ms-2 bg-${getLevelBadgeClass(reportData.cognitiveAssessment.overallLevel)}`}>
-                        {reportData.cognitiveAssessment.overallLevel}
-                      </span>
+            {reportData.cognitiveAssessment && (
+              <div className="report-section">
+                <h3 className="section-title">Cognitive Assessment</h3>
+                <div className="assessment-card">
+                  <div className="row mb-4">
+                    <div className="col-md-6">
+                      <div className="assessment-item">
+                        <strong>Overall Level:</strong>
+                        <span className={`badge ms-2 bg-${getLevelBadgeClass(reportData.cognitiveAssessment.overallLevel)}`}>
+                          {reportData.cognitiveAssessment.overallLevel}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="assessment-item">
+                        <strong>Progress Trend:</strong>
+                        <span className={`badge ms-2 bg-${getTrendBadgeClass(reportData.cognitiveAssessment.progressTrend)}`}>
+                          {reportData.cognitiveAssessment.progressTrend}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="assessment-item">
-                      <strong>Progress Trend:</strong>
-                      <span className={`badge ms-2 bg-${getTrendBadgeClass(reportData.cognitiveAssessment.progressTrend)}`}>
-                        {reportData.cognitiveAssessment.progressTrend}
-                      </span>
+
+                  {reportData.cognitiveAssessment.strengths && reportData.cognitiveAssessment.strengths.length > 0 && (
+                    <div className="mb-4">
+                      <h5 className="text-success">
+                        <i className="bi bi-star-fill me-2"></i>Strengths
+                      </h5>
+                      <ul>
+                        {reportData.cognitiveAssessment.strengths.map((strength, index) => (
+                          <li key={index}>{strength}</li>
+                        ))}
+                      </ul>
                     </div>
-                  </div>
+                  )}
+
+                  {reportData.cognitiveAssessment.areasForImprovement && reportData.cognitiveAssessment.areasForImprovement.length > 0 && (
+                    <div className="mb-4">
+                      <h5 className="text-warning">
+                        <i className="bi bi-exclamation-triangle me-2"></i>Areas for Improvement
+                      </h5>
+                      <ul>
+                        {reportData.cognitiveAssessment.areasForImprovement.map((area, index) => (
+                          <li key={index}>{area}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {reportData.cognitiveAssessment.recommendations && reportData.cognitiveAssessment.recommendations.length > 0 && (
+                    <div>
+                      <h5 className="text-primary">
+                        <i className="bi bi-lightbulb me-2"></i>Recommendations
+                      </h5>
+                      <ul>
+                        {reportData.cognitiveAssessment.recommendations.map((rec, index) => (
+                          <li key={index}>{rec}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-
-                {reportData.cognitiveAssessment.strengths.length > 0 && (
-                  <div className="mb-4">
-                    <h5 className="text-success">
-                      <i className="bi bi-star-fill me-2"></i>Strengths
-                    </h5>
-                    <ul>
-                      {reportData.cognitiveAssessment.strengths.map((strength, index) => (
-                        <li key={index}>{strength}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {reportData.cognitiveAssessment.areasForImprovement.length > 0 && (
-                  <div className="mb-4">
-                    <h5 className="text-warning">
-                      <i className="bi bi-exclamation-triangle me-2"></i>Areas for Improvement
-                    </h5>
-                    <ul>
-                      {reportData.cognitiveAssessment.areasForImprovement.map((area, index) => (
-                        <li key={index}>{area}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {reportData.cognitiveAssessment.recommendations.length > 0 && (
-                  <div>
-                    <h5 className="text-primary">
-                      <i className="bi bi-lightbulb me-2"></i>Recommendations
-                    </h5>
-                    <ul>
-                      {reportData.cognitiveAssessment.recommendations.map((rec, index) => (
-                        <li key={index}>{rec}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </div>
-            </div>
+            )}
 
             {/* Charts */}
             {progressChartData && (
@@ -641,6 +662,102 @@ const ChildReports = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* Games History */}
+            {reportData.statistics.gamesList && reportData.statistics.gamesList.length > 0 && (
+              <div className="report-section">
+                <h3 className="section-title">Games History</h3>
+                <div className="table-responsive">
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Game Name</th>
+                        <th>Score</th>
+                        <th>Time Taken</th>
+                        <th>Date Completed</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reportData.statistics.gamesList.map((game, index) => (
+                        <tr key={index}>
+                          <td>
+                            <i className="bi bi-controller me-2 text-primary"></i>
+                            {game.name}
+                          </td>
+                          <td>
+                            <span className={`badge bg-${getScoreBadgeClass(game.score)}`}>
+                              {game.score ? `${game.score.toFixed(1)}%` : 'N/A'}
+                            </span>
+                          </td>
+                          <td>
+                            {game.timeTaken ? 
+                              `${Math.floor(game.timeTaken / 60)}m ${game.timeTaken % 60}s` : 
+                              'N/A'}
+                          </td>
+                          <td>
+                            {new Date(game.completedAt).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Assessments History */}
+            {reportData.statistics.assessmentsList && reportData.statistics.assessmentsList.length > 0 && (
+              <div className="report-section">
+                <h3 className="section-title">Assessments History</h3>
+                <div className="table-responsive">
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Assessment Name</th>
+                        <th>Category</th>
+                        <th>Score</th>
+                        <th>Date Completed</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reportData.statistics.assessmentsList.map((assessment, index) => (
+                        <tr key={index}>
+                          <td>
+                            <i className="bi bi-clipboard-check me-2 text-success"></i>
+                            {assessment.name}
+                          </td>
+                          <td>
+                            <span className="badge bg-info">
+                              {assessment.category}
+                            </span>
+                          </td>
+                          <td>
+                            <span className={`badge bg-${getScoreBadgeClass(assessment.score)}`}>
+                              {assessment.score ? `${assessment.score.toFixed(1)}%` : 'N/A'}
+                            </span>
+                          </td>
+                          <td>
+                            {new Date(assessment.completedAt).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             )}

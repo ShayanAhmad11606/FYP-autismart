@@ -24,7 +24,28 @@ const ChildManagement = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // If dateOfBirth is changed, automatically calculate age
+    if (name === 'dateOfBirth' && value) {
+      const birthDate = new Date(value);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      
+      // Adjust age if birthday hasn't occurred this year yet
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      
+      // Update both dateOfBirth and age
+      setFormData(prev => ({ 
+        ...prev, 
+        [name]: value,
+        age: age >= 0 ? age.toString() : '' 
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleOpenModal = (child = null) => {
@@ -252,7 +273,7 @@ const ChildManagement = () => {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group mb-3">
-                      <label htmlFor="age">Age *</label>
+                      <label htmlFor="age">Age * (auto-calculated from DOB)</label>
                       <input
                         type="number"
                         id="age"
@@ -263,6 +284,7 @@ const ChildManagement = () => {
                         min="1"
                         max="18"
                         required
+                        readOnly={formData.dateOfBirth ? true : false}
                       />
                     </div>
                   </div>
@@ -288,7 +310,7 @@ const ChildManagement = () => {
                 </div>
 
                 <div className="form-group mb-3">
-                  <label htmlFor="dateOfBirth">Date of Birth</label>
+                  <label htmlFor="dateOfBirth">Date of Birth (will auto-calculate age)</label>
                   <input
                     type="date"
                     id="dateOfBirth"
@@ -296,7 +318,9 @@ const ChildManagement = () => {
                     className="form-control"
                     value={formData.dateOfBirth}
                     onChange={handleInputChange}
+                    max={new Date().toISOString().split('T')[0]}
                   />
+                  <small className="text-muted">Select date of birth to automatically calculate age</small>
                 </div>
 
                 <div className="form-group mb-3">

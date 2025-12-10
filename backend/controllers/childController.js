@@ -100,14 +100,16 @@ export const getChildStats = asyncHandler(async (req, res) => {
   const isExpertOrAdmin = req.user.role === 'expert' || req.user.role === 'admin';
   const caregiverId = isExpertOrAdmin ? null : req.user._id;
 
-  // Verify access to child
-  await childService.getChildById(req.params.id, caregiverId);
-
+  // Get child data and verify access
+  const child = await childService.getChildById(req.params.id, caregiverId);
   const stats = await childService.getChildStatistics(req.params.id);
 
   res.status(200).json({
     success: true,
-    data: stats
+    data: {
+      child,
+      ...stats
+    }
   });
 });
 
@@ -143,9 +145,15 @@ export const addActivity = asyncHandler(async (req, res) => {
   const caregiverId = isExpertOrAdmin ? null : req.user._id;
 
   // Verify access to child
-  await childService.getChildById(req.params.id, caregiverId);
+  const child = await childService.getChildById(req.params.id, caregiverId);
 
-  const activity = await childService.addActivity(req.params.id, req.body);
+  // Add caregiverId to activity data
+  const activityData = {
+    ...req.body,
+    caregiverId: child.caregiverId || req.user._id
+  };
+
+  const activity = await childService.addActivity(req.params.id, activityData);
 
   res.status(201).json({
     success: true,
@@ -168,8 +176,11 @@ export const generateChildReport = asyncHandler(async (req, res) => {
   // Create PDF document
   const doc = new PDFDocument({ margin: 50 });
 
-  // Set response headers
+  // Set response headers with proper CORS
   res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || 'http://localhost:5173');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
   res.setHeader(
     'Content-Disposition',
     `attachment; filename=child-report-${child.name.replace(/\s+/g, '-')}-${Date.now()}.pdf`

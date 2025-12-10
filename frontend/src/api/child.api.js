@@ -114,11 +114,12 @@ const childAPI = {
   },
 
   /**
-   * Get child report with statistics
+   * Get child report with statistics (uses stats endpoint for JSON data)
    */
   getChildReport: async (childId) => {
     try {
-      const response = await http.get(`/caregiver/children/${childId}/report`);
+      // Use stats endpoint which returns JSON data including child info
+      const response = await http.get(`/caregiver/children/${childId}/stats`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to fetch report' };
@@ -130,12 +131,27 @@ const childAPI = {
    */
   downloadChildReportPDF: async (childId) => {
     try {
-      const response = await http.get(`/caregiver/children/${childId}/report`, {
-        responseType: 'blob'
+      // Get the auth token
+      const token = localStorage.getItem('token');
+      
+      // Create a direct download using fetch to bypass IDM interception
+      const response = await fetch(`http://localhost:5000/api/caregiver/children/${childId}/report`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/pdf'
+        },
+        credentials: 'include'
       });
-      return response.data;
+
+      if (!response.ok) {
+        throw new Error('Failed to download report');
+      }
+
+      const blob = await response.blob();
+      return blob;
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to download report' };
+      throw { message: 'Failed to download report' };
     }
   },
 };

@@ -119,7 +119,9 @@ class ChildService {
         totalTherapySessions: 0,
         byActivityType: {},
         progressOverTime: [],
-        recentActivities: []
+        recentActivities: [],
+        gamesList: [],
+        assessmentsList: []
       };
     }
 
@@ -131,7 +133,9 @@ class ChildService {
       totalTherapySessions: 0,
       byActivityType: {},
       progressOverTime: [],
-      recentActivities: activities.slice(0, 10)
+      recentActivities: activities.slice(0, 10),
+      gamesList: [],
+      assessmentsList: []
     };
 
     let totalScore = 0;
@@ -139,8 +143,24 @@ class ChildService {
     activities.forEach(activity => {
       totalScore += activity.percentage || 0;
 
-      if (activity.activityType === 'game') stats.totalGames++;
-      if (activity.activityType === 'assessment') stats.totalAssessments++;
+      if (activity.activityType === 'game') {
+        stats.totalGames++;
+        stats.gamesList.push({
+          name: activity.activityName,
+          score: activity.percentage,
+          completedAt: activity.completedAt,
+          timeTaken: activity.timeTaken
+        });
+      }
+      if (activity.activityType === 'assessment') {
+        stats.totalAssessments++;
+        stats.assessmentsList.push({
+          name: activity.activityName,
+          score: activity.percentage,
+          completedAt: activity.completedAt,
+          category: activity.category || 'General'
+        });
+      }
       if (activity.activityType === 'therapy') stats.totalTherapySessions++;
 
       if (!stats.byActivityType[activity.activityName]) {

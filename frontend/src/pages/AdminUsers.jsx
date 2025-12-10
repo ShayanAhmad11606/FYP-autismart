@@ -130,6 +130,46 @@ const AdminUsers = () => {
       return;
     }
 
+    // Password validation for new users or when changing password
+    if ((modalMode === 'create' || formData.password) && formData.password) {
+      // Password length check
+      if (formData.password.length < 8) {
+        showToast('Password must be at least 8 characters long', 'warning');
+        return;
+      }
+
+      if (formData.password.length > 50) {
+        showToast('Password must not exceed 50 characters', 'warning');
+        return;
+      }
+
+      // Password strength check - require uppercase, lowercase, number, and special character
+      const hasUpperCase = /[A-Z]/.test(formData.password);
+      const hasLowerCase = /[a-z]/.test(formData.password);
+      const hasNumber = /[0-9]/.test(formData.password);
+      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(formData.password);
+
+      if (!hasUpperCase) {
+        showToast('Password must contain at least one uppercase letter', 'warning');
+        return;
+      }
+
+      if (!hasLowerCase) {
+        showToast('Password must contain at least one lowercase letter', 'warning');
+        return;
+      }
+
+      if (!hasNumber) {
+        showToast('Password must contain at least one number', 'warning');
+        return;
+      }
+
+      if (!hasSpecialChar) {
+        showToast('Password must contain at least one special character (!@#$%^&*)', 'warning');
+        return;
+      }
+    }
+
     try {
       setSubmitting(true);
       if (modalMode === 'create') {
@@ -363,14 +403,14 @@ const AdminUsers = () => {
       {showModal && (
         <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
+            <div className="modal-content bg-light text-dark">
+              <div className="modal-header bg-primary text-white">
                 <h5 className="modal-title">
                   {modalMode === 'create' ? 'Add New User' : 'Edit User'}
                 </h5>
                 <button 
                   type="button" 
-                  className="btn-close" 
+                  className="btn-close btn-close-white" 
                   onClick={() => !submitting && setShowModal(false)}
                   disabled={submitting}
                 ></button>
@@ -378,52 +418,62 @@ const AdminUsers = () => {
               <div className="modal-body">
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <label className="form-label">Name *</label>
+                    <label className="form-label text-dark fw-bold">Name *</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control border-2"
+                      style={{ backgroundColor: '#fff', color: '#000' }}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">Email *</label>
+                    <label className="form-label text-dark fw-bold">Email *</label>
                     <input
                       type="email"
-                      className="form-control"
+                      className="form-control border-2"
+                      style={{ backgroundColor: '#fff', color: '#000' }}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       required
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">Phone *</label>
+                    <label className="form-label text-dark fw-bold">Phone *</label>
                     <input
                       type="tel"
-                      className="form-control"
+                      className="form-control border-2"
+                      style={{ backgroundColor: '#fff', color: '#000' }}
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       required
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">
+                    <label className="form-label text-dark fw-bold">
                       Password {modalMode === 'create' && '*'}
                     </label>
                     <input
                       type="password"
-                      className="form-control"
+                      className="form-control border-2"
+                      style={{ backgroundColor: '#fff', color: '#000' }}
                       value={formData.password}
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                       required={modalMode === 'create'}
                       placeholder={modalMode === 'edit' ? 'Leave blank to keep current password' : ''}
                     />
+                    {modalMode === 'create' && (
+                      <small className="text-muted d-block mt-1">
+                        Must be 8+ characters with uppercase, lowercase, number, and special character (!@#$%^&*)
+                      </small>
+                    )}
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">Role *</label>
+                    <label className="form-label text-dark fw-bold">Role *</label>
                     <select
-                      className="form-select"
+                      className="form-select border-2"
+                      style={{ backgroundColor: '#fff', color: '#000' }}
                       value={formData.role}
                       onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                       required

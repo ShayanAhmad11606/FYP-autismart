@@ -82,21 +82,33 @@ export const login = asyncHandler(async (req, res) => {
     });
   }
 
-  const result = await authService.login(req.body);
+  try {
+    const result = await authService.login(req.body);
 
-  res.status(200).json({
-    success: true,
-    message: 'Login successful',
-    data: {
-      token: result.token,
-      user: {
-        id: result.user._id,
-        name: result.user.name,
-        email: result.user.email,
-        role: result.user.role,
+    res.status(200).json({
+      success: true,
+      message: 'Login successful',
+      data: {
+        token: result.token,
+        user: {
+          id: result.user._id,
+          name: result.user.name,
+          email: result.user.email,
+          role: result.user.role,
+        },
       },
-    },
-  });
+    });
+  } catch (error) {
+    // Handle specific login errors
+    if (error.message === 'Invalid credentials' || 
+        error.message === 'Please verify your email before logging in') {
+      return res.status(401).json({
+        success: false,
+        message: error.message,
+      });
+    }
+    throw error;
+  }
 });
 
 // @desc    Get user profile
