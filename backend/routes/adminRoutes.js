@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  createUser,
   getAllUsers,
   getUserById,
   updateUser,
@@ -27,6 +28,11 @@ router.use(roleMiddleware('admin'));
 router.get('/stats', getUserStats);
 
 // ==================== USER ROUTES ====================
+
+// @route   POST /api/admin/users
+// @desc    Create new user
+// @access  Private/Admin
+router.post('/users', createUser);
 
 // @route   GET /api/admin/users
 // @desc    Get all users

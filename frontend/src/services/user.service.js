@@ -6,6 +6,13 @@ import userAPI from '../api/user.api';
  */
 class UserService {
   /**
+   * Create new user (Admin only)
+   */
+  async createUser(userData) {
+    return await userAPI.createUser(userData);
+  }
+
+  /**
    * Get all users (Admin only)
    */
   async getAllUsers() {

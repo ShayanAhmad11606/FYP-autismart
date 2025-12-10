@@ -173,8 +173,7 @@ const AdminUsers = () => {
     try {
       setSubmitting(true);
       if (modalMode === 'create') {
-        // Note: createUser not implemented yet, using register endpoint
-        await userService.register(formData);
+        await userService.createUser(formData);
         showToast('User created successfully', 'success');
       } else {
         const updateData = { ...formData };

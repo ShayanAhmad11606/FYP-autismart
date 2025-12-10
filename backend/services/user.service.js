@@ -3,8 +3,48 @@
  * Handles business logic for user management operations
  */
 import userDataAccess from '../dataAccess/user.dataAccess.js';
+import User from '../models/User.js';
 
 class UserService {
+  /**
+   * Create new user (Admin only)
+   */
+  async createUser(userData) {
+    const { name, email, password, role, isVerified } = userData;
+
+    // Validation
+    if (!name || !email || !password) {
+      throw new Error('Name, email, and password are required');
+    }
+
+    // Check if user already exists
+    const existingUser = await userDataAccess.findByEmail(email, false);
+    if (existingUser) {
+      throw new Error('Email already registered');
+    }
+
+    // Create user data object
+    const newUserData = {
+      name,
+      email,
+      password,
+      role: role || 'caregiver',
+      isVerified: isVerified !== undefined ? isVerified : true // Admin-created users are verified by default
+    };
+
+    // Create new user
+    const user = new User(newUserData);
+    await user.save();
+
+    return {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isVerified: user.isVerified
+    };
+  }
+
   /**
    * Get all users
    */

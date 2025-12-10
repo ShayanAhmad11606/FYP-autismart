@@ -6,6 +6,19 @@ import userService from '../services/user.service.js';
 import assessmentService from '../services/assessment.service.js';
 import { asyncHandler } from '../middleware/error.middleware.js';
 
+// @desc    Create new user
+// @route   POST /api/admin/users
+// @access  Private (Admin)
+export const createUser = asyncHandler(async (req, res) => {
+  const user = await userService.createUser(req.body);
+
+  res.status(201).json({
+    success: true,
+    message: 'User created successfully',
+    data: user
+  });
+});
+
 // @desc    Get all users
 // @route   GET /api/admin/users
 // @access  Private (Admin)

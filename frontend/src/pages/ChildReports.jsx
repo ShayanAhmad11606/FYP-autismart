@@ -109,7 +109,13 @@ const ChildReports = () => {
       const a = document.createElement('a');
       a.href = url;
       const child = childrenList.find(c => c.id === selectedChildId);
-      a.download = `report-${child?.name.replace(/\s+/g, '-') || 'child'}-${Date.now()}.pdf`;
+      
+      // Format date for filename
+      const now = new Date();
+      const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD format
+      const childName = child?.name.replace(/\s+/g, '-').toLowerCase() || 'child';
+      
+      a.download = `AutiSmart-Progress-Report-${childName}-${dateStr}.pdf`;
       document.body.appendChild(a);
       a.click();
       

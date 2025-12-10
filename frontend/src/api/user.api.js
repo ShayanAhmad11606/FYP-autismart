@@ -5,6 +5,18 @@ import http from './http';
  */
 const userAPI = {
   /**
+   * Create new user (Admin only)
+   */
+  createUser: async (userData) => {
+    try {
+      const response = await http.post('/admin/users', userData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to create user' };
+    }
+  },
+
+  /**
    * Get all users (Admin only)
    */
   getAllUsers: async () => {
