@@ -10,35 +10,17 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      required: [true, 'Email is required'],
       unique: true,
-      sparse: true, // Allow null values with unique constraint
       lowercase: true,
       trim: true,
       match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email'],
     },
-    phone: {
-      type: String,
-      trim: true,
-    },
-    phoneNumber: {
-      type: String,
-      unique: true,
-      sparse: true, // Allow null values with unique constraint
-      trim: true,
-    },
     password: {
       type: String,
+      required: [true, 'Password is required'],
       minlength: [6, 'Password must be at least 6 characters'],
       select: false,
-    },
-    firebaseUid: {
-      type: String,
-      unique: true,
-      sparse: true, // Firebase UID for phone auth users
-    },
-    isPhoneVerified: {
-      type: Boolean,
-      default: false,
     },
     role: {
       type: String,

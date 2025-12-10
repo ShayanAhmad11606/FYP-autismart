@@ -1,6 +1,6 @@
 import express from 'express';
 import * as childController from '../controllers/childController.js';
-import { verifyToken } from '../middlewares/authMiddleware.js';
+import { verifyToken } from '../middleware/index.js';
 
 const router = express.Router();
 
@@ -13,16 +13,16 @@ router.get('/all-children', childController.getAllChildren);
 // Child management routes
 router.post('/children', childController.addChild);
 router.get('/children', childController.getChildren);
-router.get('/children/:childId', childController.getChild);
-router.put('/children/:childId', childController.updateChild);
-router.delete('/children/:childId', childController.deleteChild);
+router.get('/children/:id', childController.getChild);
+router.put('/children/:id', childController.updateChild);
+router.delete('/children/:id', childController.deleteChild);
 
-// Activity tracking routes
-router.post('/children/:childId/activities', childController.recordActivity);
-router.get('/children/:childId/activities', childController.getChildActivities);
+// Activity and stats routes
+router.get('/children/:id/stats', childController.getChildStats);
+router.get('/children/:id/activities', childController.getChildActivities);
+router.post('/children/:id/activities', childController.addActivity);
 
-// Report routes
-router.get('/children/:childId/report', childController.getChildReport);
-router.get('/children/:childId/report/download', childController.downloadChildReportPDF);
+// Report route
+router.get('/children/:id/report', childController.generateChildReport);
 
 export default router;

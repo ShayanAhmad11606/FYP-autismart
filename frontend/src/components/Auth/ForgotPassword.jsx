@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authAPI } from '../../services/api';
+import { authService } from '../../services';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -19,10 +19,22 @@ const ForgotPassword = () => {
       return;
     }
 
+    if (email.trim().length === 0) {
+      setError('Email address cannot be empty');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address (e.g., user@example.com)');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await authAPI.forgotPassword(email);
+      const response = await authService.forgotPassword(email);
       
       if (response.success) {
         setSuccess('OTP has been sent to your email!');

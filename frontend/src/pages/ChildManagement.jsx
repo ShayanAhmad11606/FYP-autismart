@@ -65,8 +65,39 @@ const ChildManagement = () => {
     e.preventDefault();
     setError('');
 
+    // Required fields validation
     if (!formData.name || !formData.age || !formData.gender) {
       setError('Name, age, and gender are required');
+      return;
+    }
+
+    // Name validation
+    if (formData.name.trim().length < 2) {
+      setError('Name must be at least 2 characters long');
+      return;
+    }
+
+    if (formData.name.trim().length > 50) {
+      setError('Name must not exceed 50 characters');
+      return;
+    }
+
+    // Check for numbers in name
+    if (/\d/.test(formData.name)) {
+      setError('Child name cannot contain numbers');
+      return;
+    }
+
+    // Age validation
+    const ageNum = parseInt(formData.age);
+    if (isNaN(ageNum) || ageNum < 1 || ageNum > 18) {
+      setError('Age must be between 1 and 18 years');
+      return;
+    }
+
+    // Gender validation
+    if (!['male', 'female', 'other'].includes(formData.gender.toLowerCase())) {
+      setError('Please select a valid gender');
       return;
     }
 

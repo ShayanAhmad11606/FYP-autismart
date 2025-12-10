@@ -24,7 +24,6 @@ const createAdminUser = async () => {
     const adminUser = new User({
       name: 'Admin User',
       email: 'admin@autismart.com',
-      phone: '+1234567890',
       password: 'Admin@123',
       role: 'admin',
       isVerified: true,

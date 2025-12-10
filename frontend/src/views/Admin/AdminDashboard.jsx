@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { adminAPI } from '../../services/api';
+import { userService } from '../../services';
 import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
@@ -23,7 +23,7 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       setError('');
-      const statsData = await adminAPI.getStats();
+      const statsData = await userService.getStats();
       setStats(statsData.data);
     } catch (err) {
       console.error('Fetch error:', err);

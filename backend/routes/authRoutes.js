@@ -4,10 +4,10 @@ import {
   verifyOtp,
   login,
   resendOtp,
-  forgotPassword,
-  resetPassword,
-  firebaseLogin,
+  getProfile,
+  changePassword,
 } from '../controllers/authController.js';
+import { authMiddleware } from '../middleware/index.js';
 
 const router = express.Router();
 
@@ -31,19 +31,14 @@ router.post('/login', login);
 // @access  Public
 router.post('/resend-otp', resendOtp);
 
-// @route   POST /api/auth/forgot-password
-// @desc    Send OTP for password reset
-// @access  Public
-router.post('/forgot-password', forgotPassword);
+// @route   GET /api/auth/profile
+// @desc    Get user profile
+// @access  Private
+router.get('/profile', authMiddleware, getProfile);
 
-// @route   POST /api/auth/reset-password
-// @desc    Reset password with OTP
-// @access  Public
-router.post('/reset-password', resetPassword);
-
-// @route   POST /api/auth/firebase-login
-// @desc    Login/Register with Firebase Phone Authentication
-// @access  Public
-router.post('/firebase-login', firebaseLogin);
+// @route   PUT /api/auth/change-password
+// @desc    Change user password
+// @access  Private
+router.put('/change-password', authMiddleware, changePassword);
 
 export default router;

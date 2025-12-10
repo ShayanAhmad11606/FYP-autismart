@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import Badge from '../components/Badge';
 import Toast from '../components/Toast';
-import { adminAPI } from '../services/api';
+import { userService } from '../services';
 
 const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,7 +31,7 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await adminAPI.getAllUsers();
+      const response = await userService.getAllUsers();
       setUsers(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Fetch users error:', error);
@@ -80,7 +80,7 @@ const AdminUsers = () => {
 
     try {
       setLoading(true);
-      await adminAPI.deleteUser(userId);
+      await userService.deleteUser(userId);
       showToast('User deleted successfully', 'success');
       await fetchUsers();
     } catch (error) {
@@ -95,8 +95,33 @@ const AdminUsers = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.phone) {
-      showToast('Please fill all required fields', 'warning');
+    // Required fields validation
+    if (!formData.name || !formData.email) {
+      showToast('Name and email are required fields', 'warning');
+      return;
+    }
+
+    // Name validation
+    if (!formData.name || formData.name.trim().length < 2) {
+      showToast('Name must be at least 2 characters long', 'warning');
+      return;
+    }
+
+    if (formData.name.trim().length > 50) {
+      showToast('Name must not exceed 50 characters', 'warning');
+      return;
+    }
+
+    // Check for numbers in name
+    if (/\d/.test(formData.name)) {
+      showToast('Name cannot contain numbers', 'warning');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      showToast('Please enter a valid email address', 'warning');
       return;
     }
 
@@ -108,12 +133,13 @@ const AdminUsers = () => {
     try {
       setSubmitting(true);
       if (modalMode === 'create') {
-        await adminAPI.createUser(formData);
+        // Note: createUser not implemented yet, using register endpoint
+        await userService.register(formData);
         showToast('User created successfully', 'success');
       } else {
         const updateData = { ...formData };
         if (!updateData.password) delete updateData.password; // Don't send empty password
-        await adminAPI.updateUser(selectedUser._id, updateData);
+        await userService.updateUser(selectedUser._id, updateData);
         showToast('User updated successfully', 'success');
       }
       setShowModal(false);

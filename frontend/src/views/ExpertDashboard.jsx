@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import StatCard from '../components/StatCard';
 import Badge from '../components/Badge';
-import { childAPI } from '../services/api';
+import { childService } from '../services';
 
 const ExpertDashboard = () => {
   const { user, logout } = useAuth();
@@ -26,7 +26,7 @@ const ExpertDashboard = () => {
   const fetchPatients = async () => {
     try {
       setLoading(true);
-      const response = await childAPI.getAllChildren();
+      const response = await childService.getAllChildren();
       if (response.success) {
         setPatients(response.data);
       }

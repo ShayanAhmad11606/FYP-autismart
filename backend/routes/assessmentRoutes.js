@@ -1,6 +1,6 @@
 import express from 'express';
 import Assessment from '../models/Assessment.js';
-import authMiddleware from '../middlewares/authMiddleware.js';
+import { authMiddleware } from '../middleware/index.js';
 
 const router = express.Router();
 

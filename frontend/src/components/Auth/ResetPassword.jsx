@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authAPI } from '../../services/api';
+import { authService } from '../../services';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -39,14 +39,40 @@ const ResetPassword = () => {
     setError('');
     setSuccess('');
 
-    // Validation
-    if (!formData.otp || formData.otp.length !== 6) {
-      setError('Please enter a valid 6-digit OTP');
+    // OTP validation
+    if (!formData.otp) {
+      setError('Please enter the OTP');
       return;
     }
 
-    if (!formData.newPassword || formData.newPassword.length < 6) {
+    if (!/^\d{6}$/.test(formData.otp)) {
+      setError('OTP must be exactly 6 digits');
+      return;
+    }
+
+    // Password validation
+    if (!formData.newPassword) {
+      setError('Please enter a new password');
+      return;
+    }
+
+    if (formData.newPassword.length < 6) {
       setError('Password must be at least 6 characters');
+      return;
+    }
+
+    if (formData.newPassword.length > 50) {
+      setError('Password must not exceed 50 characters');
+      return;
+    }
+
+    // Password strength check
+    const hasUpperCase = /[A-Z]/.test(formData.newPassword);
+    const hasLowerCase = /[a-z]/.test(formData.newPassword);
+    const hasNumber = /[0-9]/.test(formData.newPassword);
+    
+    if (!(hasUpperCase && hasLowerCase && hasNumber)) {
+      setError('Password must contain at least one uppercase letter, one lowercase letter, and one number');
       return;
     }
 
@@ -58,7 +84,7 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await authAPI.resetPassword(
+      const response = await authService.resetPassword(
         formData.email,
         formData.otp,
         formData.newPassword
@@ -83,7 +109,7 @@ const ResetPassword = () => {
     setResendLoading(true);
 
     try {
-      const response = await authAPI.forgotPassword(formData.email);
+      const response = await authService.forgotPassword(formData.email);
 
       if (response.success) {
         setSuccess('OTP has been resent to your email!');

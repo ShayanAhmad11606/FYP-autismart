@@ -41,6 +41,19 @@ const Login = () => {
       return;
     }
 
+    // Email validation
+    const emailRegex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Please enter a valid email address (e.g., user@example.com)');
+      return;
+    }
+
+    // Password validation
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -51,10 +64,19 @@ const Login = () => {
       if (response.success) {
         // Navigate based on user role
         const userRole = response.data.user.role;
-        if (userRole === 'admin') {
-          navigate('/admin');
-        } else {
-          navigate('/dashboard');
+        switch (userRole) {
+          case 'admin':
+            navigate('/admin', { replace: true });
+            break;
+          case 'caregiver':
+            navigate('/caregiver-dashboard', { replace: true });
+            break;
+          case 'expert':
+            navigate('/expert-dashboard', { replace: true });
+            break;
+          default:
+            navigate('/dashboard', { replace: true });
+            break;
         }
       }
     } catch (err) {

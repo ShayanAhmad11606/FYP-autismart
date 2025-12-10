@@ -35,8 +35,28 @@ const ChangePassword = () => {
       return;
     }
 
-    if (formData.newPassword.length < 8) {
-      setError('New password must be at least 8 characters long');
+    if (formData.currentPassword.trim().length < 6) {
+      setError('Current password is invalid');
+      return;
+    }
+
+    if (formData.newPassword.length < 6) {
+      setError('New password must be at least 6 characters long');
+      return;
+    }
+
+    if (formData.newPassword.length > 50) {
+      setError('New password must not exceed 50 characters');
+      return;
+    }
+
+    // Password strength check
+    const hasUpperCase = /[A-Z]/.test(formData.newPassword);
+    const hasLowerCase = /[a-z]/.test(formData.newPassword);
+    const hasNumber = /[0-9]/.test(formData.newPassword);
+    
+    if (!(hasUpperCase && hasLowerCase && hasNumber)) {
+      setError('New password must contain at least one uppercase letter, one lowercase letter, and one number');
       return;
     }
 

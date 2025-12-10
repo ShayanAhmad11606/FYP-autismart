@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { authAPI } from '../../services/api';
+import { authService } from '../../services';
 
 const VerifyOtp = () => {
   const navigate = useNavigate();
@@ -35,8 +35,13 @@ const VerifyOtp = () => {
     setError('');
     setSuccess('');
 
-    if (!otp || otp.length !== 6) {
-      setError('Please enter a valid 6-digit OTP');
+    if (!otp) {
+      setError('Please enter the OTP');
+      return;
+    }
+
+    if (!/^\d{6}$/.test(otp)) {
+      setError('OTP must be exactly 6 digits');
       return;
     }
 
@@ -53,8 +58,24 @@ const VerifyOtp = () => {
         setSuccess(verificationType === 'email' 
           ? 'Email verified successfully! Redirecting...' 
           : 'Phone number verified successfully! Redirecting...');
+        
+        // Navigate based on user role
+        const userRole = response.data.user.role;
         setTimeout(() => {
-          navigate('/dashboard');
+          switch (userRole) {
+            case 'admin':
+              navigate('/admin', { replace: true });
+              break;
+            case 'caregiver':
+              navigate('/caregiver-dashboard', { replace: true });
+              break;
+            case 'expert':
+              navigate('/expert-dashboard', { replace: true });
+              break;
+            default:
+              navigate('/dashboard', { replace: true });
+              break;
+          }
         }, 1500);
       }
     } catch (err) {
@@ -74,7 +95,7 @@ const VerifyOtp = () => {
         ? { email }
         : { phoneNumber };
         
-      const response = await authAPI.resendOtp(payload);
+      const response = await authService.resendOtp(payload);
       
       if (response.success) {
         setSuccess(verificationType === 'email'

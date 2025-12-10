@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { childAPI } from '../services/api';
+import { childService } from '../services';
 import { useAuth } from './AuthContext';
 
 const ChildContext = createContext();
@@ -56,7 +56,7 @@ export const ChildProvider = ({ children }) => {
         setChildrenList(preloadedData || []);
         setIsInitialized(true);
       } else {
-        const response = await childAPI.getChildren();
+        const response = await childService.getChildren();
         setChildrenList(response.data || []);
         setIsInitialized(true);
       }
@@ -80,7 +80,7 @@ export const ChildProvider = ({ children }) => {
 
   const addChild = async (childData) => {
     try {
-      const response = await childAPI.addChild(childData);
+      const response = await childService.addChild(childData);
       await loadChildren(); // Reload the list
       return response.data;
     } catch (err) {
@@ -91,7 +91,7 @@ export const ChildProvider = ({ children }) => {
 
   const updateChild = async (childId, childData) => {
     try {
-      const response = await childAPI.updateChild(childId, childData);
+      const response = await childService.updateChild(childId, childData);
       await loadChildren(); // Reload the list
       
       // Update selected child if it was the one updated
@@ -108,7 +108,7 @@ export const ChildProvider = ({ children }) => {
 
   const deleteChild = async (childId) => {
     try {
-      await childAPI.deleteChild(childId);
+      await childService.deleteChild(childId);
       
       // Clear selected child if it was the one deleted
       if (selectedChild && selectedChild.id === childId) {
@@ -129,7 +129,7 @@ export const ChildProvider = ({ children }) => {
     }
 
     try {
-      const response = await childAPI.recordActivity(selectedChild.id, activityData);
+      const response = await childService.recordActivity(selectedChild.id, activityData);
       return response.data;
     } catch (err) {
       console.error('Error recording activity:', err);

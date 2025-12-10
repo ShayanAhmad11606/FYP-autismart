@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import Card from '../components/Card';
 import ChildSelector from '../components/ChildSelector';
 import Toast from '../components/Toast';
-import { assessmentAPI } from '../services/api';
+import { assessmentService } from '../services';
 import '../styles/assessment.css';
 
 const Assessment = () => {
@@ -102,7 +102,7 @@ const Assessment = () => {
   const fetchAssessments = async () => {
     try {
       setLoading(true);
-      const response = await assessmentAPI.getAssessments();
+      const response = await assessmentService.getAssessments();
       if (response.success && response.data) {
         // Transform backend data to match existing structure
         const transformedData = {};

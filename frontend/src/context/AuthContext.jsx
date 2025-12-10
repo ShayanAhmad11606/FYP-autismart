@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI, childAPI } from '../services/api';
+import { authService, childService } from '../services';
 
 const AuthContext = createContext(null);
 
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check if user is logged in on mount
-    const currentUser = authAPI.getCurrentUser();
+    const currentUser = authService.getCurrentUser();
     if (currentUser) {
       setUser(currentUser);
       // Preload essential data for existing session
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // Fetch all essential data in parallel
       const [childrenResponse] = await Promise.all([
-        childAPI.getChildren().catch(() => ({ data: [] }))
+        childService.getChildren().catch(() => ({ data: [] }))
         // Add more API calls here as needed (activities, reports, etc.)
       ]);
       
@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }) => {
       loginData = credentials;
     }
     
-    const response = await authAPI.login(loginData);
+    const response = await authService.login(loginData);
     setUser(response.data.user);
     
     // Preload user data immediately after login
@@ -126,7 +126,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    const response = await authAPI.register(userData);
+    const response = await authService.register(userData);
     return response;
   };
 
@@ -142,7 +142,7 @@ export const AuthProvider = ({ children }) => {
       otpData = verifyData;
     }
     
-    const response = await authAPI.verifyOtp(otpData);
+    const response = await authService.verifyOtp(otpData);
     setUser(response.data.user);
     
     // Preload user data immediately after OTP verification
@@ -152,7 +152,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    authAPI.logout();
+    authService.logout();
     setUser(null);
     setPreloadedData(null);
   };

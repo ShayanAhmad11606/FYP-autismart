@@ -43,13 +43,53 @@ const Register = () => {
       return;
     }
 
+    // Name validation
+    if (formData.name.trim().length < 2) {
+      setError('Name must be at least 2 characters long');
+      return;
+    }
+
+    if (formData.name.trim().length > 50) {
+      setError('Name must not exceed 50 characters');
+      return;
+    }
+
+    // Check for numbers in name
+    if (/\d/.test(formData.name)) {
+      setError('Name cannot contain numbers');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    // Password validation
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    if (formData.password.length > 50) {
+      setError('Password must not exceed 50 characters');
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    // Password strength check
+    const hasUpperCase = /[A-Z]/.test(formData.password);
+    const hasLowerCase = /[a-z]/.test(formData.password);
+    const hasNumber = /[0-9]/.test(formData.password);
+    
+    if (!(hasUpperCase && hasLowerCase && hasNumber)) {
+      setError('Password must contain at least one uppercase letter, one lowercase letter, and one number');
       return;
     }
 

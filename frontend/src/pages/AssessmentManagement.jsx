@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import Badge from '../components/Badge';
 import Toast from '../components/Toast';
-import { assessmentAPI } from '../services/api';
+import { assessmentService } from '../services';
 
 const AssessmentManagement = () => {
   const [assessments, setAssessments] = useState([]);
@@ -57,7 +57,7 @@ const AssessmentManagement = () => {
   const fetchAssessments = async () => {
     try {
       setLoading(true);
-      const response = await assessmentAPI.getAllAssessments();
+      const response = await assessmentService.getAllAssessments();
       setAssessments(response.data || []);
     } catch (error) {
       showToast(error.message || 'Failed to fetch assessments', 'danger');
@@ -100,7 +100,7 @@ const AssessmentManagement = () => {
     if (!window.confirm('Are you sure you want to delete this assessment?')) return;
 
     try {
-      await assessmentAPI.deleteAssessment(assessmentId);
+      await assessmentService.deleteAssessment(assessmentId);
       showToast('Assessment deleted successfully', 'success');
       fetchAssessments();
     } catch (error) {
@@ -109,8 +109,37 @@ const AssessmentManagement = () => {
   };
 
   const handleAddQuestion = () => {
-    if (!currentQuestion.question || currentQuestion.options.some(opt => !opt)) {
-      showToast('Please fill all question fields', 'warning');
+    // Question validation
+    if (!currentQuestion.question || currentQuestion.question.trim().length === 0) {
+      showToast('Please enter a question', 'warning');
+      return;
+    }
+
+    if (currentQuestion.question.trim().length < 5) {
+      showToast('Question must be at least 5 characters long', 'warning');
+      return;
+    }
+
+    if (currentQuestion.question.trim().length > 200) {
+      showToast('Question must not exceed 200 characters', 'warning');
+      return;
+    }
+
+    // Options validation
+    if (currentQuestion.options.some(opt => !opt || opt.trim().length === 0)) {
+      showToast('Please fill all option fields', 'warning');
+      return;
+    }
+
+    if (currentQuestion.options.some(opt => opt.trim().length < 1 || opt.trim().length > 100)) {
+      showToast('Each option must be between 1 and 100 characters', 'warning');
+      return;
+    }
+
+    // Category validation
+    const validCategories = ['Social Interaction', 'Communication', 'Behavior', 'Sensory', 'Daily Living'];
+    if (!validCategories.includes(currentQuestion.category)) {
+      showToast('Please select a valid category', 'warning');
       return;
     }
 
@@ -146,6 +175,35 @@ const AssessmentManagement = () => {
       return;
     }
 
+    // Title validation
+    if (formData.title.trim().length < 3) {
+      showToast('Title must be at least 3 characters long', 'warning');
+      return;
+    }
+
+    if (formData.title.trim().length > 100) {
+      showToast('Title must not exceed 100 characters', 'warning');
+      return;
+    }
+
+    // Description validation
+    if (formData.description.trim().length < 10) {
+      showToast('Description must be at least 10 characters long', 'warning');
+      return;
+    }
+
+    if (formData.description.trim().length > 500) {
+      showToast('Description must not exceed 500 characters', 'warning');
+      return;
+    }
+
+    // Level validation
+    const validLevels = ['easy', 'intermediate', 'advanced', 'sensory'];
+    if (!validLevels.includes(formData.level)) {
+      showToast('Please select a valid assessment level', 'warning');
+      return;
+    }
+
     if (formData.questions.length === 0) {
       showToast('Please add at least one question to the assessment', 'warning');
       return;
@@ -154,10 +212,10 @@ const AssessmentManagement = () => {
     try {
       setSubmitting(true);
       if (modalMode === 'create') {
-        await assessmentAPI.createAssessment(formData);
+        await assessmentService.createAssessment(formData);
         showToast('Assessment created successfully', 'success');
       } else {
-        await assessmentAPI.updateAssessment(selectedAssessment._id, formData);
+        await assessmentService.updateAssessment(selectedAssessment._id, formData);
         showToast('Assessment updated successfully', 'success');
       }
       setShowModal(false);

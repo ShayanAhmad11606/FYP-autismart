@@ -258,7 +258,7 @@ const corsErrorHandler = (err, req, res, next) => {
 /**
  * Export all error handling utilities
  */
-module.exports = {
+export {
   // Error classes
   AppError,
   ValidationError,

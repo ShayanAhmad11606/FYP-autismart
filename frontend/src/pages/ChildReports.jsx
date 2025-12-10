@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useChild } from '../context/ChildContext';
-import { childAPI } from '../services/api';
+import { childService } from '../services';
 import { Line, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -78,7 +78,7 @@ const ChildReports = () => {
     try {
       setLoading(true);
       setError('');
-      const response = await childAPI.getChildReport(selectedChildId);
+      const response = await childService.getChildReport(selectedChildId);
       setReportData(response.data);
     } catch (err) {
       console.error('Error loading report:', err);
@@ -90,7 +90,7 @@ const ChildReports = () => {
 
   const handleDownloadPDF = async () => {
     try {
-      const blob = await childAPI.downloadChildReportPDF(selectedChildId);
+      const blob = await childService.downloadChildReportPDF(selectedChildId);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
