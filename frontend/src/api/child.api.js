@@ -133,13 +133,13 @@ const childAPI = {
     try {
       // Get the auth token
       const token = localStorage.getItem('token');
-      
+
       if (!token) {
         throw new Error('No authentication token found');
       }
-      
+
       // Create a direct download using fetch to bypass IDM interception
-      const response = await fetch(`http://localhost:5000/api/caregiver/children/${childId}/report`, {
+      const response = await fetch(`http://localhost:5000/api/children/${childId}/report`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -157,18 +157,30 @@ const childAPI = {
       // Check content type
       const contentType = response.headers.get('content-type');
       console.log('Response content-type:', contentType);
-      
+
       const blob = await response.blob();
       console.log('Blob size:', blob.size, 'bytes');
-      
+
       if (blob.size === 0) {
         throw new Error('Received empty PDF file');
       }
-      
+
       return blob;
     } catch (error) {
       console.error('PDF download error:', error);
       throw { message: error.message || 'Failed to download report' };
+    }
+  },
+
+  /**
+   * Generate AI Insight
+   */
+  generateAIReview: async (childId) => {
+    try {
+      const response = await http.post(`/ai/generate-insight/${childId}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: 'Failed to generate AI insight' };
     }
   },
 };

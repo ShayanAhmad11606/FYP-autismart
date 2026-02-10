@@ -36,14 +36,18 @@ const ChildReports = () => {
   const [error, setError] = useState('');
   const [showChildList, setShowChildList] = useState(false);
 
+  // AI State
+  const [aiInsight, setAiInsight] = useState('');
+  const [aiLoading, setAiLoading] = useState(false);
+
   // Load saved child ID from localStorage or use first child
   useEffect(() => {
     if (childrenList.length > 0 && !selectedChildId) {
       const savedChildId = localStorage.getItem('lastSelectedChildForReport');
-      
+
       // Check if saved child still exists in the list
       const childExists = savedChildId && childrenList.some(child => child.id === savedChildId);
-      
+
       if (childExists) {
         setSelectedChildId(savedChildId);
       } else {
@@ -51,6 +55,23 @@ const ChildReports = () => {
       }
     }
   }, [childrenList]);
+
+  const handleGenerateAI = async () => {
+    try {
+      setAiLoading(true);
+      setError('');
+      setAiInsight('');
+
+      const response = await childService.generateAIReview(selectedChildId);
+      setAiInsight(response.data.insight);
+    } catch (err) {
+      console.error('AI Generation Error:', err);
+      alert('Failed to generate AI insight. Please ensure API key is configured.');
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
 
   // Save selected child ID to localStorage whenever it changes
   useEffect(() => {
@@ -79,7 +100,7 @@ const ChildReports = () => {
       setLoading(true);
       setError('');
       const response = await childService.getChildReport(selectedChildId);
-      
+
       // Transform data structure: stats endpoint returns { child, totalActivities, ... }
       // Component expects { child, statistics: { totalActivities, ... } }
       const { child, ...statistics } = response.data;
@@ -99,26 +120,26 @@ const ChildReports = () => {
     try {
       setError(''); // Clear any previous errors
       const blob = await childService.downloadChildReportPDF(selectedChildId);
-      
+
       // Check if blob is valid
       if (!blob || blob.size === 0) {
         throw new Error('Received empty PDF file');
       }
-      
+
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       const child = childrenList.find(c => c.id === selectedChildId);
-      
+
       // Format date for filename
       const now = new Date();
       const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD format
       const childName = child?.name.replace(/\s+/g, '-').toLowerCase() || 'child';
-      
+
       a.download = `AutiSmart-Progress-Report-${childName}-${dateStr}.pdf`;
       document.body.appendChild(a);
       a.click();
-      
+
       // Cleanup
       setTimeout(() => {
         window.URL.revokeObjectURL(url);
@@ -156,10 +177,10 @@ const ChildReports = () => {
 
   // Prepare chart data
   const progressChartData = reportData?.statistics?.progressOverTime ? {
-    labels: reportData.statistics.progressOverTime.map(item => 
-      new Date(item.date).toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric' 
+    labels: reportData.statistics.progressOverTime.map(item =>
+      new Date(item.date).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric'
       })
     ),
     datasets: [{
@@ -205,20 +226,61 @@ const ChildReports = () => {
             Progress Reports
           </h2>
           {reportData && (
-            <button className="btn btn-primary" onClick={handleDownloadPDF}>
-              <i className="bi bi-download me-2"></i>
-              Download PDF
-            </button>
+            <div className="d-flex gap-2">
+              <button
+                className="btn btn-outline-primary"
+                onClick={handleGenerateAI}
+                disabled={aiLoading}
+              >
+                {aiLoading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <i className="bi bi-stars me-2"></i>
+                    Generate AI Insight
+                  </>
+                )}
+              </button>
+              <button className="btn btn-primary" onClick={handleDownloadPDF}>
+                <i className="bi bi-download me-2"></i>
+                Download PDF
+              </button>
+            </div>
           )}
         </div>
+
+        {/* AI Insight Section */}
+        {aiInsight && (
+          <div className="alert alert-info border-0 shadow-sm mb-4" style={{ background: 'linear-gradient(to right, #e2e2ff, #f3e5f5)' }}>
+            <div className="d-flex mb-3">
+              <i className="bi bi-robot fs-2 me-3 text-primary"></i>
+              <div>
+                <h4 className="alert-heading fw-bold mb-1">AI Developmental Insight</h4>
+                <p className="text-muted small mb-0">Powered by Gemini AI • {new Date().toLocaleDateString()}</p>
+              </div>
+            </div>
+            <div style={{ whiteSpace: 'pre-line', lineHeight: '1.6' }}>
+              {aiInsight}
+            </div>
+            <hr />
+            <div className="d-flex justify-content-end">
+              <button className="btn btn-sm btn-outline-secondary" onClick={() => setAiInsight('')}>
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Child Selector */}
         <div className="mb-4 position-relative">
           <label className="form-label">Select Child:</label>
           <div className="d-flex gap-2 align-items-center">
-            <button 
+            <button
               className="btn d-flex align-items-center justify-content-between w-100"
-              style={{ 
+              style={{
                 maxWidth: '400px',
                 border: '2px solid #5EBDB0',
                 color: '#5EBDB0',
@@ -241,13 +303,13 @@ const ChildReports = () => {
               <i className={`bi bi-chevron-${showChildList ? 'up' : 'down'}`}></i>
             </button>
           </div>
-          
+
           {/* Dropdown List */}
           {showChildList && (
-            <div 
-              className="card position-absolute shadow-lg mt-2" 
-              style={{ 
-                maxWidth: '400px', 
+            <div
+              className="card position-absolute shadow-lg mt-2"
+              style={{
+                maxWidth: '400px',
                 width: '100%',
                 zIndex: 1050,
                 maxHeight: '400px',
@@ -272,7 +334,7 @@ const ChildReports = () => {
                     }}
                   >
                     <div className="d-flex align-items-center w-100">
-                      <div 
+                      <div
                         className="rounded-circle d-flex align-items-center justify-content-center me-3"
                         style={{
                           width: '50px',
@@ -284,8 +346,8 @@ const ChildReports = () => {
                         }}
                       >
                         {child.profileImage ? (
-                          <img 
-                            src={child.profileImage} 
+                          <img
+                            src={child.profileImage}
                             alt={child.name}
                             className="rounded-circle"
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -499,13 +561,13 @@ const ChildReports = () => {
               <div className="report-section">
                 <h3 className="section-title">Progress Over Time</h3>
                 <div className="chart-container">
-                  <Line 
+                  <Line
                     data={progressChartData}
                     options={{
                       responsive: true,
                       maintainAspectRatio: false,
                       plugins: {
-                        legend: { 
+                        legend: {
                           display: true,
                           position: 'top',
                           labels: {
@@ -523,7 +585,7 @@ const ChildReports = () => {
                           cornerRadius: 8,
                           displayColors: true,
                           callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                               return `Score: ${context.parsed.y.toFixed(1)}%`;
                             }
                           }
@@ -534,7 +596,7 @@ const ChildReports = () => {
                           beginAtZero: true,
                           max: 100,
                           ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                               return value + '%';
                             },
                             font: { size: 12 }
@@ -562,7 +624,7 @@ const ChildReports = () => {
               <div className="report-section">
                 <h3 className="section-title">Performance by Activity</h3>
                 <div className="chart-container">
-                  <Bar 
+                  <Bar
                     data={activityChartData}
                     options={{
                       responsive: true,
@@ -577,7 +639,7 @@ const ChildReports = () => {
                           bodyFont: { size: 13 },
                           cornerRadius: 8,
                           callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                               return `Average: ${context.parsed.y}%`;
                             }
                           }
@@ -588,7 +650,7 @@ const ChildReports = () => {
                           beginAtZero: true,
                           max: 100,
                           ticks: {
-                            callback: function(value) {
+                            callback: function (value) {
                               return value + '%';
                             },
                             font: { size: 12 }
@@ -613,64 +675,63 @@ const ChildReports = () => {
             )}
 
             {/* Game Progress by Type */}
-            {reportData.statistics.byActivityType && Object.keys(reportData.statistics.byActivityType).filter(name => 
+            {reportData.statistics.byActivityType && Object.keys(reportData.statistics.byActivityType).filter(name =>
               ['Memory Match', 'Color Matching', 'Sound Matching'].includes(name)
             ).length > 0 && (
-              <div className="report-section">
-                <h3 className="section-title">
-                  <i className="bi bi-controller me-2"></i>
-                  Game Progress Details
-                </h3>
-                <div className="row g-3">
-                  {Object.entries(reportData.statistics.byActivityType)
-                    .filter(([name]) => ['Memory Match', 'Color Matching', 'Sound Matching'].includes(name))
-                    .map(([gameName, stats]) => (
-                    <div key={gameName} className="col-md-4">
-                      <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '12px' }}>
-                        <div className="card-body">
-                          <div className="d-flex align-items-center mb-3">
-                            <div className="me-3">
-                              {gameName === 'Memory Match' && <i className="bi bi-grid-3x3-gap fs-2 text-primary"></i>}
-                              {gameName === 'Color Matching' && <i className="bi bi-palette fs-2 text-success"></i>}
-                              {gameName === 'Sound Matching' && <i className="bi bi-music-note-beamed fs-2 text-info"></i>}
-                            </div>
-                            <div>
-                              <h5 className="mb-0">{gameName}</h5>
-                              <small className="text-muted">Times Played: {stats.count}</small>
-                            </div>
-                          </div>
-                          <div className="mb-2">
-                            <div className="d-flex justify-content-between mb-1">
-                              <small>Average Score</small>
-                              <small className="fw-bold">{stats.averageScore.toFixed(1)}%</small>
-                            </div>
-                            <div className="progress" style={{ height: '8px' }}>
-                              <div 
-                                className={`progress-bar ${
-                                  stats.averageScore >= 80 ? 'bg-success' : 
-                                  stats.averageScore >= 60 ? 'bg-primary' : 
-                                  stats.averageScore >= 40 ? 'bg-warning' : 'bg-danger'
-                                }`}
-                                style={{ width: `${stats.averageScore}%` }}
-                              ></div>
-                            </div>
-                          </div>
-                          <div className="mt-3 pt-3 border-top">
-                            <div className="d-flex justify-content-between">
-                              <span className="text-muted">
-                                <i className="bi bi-trophy-fill text-warning me-1"></i>
-                                Total Points
-                              </span>
-                              <span className="fw-bold">{Math.round(stats.totalScore)}</span>
+                <div className="report-section">
+                  <h3 className="section-title">
+                    <i className="bi bi-controller me-2"></i>
+                    Game Progress Details
+                  </h3>
+                  <div className="row g-3">
+                    {Object.entries(reportData.statistics.byActivityType)
+                      .filter(([name]) => ['Memory Match', 'Color Matching', 'Sound Matching'].includes(name))
+                      .map(([gameName, stats]) => (
+                        <div key={gameName} className="col-md-4">
+                          <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '12px' }}>
+                            <div className="card-body">
+                              <div className="d-flex align-items-center mb-3">
+                                <div className="me-3">
+                                  {gameName === 'Memory Match' && <i className="bi bi-grid-3x3-gap fs-2 text-primary"></i>}
+                                  {gameName === 'Color Matching' && <i className="bi bi-palette fs-2 text-success"></i>}
+                                  {gameName === 'Sound Matching' && <i className="bi bi-music-note-beamed fs-2 text-info"></i>}
+                                </div>
+                                <div>
+                                  <h5 className="mb-0">{gameName}</h5>
+                                  <small className="text-muted">Times Played: {stats.count}</small>
+                                </div>
+                              </div>
+                              <div className="mb-2">
+                                <div className="d-flex justify-content-between mb-1">
+                                  <small>Average Score</small>
+                                  <small className="fw-bold">{stats.averageScore.toFixed(1)}%</small>
+                                </div>
+                                <div className="progress" style={{ height: '8px' }}>
+                                  <div
+                                    className={`progress-bar ${stats.averageScore >= 80 ? 'bg-success' :
+                                      stats.averageScore >= 60 ? 'bg-primary' :
+                                        stats.averageScore >= 40 ? 'bg-warning' : 'bg-danger'
+                                      }`}
+                                    style={{ width: `${stats.averageScore}%` }}
+                                  ></div>
+                                </div>
+                              </div>
+                              <div className="mt-3 pt-3 border-top">
+                                <div className="d-flex justify-content-between">
+                                  <span className="text-muted">
+                                    <i className="bi bi-trophy-fill text-warning me-1"></i>
+                                    Total Points
+                                  </span>
+                                  <span className="fw-bold">{Math.round(stats.totalScore)}</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
+                      ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* Games History */}
             {reportData.statistics.gamesList && reportData.statistics.gamesList.length > 0 && (
@@ -699,8 +760,8 @@ const ChildReports = () => {
                             </span>
                           </td>
                           <td>
-                            {game.timeTaken ? 
-                              `${Math.floor(game.timeTaken / 60)}m ${game.timeTaken % 60}s` : 
+                            {game.timeTaken ?
+                              `${Math.floor(game.timeTaken / 60)}m ${game.timeTaken % 60}s` :
                               'N/A'}
                           </td>
                           <td>
@@ -808,17 +869,17 @@ const ChildReports = () => {
                             </span>
                           </td>
                           <td>
-                            {activity.duration ? 
-                              `${Math.floor(activity.duration / 60)}m ${activity.duration % 60}s` : 
+                            {activity.duration ?
+                              `${Math.floor(activity.duration / 60)}m ${activity.duration % 60}s` :
                               'N/A'}
                           </td>
                           <td>
-                            {activity.completedAt ? 
+                            {activity.completedAt ?
                               new Date(activity.completedAt).toLocaleDateString('en-US', {
                                 year: 'numeric',
                                 month: 'short',
                                 day: 'numeric'
-                              }) : 
+                              }) :
                               'N/A'}
                           </td>
                         </tr>

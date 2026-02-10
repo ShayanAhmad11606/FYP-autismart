@@ -1,3 +1,4 @@
+
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -6,6 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import childRoutes from './routes/childRoutes.js';
 import assessmentRoutes from './routes/assessmentRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 import { verifyEmailConfig } from './config/email.js';
 
 // Load environment variables
@@ -33,14 +35,14 @@ const connectDB = async () => {
   try {
     console.log('Attempting to connect to MongoDB...');
     console.log('MongoDB URI:', process.env.MONGO_URI ? 'Set' : 'Not Set');
-    
+
     const conn = await mongoose.connect(process.env.MONGO_URI, {
       serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
       socketTimeoutMS: 45000,
       family: 4 // Use IPv4, skip trying IPv6
     });
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
-    
+
     // Verify email configuration (non-blocking)
     console.log('Verifying email config in background...');
     verifyEmailConfig().then(() => {
@@ -70,6 +72,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/caregiver', childRoutes);
 app.use('/api/assessments', assessmentRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {

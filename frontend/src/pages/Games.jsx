@@ -14,7 +14,7 @@ const Games = () => {
       title: 'Memory Match',
       description: 'Match pairs of cards to improve memory and concentration',
       icon: 'bi-grid-3x3-gap',
-      difficulty: 'Easy',
+      difficulty: 'Adaptive',
       category: 'Memory',
       color: 'success',
       route: '/games/memory-match'
@@ -38,6 +38,16 @@ const Games = () => {
       category: 'Visual',
       color: 'success',
       route: '/games/color-matching'
+    },
+    {
+      id: 6,
+      title: 'Emotion Recognition',
+      description: 'Learn to identify feelings and emotions from facial expressions',
+      icon: 'bi-emoji-smile',
+      difficulty: 'Medium',
+      category: 'Social',
+      color: 'danger',  // Use a distinct color
+      route: '/games/emotion-recognition'
     },
     {
       id: 3,
@@ -67,15 +77,6 @@ const Games = () => {
       color: 'warning'
     },
     {
-      id: 6,
-      title: 'Emotion Explorer',
-      description: 'Recognize and understand different facial expressions',
-      icon: 'bi-emoji-smile',
-      difficulty: 'Medium',
-      category: 'Social',
-      color: 'info'
-    },
-    {
       id: 7,
       title: 'Story Sequencer',
       description: 'Arrange story events in correct order',
@@ -96,7 +97,7 @@ const Games = () => {
   ];
 
   const categories = ['All', 'Memory', 'Visual', 'Logic', 'Math', 'Social', 'Audio'];
-  
+
   // Check if caregiver and no child selected
   const requiresChildSelection = user?.role === 'caregiver' && !selectedChild;
 
@@ -119,7 +120,7 @@ const Games = () => {
           <div>
             <h5 className="alert-heading mb-2">Child Selection Required</h5>
             <p className="mb-2">Please select a child before playing therapy games. The game results will be recorded for the selected child.</p>
-            <button 
+            <button
               className="btn btn-warning btn-sm"
               onClick={() => navigate('/child-management')}
             >
@@ -158,7 +159,7 @@ const Games = () => {
               </div>
               <p className="card-text text-muted">{game.description}</p>
               <div className="mt-auto">
-                <button 
+                <button
                   className="btn btn-primary w-100"
                   onClick={() => game.route ? navigate(game.route) : alert('Coming Soon!')}
                   disabled={requiresChildSelection}

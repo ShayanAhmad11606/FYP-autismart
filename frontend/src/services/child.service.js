@@ -94,7 +94,7 @@ class ChildService {
    */
   async downloadChildReportPDF(childId, childName) {
     const blob = await childAPI.downloadChildReportPDF(childId);
-    
+
     // Create download link
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -111,16 +111,16 @@ class ChildService {
    */
   calculateAge(dateOfBirth) {
     if (!dateOfBirth) return null;
-    
+
     const today = new Date();
     const birthDate = new Date(dateOfBirth);
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    
+
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    
+
     return age;
   }
 
@@ -130,11 +130,18 @@ class ChildService {
   formatChildForDisplay(child) {
     return {
       ...child,
-      ageDisplay: child.dateOfBirth 
-        ? `${this.calculateAge(child.dateOfBirth)} years` 
+      ageDisplay: child.dateOfBirth
+        ? `${this.calculateAge(child.dateOfBirth)} years`
         : `${child.age} years`,
       genderDisplay: child.gender.charAt(0).toUpperCase() + child.gender.slice(1),
     };
+  }
+
+  /**
+   * Generate AI Insight
+   */
+  async generateAIReview(childId) {
+    return await childAPI.generateAIReview(childId);
   }
 }
 
